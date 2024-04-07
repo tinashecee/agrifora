@@ -124,7 +124,7 @@
                <% if (dispatch) { %> <% for (let dat of dispatch) { %>
                 <tr>
                   <td><%= dat.dispatch_id %></td>
-                  <td><%= dat.dispatch_date %></td>
+                  <td><%= moment(dat.dispatch_date).format('Do MMMM, YYYY') %></td>
                   <td><%= dat.delivery_center %></td>
                   <td><%= dat.warehouse %></td>
                   <td><%= dat.transporter %></td>
