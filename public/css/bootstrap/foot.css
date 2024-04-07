@@ -1,0 +1,31 @@
+/* styles.css */
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.main {
+    min-height: 100%;
+    margin-bottom: -100px; /* Height of the footer */
+    padding-bottom: 100px; /* Height of the footer */
+}
+
+.main-footer {
+    background-color: #f8f8f8;
+    padding: 10px 0;
+    text-align: center;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Add any additional styles here */
+  /* Add this style to your existing CSS or in a <style> block in your HTML */
+  .login-section {
+    background-image: url('public/sirius-assets/images/logos/bg.jpg'); /* Replace 'path-to-your-image.jpg' with the actual path to your image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }

@@ -1,0 +1,393 @@
+
+        <div class="mx-auto ms-lg-80 ps-lg-4">
+          <% for (let error of errors) { %>
+            <div class="alert alert-danger" role="alert"><%= error.message %></div>
+            <% } %> <% if(message.success){ %>
+            <div class="alert alert-success" role="alert"><%= message.success %></div>
+            <% } %>
+          <section>
+            <div class="p-8 bg-white navbar-light">
+              <div class="row align-items-center justify-content-between">
+                <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+                  <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                      <li class="breadcrumb-item" aria-current="page">
+                        <a class="d-flex align-items-center" href="#">
+                          <svg
+                            class="text-primary me-2"
+                            width="20"
+                            height="20"
+                            viewbox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              d="M16.8737 16.875V9.02647C16.8737 8.93939 16.8555 8.85327 16.8202 8.77363C16.785 8.694 16.7335 8.6226 16.6691 8.56402L10.4187 2.88159C10.3036 2.77699 10.1537 2.71904 9.99821 2.71904C9.84272 2.71905 9.69281 2.77701 9.57777 2.88162L3.3282 8.56402C3.26377 8.6226 3.2123 8.69399 3.17707 8.77363C3.14185 8.85326 3.12366 8.93937 3.12366 9.02645V16.875"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                            <path
+                              d="M1.24866 16.875H18.7487"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                            <path
+                              d="M11.8732 16.8743V12.4993C11.8732 12.3336 11.8073 12.1746 11.6901 12.0574C11.5729 11.9402 11.4139 11.8743 11.2482 11.8743H8.74817C8.58241 11.8743 8.42344 11.9402 8.30623 12.0574C8.18902 12.1746 8.12317 12.3336 8.12317 12.4993V16.8743"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                          </svg>
+                          <span>Settings</span>
+                        </a>
+                      </li>
+                      <li class="breadcrumb-item active" aria-current="page">
+                        <a class="d-flex align-items-center" href="#">
+                          <svg
+                            class="text-primary me-2"
+                            width="20"
+                            height="20"
+                            viewbox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              d="M17.8125 16.25H2.1875"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                            <path
+                              d="M7.8125 16.25V6.875H12.1875"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                            <path
+                              d="M16.5625 3.125H12.1875V16.25H16.5625V3.125Z"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                            <path
+                              d="M3.4375 16.25V10.625H7.8125"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"></path>
+                          </svg>
+                          <span>Transporter</span>
+                        </a>
+                      </li>
+                    </ol>
+                  </nav>
+                </div>
+                <div class="col-12 col-lg-6 d-flex">
+                  <a
+                    class="btn btn-outline-light d-inline-flex align-items-center justify-content-center p-0 ms-lg-auto me-2 shadow rounded-2"
+                    href="#"
+                    style="width: 40px; height: 40px">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewbox="0 0 12 12"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M5.4375 9.375C7.61212 9.375 9.375 7.61212 9.375 5.4375C9.375 3.26288 7.61212 1.5 5.4375 1.5C3.26288 1.5 1.5 3.26288 1.5 5.4375C1.5 7.61212 3.26288 9.375 5.4375 9.375Z"
+                        stroke="#7A899B"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                      <path
+                        d="M8.22156 8.22189L10.4997 10.5"
+                        stroke="#7A899B"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                    </svg>
+                  </a>
+                  <a
+                    class="btn btn-outline-light d-inline-flex align-items-center justify-content-center p-0 me-2 shadow rounded-2"
+                    href="#"
+                    style="width: 40px; height: 40px">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewbox="0 0 12 12"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M2.12974 8.29964C1.57041 7.35675 1.37453 6.2421 1.57887 5.165C1.78322 4.0879 2.37374 3.12245 3.23955 2.44994C4.10535 1.77742 5.18688 1.4441 6.28105 1.51257C7.37522 1.58104 8.40676 2.04659 9.18197 2.8218C9.95718 3.597 10.4227 4.62854 10.4912 5.72271C10.5597 6.81688 10.2264 7.89841 9.55386 8.76422C8.88135 9.63003 7.9159 10.2206 6.8388 10.4249C5.76171 10.6293 4.64706 10.4334 3.70416 9.87406L3.70417 9.87401L2.14931 10.3183C2.08498 10.3366 2.01691 10.3375 1.95214 10.3207C1.88738 10.3039 1.82828 10.2701 1.78097 10.2228C1.73366 10.1755 1.69986 10.1164 1.68308 10.0516C1.6663 9.98687 1.66714 9.9188 1.68552 9.85447L2.12977 8.29961L2.12974 8.29964Z"
+                        stroke="#7A899B"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                    </svg>
+                  </a>
+                  <a
+                    class="btn btn-outline-light d-inline-flex align-items-center justify-content-center p-0 me-2 shadow rounded-2"
+                    href="#"
+                    style="width: 40px; height: 40px">
+                    <svg
+                      width="10"
+                      height="12"
+                      viewbox="0 0 10 12"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M4 11H6"
+                        stroke="#7A899B"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                      <path
+                        d="M1.6988 4.14999C1.69819 3.73489 1.78393 3.32378 1.95108 2.94036C2.11823 2.55694 2.36348 2.20879 2.6727 1.91598C2.98192 1.62317 3.34899 1.39148 3.75275 1.23429C4.15651 1.07709 4.58897 0.997483 5.02522 1.00006C6.84554 1.01294 8.30157 2.45262 8.30157 4.18953V4.49999C8.30157 6.06693 8.64611 6.9762 8.94956 7.47317C8.98225 7.52627 8.99965 7.58663 8.99999 7.64817C9.00034 7.70971 8.98362 7.77025 8.95153 7.82368C8.91944 7.87711 8.87311 7.92155 8.81721 7.9525C8.76131 7.98346 8.69783 7.99984 8.63315 8H1.36685C1.30217 7.99984 1.23867 7.98345 1.18277 7.95249C1.12686 7.92153 1.08053 7.87708 1.04844 7.82364C1.01636 7.7702 0.999648 7.70965 1.00001 7.64811C1.00036 7.58656 1.01777 7.52619 1.05048 7.47309C1.3541 6.97611 1.69879 6.06685 1.69879 4.49999L1.6988 4.14999Z"
+                        stroke="#7A899B"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                    </svg>
+                  </a>
+                  <a href="#">
+                    <img
+                      class="img-fluid rounded-1"
+                      style="width: 40px; height: 40px"
+                      src="https://lh3.googleusercontent.com/a/AAcHTtfJwO6agah1DDbB2CKQ25F_zrsfyYqu-8d44zbNW8bzDDmB=s192-c-rg-br100"
+                      alt="" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+     <!-- New Transporter Modal Button with top margin -->
+<button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#newTransporterModal">
+    <i class="fas fa-plus"></i> Add Transporter
+  </button>
+  
+  <!-- New Transporter Modal -->
+  <div class="modal fade" id="newTransporterModal" tabindex="-1" aria-labelledby="newTransporterModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="newTransporterModalLabel">New Transporter</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="transporterForm">
+            <div class="mb-3">
+              <label for="transporterName" class="form-label">Transporter Name</label>
+              <input type="text" class="form-control" id="transporterName" required>
+            </div>
+            <div class="mb-3">
+              <label for="contactPerson" class="form-label">Contact Person</label>
+              <input type="text" class="form-control" id="contactPerson" required>
+            </div>
+            <div class="mb-3">
+              <label for="phoneNumber" class="form-label">Phone Number</label>
+              <input type="tel" class="form-control" id="phoneNumber" required>
+            </div>
+  
+            <h5 class="mt-3">Fleet Information</h5>
+            <table class="table table-bordered" id="fleetTable">
+              <thead>
+                <tr>
+                  <th>Truck Type</th>
+                  <th>Truck Tonnage</th>
+                  <th>Reg Number</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="text" class="form-control" name="truckType[]" required></td>
+                  <td><input type="text" class="form-control" name="truckTonnage[]" required></td>
+                  <td><input type="text" class="form-control" name="regNumber[]" required></td>
+                </tr>
+                <!-- Add more rows as needed -->
+              </tbody>
+            </table>
+            <button type="button" class="btn btn-primary mt-3" id="addFleetBtn">Add Truck</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="saveTransporterButton">Save Transporter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+     
+  <div class="container mt-5">
+    <!-- Table for displaying transport details -->
+    <table class="table table-striped -sm">
+        <thead class="table-primary">
+            <tr>
+                <th>Transport ID</th>
+                <th>Transporter</th>
+                <th>Contact Person</th>
+                <th>No of Trucks</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="transportTableBody">
+            <!-- Data will be dynamically populated here -->
+           <% if (transporters.length > 0) { %>
+                  <% for (let dat of transporters) { %>
+                    <tr>
+                      <td><%= dat.transporter_id %></td>
+                      <td><%= dat.transporter_name %></td>
+                      <td><%= dat.contact_person %></td>
+                      <td>
+                        <% 
+                          let fleetCount = 0;
+                          for (let fleetData of fleet) {
+                            if (fleetData.transporter_id === dat.transporter_id) {
+                              fleetCount++;
+                            }
+                          }
+                        %>
+                        <%= fleetCount %>
+                      </td>
+                      <td></td>
+                    </tr>
+                  <% } %>
+                <% } %>
+        </tbody>
+    </table>
+  </div>
+  
+  <!-- View Transport Modal -->
+  <div class="modal fade" id="viewTransportModal" tabindex="-1" aria-labelledby="viewTransportModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewTransportModalLabel">View Transport Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Display specific transport details, including fleet details -->
+                <p><strong>Transport ID:</strong> <span id="viewTransportId"></span></p>
+                <p><strong>Transporter:</strong> <span id="viewTransporter"></span></p>
+                <p><strong>Contact Person:</strong> <span id="viewContactPerson"></span></p>
+                <p><strong>No of Trucks:</strong> <span id="viewNoOfTrucks"></span></p>
+  
+                <!-- Fleet details table -->
+                <h5 class="mt-3">Fleet Details</h5>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Truck Type</th>
+                            <th>Truck Tonnage</th>
+                            <th>Reg Number</th>
+                        </tr>
+                    </thead>
+                    <tbody id="viewFleetDetails">
+                        <!-- Fleet details will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+  </div>
+  
+        </div>
+        </div>
+        </div>
+      </div>
+          <script src="js/bootstrap/bootstrap.bundle.min.js"></script>
+      <script src="js/main.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+      <script src="js/charts-demo.js"></script>
+  <!-- Add this script at the end of your HTML body -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script>
+   $(document).ready(function () {
+  // Counter to keep track of the number of trucks added
+  let truckCounter = 1;
+
+  // Event listener for the "Add Truck" button
+  $("#addFleetBtn").click(function () {
+    // Increment the counter
+    truckCounter++;
+
+    // Create a new row with input fields
+    let newRow = `
+      <tr>
+        <td><input type="text" class="form-control" name="truckType[]" required></td>
+        <td><input type="text" class="form-control" name="truckTonnage[]" required></td>
+        <td><input type="text" class="form-control" name="regNumber[]" required></td>
+        <td><button type="button" class="btn btn-danger btn-sm removeTruckBtn">Remove</button></td>
+      </tr>
+    `;
+
+    // Append the new row to the fleet table
+    $("#fleetTable tbody").append(newRow);
+
+    // Clear input fields after appending the new row
+    $("#fleetForm")[0].reset();
+  });
+
+  // Event listener for the "Remove" button in the fleet table
+  $("#fleetTable").on("click", ".removeTruckBtn", function () {
+    // Remove the corresponding row when the "Remove" button is clicked
+    $(this).closest("tr").remove();
+  });
+
+  // Event listener for the "Save Transporter" button
+  $("#saveTransporterButton").click(function () {
+    // Extract transporter details from the form
+    let transporterName = $("#transporterName").val();
+    let contactPerson = $("#contactPerson").val();
+    let phoneNumber = $("#phoneNumber").val();
+
+    // Extract fleet details from the table
+    let fleetDetails = [];
+    $("#fleetTable tbody tr").each(function () {
+      // Skip the last empty row
+      if (!$(this).find("input[name='truckType[]']").val()) {
+        return;
+      }
+      let truckType = $(this).find("input[name='truckType[]']").val();
+      let truckTonnage = $(this).find("input[name='truckTonnage[]']").val();
+      let regNumber = $(this).find("input[name='regNumber[]']").val();
+
+     
+
+      // Save truck details to the fleetDetails array
+      fleetDetails.push({
+        truckType: truckType,
+        truckTonnage: truckTonnage,
+        regNumber: regNumber
+      });
+    });
+
+    // Output the fleet details array (you can modify this part based on your needs)
+    console.log("Fleet Details:", fleetDetails);
+
+    // Send data to server
+    fetch('/add-transporter', {
+      method: 'POST',
+      body: JSON.stringify({
+        transporterName, contactPerson, phoneNumber,
+        fleetDetails
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8'
+      },
+    }).then(function (response) { window.location.reload(true); })
+      .catch(error => console.error('Error:', error));
+  });
+});
+  </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-pzjw8z+lbXg1h9xLjBkYsQbUPaHp1w18TVS+JZnVCTY5bA6qyj2i7ckD2J+uzWpF"
+          crossorigin="anonymous"></script>
+ 
+    
+
+  
