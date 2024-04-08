@@ -270,6 +270,29 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="js/charts-demo.js"></script>
     <script>
+      const searchInput = document.getElementById("searchInput");
+      const tableRows = document.querySelectorAll("tbody tr");
+
+      searchInput.addEventListener("input", function () {
+        const searchText = searchInput.value.toLowerCase();
+
+        tableRows.forEach((row) => {
+          const cells = row.getElementsByTagName("td");
+          let rowMatchesSearch = false;
+
+          for (let i = 0; i < cells.length; i++) {
+            const cellText = cells[i].textContent.toLowerCase();
+            if (cellText.includes(searchText)) {
+              rowMatchesSearch = true;
+              break;
+            }
+          }
+
+          row.style.display = rowMatchesSearch ? "" : "none";
+        });
+      });
+    </script>
+    <script>
       // Get all the menu items
       const menuItems = document.querySelectorAll("#nav-menu a");
   
