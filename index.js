@@ -76,17 +76,47 @@ app.get("/stockmanagement", checkNotAuthenticated, (req, res) => {
         console.error(err);
         errors.push({ message: err });
       }
-      res.render("stockmanagement", {
-        layout: "./layouts/index-layout",
-        errors,
-        stock: results,
-        stock_products: results1,
+      pool.query("SELECT * FROM products", [], (err, results2) => {
+        if (err) {
+          console.error(err);
+          errors.push({ message: err });
+        }
+        pool.query(
+          `SELECT 
+        p.id, 
+        p.product_name, 
+        p.unit, 
+        p.reorder_level, 
+        SUM(sp.quantity) AS total_quantity,
+        MAX(s.stock_date) AS last_stock_in_date
+    FROM 
+        products p
+    LEFT JOIN 
+        stock_products sp ON TRIM(p.product_name) = TRIM(sp.product_name)
+    LEFT JOIN 
+        stock s ON sp.stock_id = s.stock_id
+    GROUP BY 
+        p.id`,
+          [],
+          (err, resultsA) => {
+            if (err) {
+              console.error(err);
+              errors.push({ message: err });
+            }
+            console.log(results2, results1);
+            res.render("stockmanagement", {
+              layout: "./layouts/index-layout",
+              errors,
+              prods: resultsA,
+              products: results2,
+              stock: results,
+              stock_products: results1,
+            });
+          }
+        );
       });
     });
   });
-});
-app.get("/stockmanagement", checkNotAuthenticated, (req, res) => {
-  res.render("stockmanagement", { layout: "./layouts/index-layout" });
 });
 app.get("/dispatch", checkNotAuthenticated, (req, res) => {
   let errors = [];
@@ -508,6 +538,23 @@ app.post("/add-dispatch", async (req, res) => {
       }
       req.flash("success", "You have successfully added dispatch");
       res.redirect("/dispatch");
+    }
+  );
+});
+app.post("/reorder-level", async (req, res) => {
+  let id = req.body.id;
+  let lvl = req.body.reorderLevel;
+  pool.query(
+    "UPDATE products SET reorder_level = ? WHERE id = ?",
+    [lvl, id],
+    (err, results) => {
+      if (err) {
+        // Handle error
+        console.error(err);
+        return;
+      }
+      req.flash("success", "Reorder Level updated");
+      res.redirect("/stockmanagement");
     }
   );
 });
