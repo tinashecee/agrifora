@@ -1,18 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Agrifora</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
-    <link rel="icon" type="image/png" sizes="32x32" href="shuffle-for-bootstrap.png">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="./css/bootstrap/foot.css">
-  
-</head>
-<body>
+
   <section class="position-relative py-8 login-section">
+    <% for (let error of errors) { %>
+      <div class="alert alert-danger" role="alert"><%= error.message %></div>
+      <% } %> <% if(message.success){ %>
+      <div class="alert alert-success" role="alert"><%= message.success %></div>
+      <% } %>
         <div class="container">
           <div class="row align-items-center">
             <div class="col-12 col-lg-6 py-lg-20">
@@ -27,14 +19,14 @@
                     <p class="mb-8">Login to manage inventory, order, delivery notes and more</p>
                 </div>
                 
-                <form id="loginForm">
+                <form action="/login" method="post">
                   <div class="mb-6">
                     <label class="form-label" for="exampleForm1">Email Address</label>
-                    <input class="form-control" id="exampleForm1" type="email" placeholder="supermario@example.com">
+                    <input class="form-control" id="email" type="email" name="email" placeholder="supermario@example.com">
                   </div>
                   <div class="mb-6">
                     <label class="form-label" for="exampleForm2">Password</label>
-                    <input class="form-control" id="exampleForm2" type="password" placeholder="*******">
+                    <input class="form-control" id="password" name="password" type="password" placeholder="*******">
                   </div>
                   <div class="row mb-8">
                     <div class="col-12 col-lg-auto">
@@ -43,13 +35,10 @@
                         <label class="form-check-label" for="checkbox1-1">Remember me</label>
                       </div>
                     </div>
-                    <div class="col-12 col-lg-auto ms-auto"><a class="text-decoration-none" href="#">Forgot password?</a></div>
+                    <div class="col-12 col-lg-auto ms-auto"><a class="text-decoration-none" href="/resetpassword">Forgot password?</a></div>
                   </div>
-                  <button class="btn btn-primary py-3 mb-4 w-100">Login</button>
-                  <p class="text-center">
-                    <span>Don&apos;t have an account?</span>
-                    <a class="text-decoration-none" href="#">Sign up &#x1F680;</a>
-                  </p>
+                  <button type="submit" class="btn btn-primary py-3 mb-4 w-100">Login</button>
+                 
                 </form>
               </div>
               <div class="d-lg-none mt-8 bg-dark py-16 px-8 mw-md mx-auto text-center">
@@ -94,5 +83,4 @@
       });
     });
   </script>
-</body>
-</html>
+

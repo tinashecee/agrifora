@@ -14,17 +14,7 @@ const SENDACTIVATEACCOUNTEMAIL = async (userName, date, email) => {
     <title>Email Template</title>
 
     <style type="text/css">
-        body * {
-            font-family: 'Open Sans', Arial, sans-serif;
-            color: white; /* Change font color to white */
-        }
-
-        /* Add background color to body */
-        body {
-            background-color: #111d2f !important;
-            margin: 0;
-            padding: 0;
-        }
+       
 
         /* Style the button */
         table[class="buttonScale"] td {
@@ -41,14 +31,7 @@ const SENDACTIVATEACCOUNTEMAIL = async (userName, date, email) => {
         }
 
         /* Change background color of tables */
-        table.full {
-            background-color: #111d2f !important;
-        }
-
-        /* Change font color of tables */
-        table.full td {
-            color: white !important;
-        }
+      
     </style>
 
 </head>
@@ -110,7 +93,7 @@ const SENDACTIVATEACCOUNTEMAIL = async (userName, date, email) => {
                                     <table width="184" border="0" cellpadding="0" cellspacing="0" align="left" style="border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt;" class="fullCenter">
                                         <tbody>
                                         <tr>
-                                            <td width="100%" class="img184">
+                                            <td width="100%" class="img184" style="background-color: #111d2f;">
                                                 <a href="#" style="text-decoration: none;">
                                                     <img src="https://agrifora.co.zw/wp-content/uploads/2021/06/Wide-AgriFora-Logo-02.png" editable="true" width="184" height="auto" style="width: 184px;" alt="" border="0" class="hover toModifyImage">
                                                 </a>
@@ -139,7 +122,7 @@ const SENDACTIVATEACCOUNTEMAIL = async (userName, date, email) => {
                                         </tr>
                                         <tr>
                                             <td width="100%" style="font-size: 14px; color: #8d9499; text-align: left; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; line-height: 26px; vertical-align: top; font-weight: 400;" class="fullCenter">
-                                                <strong><span style="color: rgb(0, 0, 0);">Dear ${userName}</span></strong><br><br><br><span style="color: rgb(0, 0, 0);">Your account on the Agrifora System has been created successfully. To verify your account and set your password, please click on the following link:</span></p><p><a href="http://localhost:8080/set-password?email=${email}">ACTIVATION LINK</a></p><p><span style="color: rgb(0, 0, 0);">Date Added:</span></strong> ${date}<br><strong><span style="color: rgb(0, 0, 0);">Notes: Once you have clicked on the link, you will be prompted to enter a new password for your account. Please choose a strong password that is at least 8 characters long and includes a mix of upper and lowercase letters, numbers, and symbols.</span></strong> <p><span style="color: rgb(0, 0, 0);">After you have entered your new password, you will be able to log in to your account.</span></p><p>If you have any questions, please do not hesitate to contact us.</p><br>
+                                                <strong><span style="color: rgb(0, 0, 0);">Dear ${userName}</span></strong><br><br><br><span style="color: rgb(0, 0, 0);">Your account on the Agrifora System has been created successfully. To verify your account and set your password, please click on the following link:</span></p><p><a href="http://localhost:8080/setpassword?email=${email}">ACTIVATION LINK</a></p><p><span style="color: rgb(0, 0, 0);">Date Added:</span></strong> ${date}<br><strong><span style="color: rgb(0, 0, 0);">Notes: Once you have clicked on the link, you will be prompted to enter a new password for your account. Please choose a strong password that is at least 8 characters long and includes a mix of upper and lowercase letters, numbers, and symbols.</span></strong> <p><span style="color: rgb(0, 0, 0);">After you have entered your new password, you will be able to log in to your account.</span></p><p>If you have any questions, please do not hesitate to contact us.</p><br>
                                             </td>
                                         </tr>
                                         <tr>
@@ -230,8 +213,6 @@ const SENDACTIVATEACCOUNTEMAIL = async (userName, date, email) => {
     </tbody>
 </table>
 </body>
-
-	
         `,
   };
   // send mail with defined transport object and mail options

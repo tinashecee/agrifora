@@ -4,6 +4,9 @@ const expressLayouts = require("express-ejs-layouts");
 const bodyParser = require("body-parser");
 const path = require("path");
 const flash = require("connect-flash");
+const passport = require("passport");
+const bcrypt = require("bcryptjs");
+const initializePassport = require("./passportConfig");
 const session = require("express-session");
 const { pool } = require("./dbConfig");
 const cors = require("cors");
@@ -12,6 +15,7 @@ const moment = require("moment");
 const puppeteer = require("puppeteer");
 const SENDACTIVATEACCOUNTEMAIL = require("./email-generators/activate_account.js");
 const app = express();
+initializePassport(passport);
 //APP CONFIGS
 const PORT = process.env.PORT || 8080;
 app.set("views", path.join(__dirname, "views"));
@@ -43,10 +47,10 @@ app.use(bodyParser.json());
 const SENDMAIL = require("./mailer.js");
 
 //FETCH PAGE SCRIPTS
-app.get("/", (req, res) => {
+app.get("/", checkNotAuthenticated, (req, res) => {
   res.render("index", { layout: "./layouts/index-layout" });
 });
-app.get("/products", (req, res) => {
+app.get("/products", checkNotAuthenticated, (req, res) => {
   let errors = [];
   pool.query("SELECT * FROM products", [], (err, results1) => {
     if (err) {
@@ -60,7 +64,7 @@ app.get("/products", (req, res) => {
     });
   });
 });
-app.get("/stockmanagement", (req, res) => {
+app.get("/stockmanagement", checkNotAuthenticated, (req, res) => {
   let errors = [];
   pool.query("SELECT * FROM stock", [], (err, results) => {
     if (err) {
@@ -81,10 +85,10 @@ app.get("/stockmanagement", (req, res) => {
     });
   });
 });
-app.get("/stockmanagement", (req, res) => {
+app.get("/stockmanagement", checkNotAuthenticated, (req, res) => {
   res.render("stockmanagement", { layout: "./layouts/index-layout" });
 });
-app.get("/dispatch", (req, res) => {
+app.get("/dispatch", checkNotAuthenticated, (req, res) => {
   let errors = [];
   pool.getConnection((err, connection) => {
     if (err) {
@@ -156,25 +160,46 @@ app.get("/dispatch", (req, res) => {
     });
   });
 });
-app.get("/deliverynotes", (req, res) => {
+app.get("/deliverynotes", checkNotAuthenticated, (req, res) => {
   res.render("dispatchno", { layout: "./layouts/index-layout" });
 });
-app.get("/orderbook", (req, res) => {
+app.get("/orderbook", checkNotAuthenticated, (req, res) => {
   res.render("orderbook", { layout: "./layouts/index-layout" });
 });
-app.get("/orderhistory", (req, res) => {
+app.get("/orderhistory", checkNotAuthenticated, (req, res) => {
   res.render("orderhistory", { layout: "./layouts/index-layout" });
 });
-app.get("/stockrecon", (req, res) => {
+app.get("/login", (req, res) => {
+  let errors = [];
+  res.render("login", { layout: "./layouts/login-layout", errors });
+});
+app.get("/setpassword", (req, res) => {
+  let errors = [];
+  let email = req.query.email;
+  res.render("setpassword", {
+    layout: "./layouts/login-layout",
+    errors,
+    email,
+  });
+});
+app.get("/resetpassword", (req, res) => {
+  let errors = [];
+  res.render("resetpassword", { layout: "./layouts/login-layout", errors });
+});
+app.get("/resetconfirmation", (req, res) => {
+  let errors = [];
+  res.render("resetconfirmation", { layout: "./layouts/login-layout", errors });
+});
+app.get("/stockrecon", checkNotAuthenticated, (req, res) => {
   res.render("stockrecon", { layout: "./layouts/index-layout" });
 });
-app.get("/centermovement", (req, res) => {
+app.get("/centermovement", checkNotAuthenticated, (req, res) => {
   res.render("centermovement", { layout: "./layouts/index-layout" });
 });
-app.get("/reports", (req, res) => {
+app.get("/reports", checkNotAuthenticated, (req, res) => {
   res.render("reports", { layout: "./layouts/index-layout" });
 });
-app.get("/users", (req, res) => {
+app.get("/users", checkNotAuthenticated, (req, res) => {
   let errors = [];
   pool.query("SELECT * FROM users", [], (err, results) => {
     if (err) {
@@ -188,7 +213,7 @@ app.get("/users", (req, res) => {
     });
   });
 });
-app.get("/transporter", (req, res) => {
+app.get("/transporter", checkNotAuthenticated, (req, res) => {
   let errors = [];
   pool.query("SELECT * FROM transporters", [], (err, results) => {
     if (err) {
@@ -209,7 +234,7 @@ app.get("/transporter", (req, res) => {
     });
   });
 });
-app.get("/warehouse", (req, res) => {
+app.get("/warehouse", checkNotAuthenticated, (req, res) => {
   let errors = [];
   pool.query("SELECT * FROM warehouse", [], (err, results1) => {
     if (err) {
@@ -223,7 +248,7 @@ app.get("/warehouse", (req, res) => {
     });
   });
 });
-app.get("/deliverycenters", (req, res) => {
+app.get("/deliverycenters", checkNotAuthenticated, (req, res) => {
   let errors = [];
   pool.query("SELECT * FROM unit", [], (err, results1) => {
     if (err) {
@@ -237,7 +262,7 @@ app.get("/deliverycenters", (req, res) => {
     });
   });
 });
-app.get("/faq", (req, res) => {
+app.get("/faq", checkNotAuthenticated, (req, res) => {
   res.render("faq", { layout: "./layouts/index-layout" });
 });
 
@@ -486,6 +511,105 @@ app.post("/add-dispatch", async (req, res) => {
     }
   );
 });
+app.post("/set-password", async (req, res) => {
+  const email = req.body.email;
+  const password1 = req.body.new_password;
+  const password2 = req.body.confirm_password;
+  const errors = [];
+
+  if (password1 !== password2) {
+    errors.push({ message: "Passwords do not match" });
+    return res.render("setpassword", {
+      layout: "./layouts/login-layout",
+      errors: errors,
+    });
+  } else {
+    const hashedPassword = await bcrypt.hash(password1, 10);
+    pool.query(
+      "UPDATE users SET password = ?, activated = ? WHERE email = ?",
+      [hashedPassword, true, email],
+      (err, results) => {
+        if (err) {
+          console.error(err);
+          errors.push({ message: err });
+          return res.render("setpassword", {
+            layout: "./layouts/login-layout",
+            errors: errors,
+          });
+        } else {
+          req.flash(
+            "success",
+            "Password setup successful, you can now login into your account"
+          );
+          res.redirect("/login");
+        }
+      }
+    );
+  }
+});
+app.post("/reset-password", (req, res) => {
+  const email = req.body.email;
+  pool.query("SELECT * FROM users WHERE email = ?", [email], (err, results) => {
+    if (err) {
+      console.error(err);
+      req.flash("error", "Failed to reset password");
+      return res.redirect("/passwordreset");
+    }
+    if (results.length === 0) {
+      req.flash("error", "Email is not registered in the system!");
+      return res.redirect("/passwordreset");
+    }
+
+    // Code to send reset password email
+    const message = "Email to reset password of your Agrifora account";
+    const options = {
+      from: "Agrifora", // sender address
+      to: email, // receiver email
+      subject: "Agrifora System - Account Verification", // Subject line
+      text: message,
+      html: `<div>
+        <p>Hi, <b>${results[0].firstname}</b>,</p>
+        <p>We received a request to reset your password for your Prolegal Case Management account. If you did not request this, please disregard this email.</p>
+        <p>To reset your password, please click on the following link:</p>
+        <a href="http://localhost:8080/setpassword?email=${email}&secret=${results[0].password}">RESET PASSWORD LINK</a>
+        <p>This link will only be valid for 24 hours.</p>
+        <p>If you are unable to click on the link, please copy and paste it into your browser.</p>
+        <p>Once you have clicked on the link, you will be taken to a page where you can enter a new password for your account. Please choose a strong password that is at least 8 characters long and includes a mix of upper and lowercase letters, numbers, and symbols.</p>
+        <p>After you have entered your new password, you will be able to log in to your account.</p>
+        <p>If you have any questions, please do not hesitate to contact us.</p>
+        <p>Thank you,</p>
+        <p>Agrifora Team</p>
+</div>`,
+    };
+
+    // Send the email
+    SENDMAIL(options, (info) => {
+      req.flash("success", "Reset Password email sent");
+      res.redirect("/resetconfirmation");
+    });
+  });
+});
+app.post(
+  "/login",
+  passport.authenticate("local", {
+    //successRedirect: '/',
+
+    failureRedirect: "/login",
+    failureFlash: true,
+  }),
+  (req, res) => {
+    usrId = req.user.id;
+    authed = true;
+    req.session.userId = req.user.id;
+    req.session.user = req.user.name;
+    req.session.email = req.user.email;
+    req.session.role = req.user.role;
+    req.session.activated = req.user.activated;
+    req.session.id = req.user.id;
+
+    res.redirect("/");
+  }
+);
 function formatDate(date) {
   var d = new Date(date),
     month = "" + (d.getMonth() + 1),
@@ -496,6 +620,14 @@ function formatDate(date) {
   if (day.length < 2) day = "0" + day;
 
   return [year, month, day].join("-");
+}
+function checkNotAuthenticated(req, res, next) {
+  if (req.session.email != null) {
+    authed = true;
+    return next();
+  }
+  authed = false;
+  res.redirect("/login");
 }
 
 app.listen(PORT, console.log(`Server running on port ${PORT}`));
