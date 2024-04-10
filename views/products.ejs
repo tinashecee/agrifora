@@ -76,7 +76,7 @@
             </thead>
             <tbody id="productTableBody">
                 <!-- Product rows will be added here dynamically -->
-                <% if (products.length > 0) { %>
+                <% if (products) { %>
                   <% for (let dat of products) { %>
                     <tr>
                       <td><%= dat.id %></td>

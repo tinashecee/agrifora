@@ -48,7 +48,48 @@ const SENDMAIL = require("./mailer.js");
 
 //FETCH PAGE SCRIPTS
 app.get("/", checkNotAuthenticated, (req, res) => {
-  res.render("index", { layout: "./layouts/index-layout" });
+  let errors = [];
+  pool.getConnection((err, connection) => {
+    if (err) {
+      console.error("Error getting MySQL connection:", err);
+      req.flash("error", "Failed to connect to DB");
+      return res.redirect("/");
+    }
+    connection.query(
+      `SELECT 
+    p.id, 
+    p.product_name, 
+    p.unit,
+    p.product_type,
+    p.reorder_level,
+    s.warehouse,
+    SUM(sp.quantity) AS total_quantity,
+    MAX(s.stock_date) AS last_stock_in_date
+FROM 
+    products p
+LEFT JOIN 
+    stock_products sp ON TRIM(p.product_name) = TRIM(sp.product_name)
+LEFT JOIN 
+    stock s ON sp.stock_id = s.stock_id
+GROUP BY 
+    p.id, p.product_name, p.unit, p.product_type, p.reorder_level, s.warehouse;`,
+      [],
+      (err, results1) => {
+        connection.release();
+        console.log(results1);
+        if (err) {
+          console.error("Error executing MySQL query:", err);
+          req.flash("error", "Failed to connect to DB");
+        } else {
+          res.render("index", {
+            layout: "./layouts/index-layout",
+            errors,
+            prods: results1,
+          });
+        }
+      }
+    );
+  });
 });
 app.get("/products", checkNotAuthenticated, (req, res) => {
   let errors = [];
@@ -123,8 +164,8 @@ app.get("/dispatch", checkNotAuthenticated, (req, res) => {
   pool.getConnection((err, connection) => {
     if (err) {
       console.error("Error getting MySQL connection:", err);
-      req.flash("error", "Failed to delete budget line item");
-      return res.redirect("/budget");
+      req.flash("error", "Failed to connect to DB");
+      return res.redirect("/dispatch");
     }
     connection.query("SELECT * FROM dispatch", [], (err, results1) => {
       if (err) {
@@ -166,7 +207,7 @@ app.get("/dispatch", checkNotAuthenticated, (req, res) => {
 
                       if (err) {
                         console.error("Error executing MySQL query:", err);
-                        req.flash("error", "Failed to update budget balance");
+                        req.flash("error", "Failed to connect to DB");
                       } else {
                         res.render("dispatch", {
                           layout: "./layouts/index-layout",
@@ -195,6 +236,9 @@ app.get("/deliverynotes", checkNotAuthenticated, (req, res) => {
 });
 app.get("/orderbook", checkNotAuthenticated, (req, res) => {
   res.render("orderbook", { layout: "./layouts/index-layout" });
+});
+app.get("/productmovement", checkNotAuthenticated, (req, res) => {
+  res.render("productmovement", { layout: "./layouts/index-layout" });
 });
 app.get("/orderhistory", checkNotAuthenticated, (req, res) => {
   res.render("orderhistory", { layout: "./layouts/index-layout" });
@@ -669,7 +713,7 @@ function formatDate(date) {
   return [year, month, day].join("-");
 }
 function checkNotAuthenticated(req, res, next) {
-  if (req.session.email != null) {
+  if (req.session.email == null) {
     authed = true;
     return next();
   }
