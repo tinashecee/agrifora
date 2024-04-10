@@ -701,6 +701,11 @@ app.post(
     res.redirect("/");
   }
 );
+app.get("/logout", (req, res) => {
+  req.session.destroy();
+  //req.flash('success','User signed out');
+  res.redirect("/login");
+});
 function formatDate(date) {
   var d = new Date(date),
     month = "" + (d.getMonth() + 1),
@@ -713,7 +718,7 @@ function formatDate(date) {
   return [year, month, day].join("-");
 }
 function checkNotAuthenticated(req, res, next) {
-  if (req.session.email == null) {
+  if (req.session.email != null) {
     authed = true;
     return next();
   }
