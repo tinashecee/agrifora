@@ -1,4 +1,9 @@
 <div class="mx-auto ms-lg-80 ps-lg-4">
+  <% for (let error of errors) { %>
+    <div class="alert alert-danger" role="alert"><%= error.message %></div>
+    <% } %> <% if(message.success){ %>
+    <div class="alert alert-success" role="alert"><%= message.success %></div>
+    <% } %>
     <section>
       <div class="p-8 bg-white navbar-light">
         <div class="row align-items-center justify-content-between">

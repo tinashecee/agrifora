@@ -45,6 +45,7 @@ app.use(function (req, res, next) {
 });
 app.use(bodyParser.json());
 const SENDMAIL = require("./mailer.js");
+const { error } = require("console");
 
 //FETCH PAGE SCRIPTS
 app.get("/", checkNotAuthenticated, (req, res) => {
@@ -52,8 +53,12 @@ app.get("/", checkNotAuthenticated, (req, res) => {
   pool.getConnection((err, connection) => {
     if (err) {
       console.error("Error getting MySQL connection:", err);
-      req.flash("error", "Failed to connect to DB");
-      return res.redirect("/");
+      errors.push({ message: err });
+      return res.render("index", {
+        layout: "./layouts/index-layout",
+        errors,
+        prods: [],
+      });
     }
     connection.query(
       `SELECT 
@@ -79,7 +84,12 @@ GROUP BY
         console.log(results1);
         if (err) {
           console.error("Error executing MySQL query:", err);
-          req.flash("error", "Failed to connect to DB");
+          errors.push({ message: err });
+          return res.render("index", {
+            layout: "./layouts/index-layout",
+            errors,
+            prods: [],
+          });
         } else {
           res.render("index", {
             layout: "./layouts/index-layout",
@@ -97,7 +107,15 @@ app.get("/products", checkNotAuthenticated, (req, res) => {
     if (err) {
       console.error(err);
       errors.push({ message: err });
+      return res.render("products", {
+        layout: "./layouts/index-layout",
+        errors,
+        products: [],
+      });
     }
+    results1.forEach((e) => {
+      console.log(e.product_name);
+    });
     res.render("products", {
       layout: "./layouts/index-layout",
       errors,
@@ -111,16 +129,43 @@ app.get("/stockmanagement", checkNotAuthenticated, (req, res) => {
     if (err) {
       console.error(err);
       errors.push({ message: err });
+      return res.render("stockmanagement", {
+        layout: "./layouts/index-layout",
+        errors,
+        prods: [],
+        products: [],
+        stock: [],
+        stock_products: [],
+        warehouse: [],
+      });
     }
     pool.query("SELECT * FROM stock_products", [], (err, results1) => {
       if (err) {
         console.error(err);
         errors.push({ message: err });
+        return res.render("stockmanagement", {
+          layout: "./layouts/index-layout",
+          errors,
+          prods: [],
+          products: [],
+          stock: [],
+          stock_products: [],
+          warehouse: [],
+        });
       }
       pool.query("SELECT * FROM products", [], (err, results2) => {
         if (err) {
           console.error(err);
           errors.push({ message: err });
+          return res.render("stockmanagement", {
+            layout: "./layouts/index-layout",
+            errors,
+            prods: [],
+            products: [],
+            stock: [],
+            stock_products: [],
+            warehouse: [],
+          });
         }
         pool.query(
           `SELECT 
@@ -143,15 +188,39 @@ app.get("/stockmanagement", checkNotAuthenticated, (req, res) => {
             if (err) {
               console.error(err);
               errors.push({ message: err });
+              return res.render("stockmanagement", {
+                layout: "./layouts/index-layout",
+                errors,
+                prods: [],
+                products: [],
+                stock: [],
+                stock_products: [],
+                warehouse: [],
+              });
             }
-            console.log(results2, results1);
-            res.render("stockmanagement", {
-              layout: "./layouts/index-layout",
-              errors,
-              prods: resultsA,
-              products: results2,
-              stock: results,
-              stock_products: results1,
+            pool.query("SELECT * FROM warehouse", [], (err, results3) => {
+              if (err) {
+                console.error(err);
+                errors.push({ message: err });
+                return res.render("stockmanagement", {
+                  layout: "./layouts/index-layout",
+                  errors,
+                  prods: [],
+                  products: [],
+                  stock: [],
+                  stock_products: [],
+                  warehouse: [],
+                });
+              }
+              res.render("stockmanagement", {
+                layout: "./layouts/index-layout",
+                errors,
+                prods: resultsA,
+                products: results2,
+                stock: results,
+                stock_products: results1,
+                warehouse: results3,
+              });
             });
           }
         );
@@ -164,13 +233,32 @@ app.get("/dispatch", checkNotAuthenticated, (req, res) => {
   pool.getConnection((err, connection) => {
     if (err) {
       console.error("Error getting MySQL connection:", err);
-      req.flash("error", "Failed to connect to DB");
-      return res.redirect("/dispatch");
+      errors.push({ message: err });
+      return res.render("dispatch", {
+        layout: "./layouts/index-layout",
+        errors,
+        dispatch: [],
+        dispatched_products: [],
+        warehouse: [],
+        users: [],
+        transporters: [],
+        unit: [],
+      });
     }
     connection.query("SELECT * FROM dispatch", [], (err, results1) => {
       if (err) {
         console.error(err);
         errors.push({ message: err });
+        return res.render("dispatch", {
+          layout: "./layouts/index-layout",
+          errors,
+          dispatch: [],
+          dispatched_products: [],
+          warehouse: [],
+          users: [],
+          transporters: [],
+          unit: [],
+        });
       }
       connection.query(
         "SELECT * FROM dispatched_products",
@@ -180,16 +268,46 @@ app.get("/dispatch", checkNotAuthenticated, (req, res) => {
           if (err) {
             console.error(err);
             errors.push({ message: err });
+            return res.render("dispatch", {
+              layout: "./layouts/index-layout",
+              errors,
+              dispatch: [],
+              dispatched_products: [],
+              warehouse: [],
+              users: [],
+              transporters: [],
+              unit: [],
+            });
           }
           connection.query("SELECT * FROM warehouse", [], (err, results3) => {
             if (err) {
               console.error(err);
               errors.push({ message: err });
+              return res.render("dispatch", {
+                layout: "./layouts/index-layout",
+                errors,
+                dispatch: [],
+                dispatched_products: [],
+                warehouse: [],
+                users: [],
+                transporters: [],
+                unit: [],
+              });
             }
             connection.query("SELECT * FROM users", [], (err, results4) => {
               if (err) {
                 console.error(err);
                 errors.push({ message: err });
+                return res.render("dispatch", {
+                  layout: "./layouts/index-layout",
+                  errors,
+                  dispatch: [],
+                  dispatched_products: [],
+                  warehouse: [],
+                  users: [],
+                  transporters: [],
+                  unit: [],
+                });
               }
               connection.query(
                 "SELECT * FROM transporters",
@@ -198,6 +316,16 @@ app.get("/dispatch", checkNotAuthenticated, (req, res) => {
                   if (err) {
                     console.error(err);
                     errors.push({ message: err });
+                    return res.render("dispatch", {
+                      layout: "./layouts/index-layout",
+                      errors,
+                      dispatch: [],
+                      dispatched_products: [],
+                      warehouse: [],
+                      users: [],
+                      transporters: [],
+                      unit: [],
+                    });
                   }
                   connection.query(
                     "SELECT * FROM unit",
@@ -207,7 +335,17 @@ app.get("/dispatch", checkNotAuthenticated, (req, res) => {
 
                       if (err) {
                         console.error("Error executing MySQL query:", err);
-                        req.flash("error", "Failed to connect to DB");
+                        errors.push({ message: err });
+                        return res.render("dispatch", {
+                          layout: "./layouts/index-layout",
+                          errors,
+                          dispatch: [],
+                          dispatched_products: [],
+                          warehouse: [],
+                          users: [],
+                          transporters: [],
+                          unit: [],
+                        });
                       } else {
                         res.render("dispatch", {
                           layout: "./layouts/index-layout",
@@ -279,6 +417,11 @@ app.get("/users", checkNotAuthenticated, (req, res) => {
     if (err) {
       console.error(err);
       errors.push({ message: err });
+      return res.render("users", {
+        layout: "./layouts/index-layout",
+        errors,
+        users: [],
+      });
     }
     res.render("users", {
       layout: "./layouts/index-layout",
@@ -328,6 +471,11 @@ app.get("/deliverycenters", checkNotAuthenticated, (req, res) => {
     if (err) {
       console.error(err);
       errors.push({ message: err });
+      return res.render("deliverycenters", {
+        layout: "./layouts/index-layout",
+        errors,
+        units: [],
+      });
     }
     res.render("deliverycenters", {
       layout: "./layouts/index-layout",
@@ -371,7 +519,7 @@ app.post("/add-user", async (req, res) => {
     (err, results) => {
       if (err) {
         console.error(err);
-        req.flash("error", "Failed to add user");
+        errors.push({ message: err });
         return res.redirect("/users");
       }
 
@@ -382,10 +530,10 @@ app.post("/add-user", async (req, res) => {
   );
 });
 app.post("/add-transporter", async (req, res) => {
+  let errors = [];
   let { transporterName, contactPerson, phoneNumber, fleetDetails } = req.body;
   let yourDate = new Date();
   date_created = formatDate(yourDate);
-  console.log("css");
 
   pool.query(
     `
@@ -397,7 +545,8 @@ app.post("/add-transporter", async (req, res) => {
       if (err) {
         // Handle error
         console.error(err);
-        return;
+        errors.push({ message: err });
+        return res.redirect("/transporter");
       }
       const transporterId = results.insertId;
       for (let fleetDetail of fleetDetails) {
@@ -411,7 +560,8 @@ app.post("/add-transporter", async (req, res) => {
             if (err) {
               // Handle error
               console.error(err);
-              return;
+              errors.push({ message: err });
+              return res.redirect("/transporter");
             }
           }
         );
@@ -422,6 +572,7 @@ app.post("/add-transporter", async (req, res) => {
   );
 });
 app.post("/add-warehouse", async (req, res) => {
+  let errors = [];
   let { warehouseName, location, warehousecontact, warephonenumber } = req.body;
   pool.query(
     `
@@ -433,7 +584,8 @@ app.post("/add-warehouse", async (req, res) => {
       if (err) {
         // Handle error
         console.error(err);
-        return;
+        errors.push({ message: err });
+        return res.redirect("/warehouse");
       }
       req.flash("success", "You have successfully added a warehouse");
       res.redirect("/warehouse");
@@ -441,6 +593,7 @@ app.post("/add-warehouse", async (req, res) => {
   );
 });
 app.post("/add-unit", async (req, res) => {
+  let errors = [];
   let {
     unitName,
     location,
@@ -459,7 +612,8 @@ app.post("/add-unit", async (req, res) => {
       if (err) {
         // Handle error
         console.error(err);
-        return;
+        errors.push({ message: err });
+        return res.redirect("/deliverycenters");
       }
       req.flash("success", "You have successfully added a unit");
       res.redirect("/deliverycenters");
@@ -467,6 +621,7 @@ app.post("/add-unit", async (req, res) => {
   );
 });
 app.post("/add-product", async (req, res) => {
+  let errors = [];
   let {
     productName,
     productDescription,
@@ -475,35 +630,60 @@ app.post("/add-product", async (req, res) => {
     alternateUnit,
     conversionFactor,
   } = req.body;
-  pool.query(
-    `
+  pool.getConnection((err, connection) => {
+    if (err) {
+      console.error("Error getting MySQL connection:", err);
+      req.flash("error", "Failed to connect to DB");
+      errors.push({ message: err });
+      return res.redirect("/products");
+    }
+    connection.query(
+      `
       INSERT INTO products (product_name, description, product_type, unit, alternative_unit, conversion_factor)
       VALUES (?, ?, ?, ?, ?, ?)
     `,
-    [
-      productName,
-      productDescription,
-      productType,
-      unitMeasure,
-      alternateUnit,
-      conversionFactor,
-    ],
-    (err, results) => {
-      if (err) {
-        // Handle error
-        console.error(err);
-        return;
+      [
+        productName,
+        productDescription,
+        productType,
+        unitMeasure,
+        alternateUnit,
+        conversionFactor,
+      ],
+      (err, results) => {
+        if (err) {
+          // Handle error
+          console.error(err);
+          errors.push({ message: err });
+          return res.redirect("/products");
+        }
+        // Remove spaces from the input string
+        const columnName = removeSpaces(productName);
+
+        // SQL query to create a column with float parameter
+        const createColumnQuery = `ALTER TABLE your_table_name ADD COLUMN ${columnName} FLOAT`;
+
+        // Execute the SQL query
+        connection.query(createColumnQuery, (err, results) => {
+          if (err) {
+            console.error("Error creating column:", err);
+            errors.push({ message: err });
+            return res.redirect("/products");
+          }
+          console.log("Column created successfully");
+          connection.release();
+          req.flash("success", "You have successfully added a product");
+          res.redirect("/products");
+        });
       }
-      req.flash("success", "You have successfully added a product");
-      res.redirect("/products");
-    }
-  );
+    );
+  });
 });
 app.post("/add-stock", async (req, res) => {
+  let errors = [];
   let { stockDate, warehouse, supplier, products } = req.body;
   let yourDate = new Date();
   date_created = formatDate(yourDate);
-  console.log("css");
 
   pool.query(
     `
@@ -515,7 +695,8 @@ app.post("/add-stock", async (req, res) => {
       if (err) {
         // Handle error
         console.error(err);
-        return;
+        errors.push({ message: err });
+        return res.redirect("/stockmanagement");
       }
       const stockId = results.insertId;
       for (let productDetail of products) {
@@ -529,7 +710,8 @@ app.post("/add-stock", async (req, res) => {
             if (err) {
               // Handle error
               console.error(err);
-              return;
+              errors.push({ message: err });
+              return res.redirect("/stockmanagement");
             }
           }
         );
@@ -540,6 +722,7 @@ app.post("/add-stock", async (req, res) => {
   );
 });
 app.post("/add-dispatch", async (req, res) => {
+  let errors = [];
   let {
     dispatchDate,
     warehouse,
@@ -561,7 +744,8 @@ app.post("/add-dispatch", async (req, res) => {
       if (err) {
         // Handle error
         console.error(err);
-        return;
+        errors.push({ message: err });
+        return res.redirect("/dispatch");
       }
       const dispatchId = results.insertId;
       for (let productDetail of products) {
@@ -575,7 +759,8 @@ app.post("/add-dispatch", async (req, res) => {
             if (err) {
               // Handle error
               console.error(err);
-              return;
+              errors.push({ message: err });
+              return res.redirect("/dispatch");
             }
           }
         );
@@ -586,6 +771,7 @@ app.post("/add-dispatch", async (req, res) => {
   );
 });
 app.post("/reorder-level", async (req, res) => {
+  let errors = [];
   let id = req.body.id;
   let lvl = req.body.reorderLevel;
   pool.query(
@@ -595,7 +781,8 @@ app.post("/reorder-level", async (req, res) => {
       if (err) {
         // Handle error
         console.error(err);
-        return;
+        errors.push({ message: err });
+        return res.redirect("/stockmanagement");
       }
       req.flash("success", "Reorder Level updated");
       res.redirect("/stockmanagement");
@@ -639,15 +826,17 @@ app.post("/set-password", async (req, res) => {
   }
 });
 app.post("/reset-password", (req, res) => {
+  let errors = [];
   const email = req.body.email;
   pool.query("SELECT * FROM users WHERE email = ?", [email], (err, results) => {
     if (err) {
       console.error(err);
-      req.flash("error", "Failed to reset password");
+      errors.push({ message: err });
       return res.redirect("/passwordreset");
     }
     if (results.length === 0) {
       req.flash("error", "Email is not registered in the system!");
+      errors.push({ message: err });
       return res.redirect("/passwordreset");
     }
 
@@ -706,6 +895,11 @@ app.get("/logout", (req, res) => {
   //req.flash('success','User signed out');
   res.redirect("/login");
 });
+
+// Function to remove spaces from a string
+function removeSpaces(str) {
+  return str.replace(/\s/g, ""); // Using regular expression to replace all spaces with an empty string
+}
 function formatDate(date) {
   var d = new Date(date),
     month = "" + (d.getMonth() + 1),
