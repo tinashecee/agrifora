@@ -375,7 +375,10 @@ app.get("/deliverynotes", checkNotAuthenticated, (req, res) => {
 app.get("/orderbook", checkNotAuthenticated, (req, res) => {
   let errors = [];
   let columns = [];
-
+  const dryColumnTotals = {};
+  const perishableColumnTotals = {};
+  let dryProducts = [];
+  let perishableProducts = [];
   pool.query("SHOW COLUMNS FROM order_book", [], (err, results1a) => {
     if (err) {
       console.error(err);
@@ -387,61 +390,165 @@ app.get("/orderbook", checkNotAuthenticated, (req, res) => {
         startDate: "0/0/0",
         endDate: "0/0/0",
         columns,
+        dryColumnTotals,
+        perishableColumnTotals,
       });
     }
 
     results1a.forEach((e) => {
-      console.log(e.Field);
       columns.push(e.Field);
     });
-    pool.query("SELECT * FROM order_book", [], (err, results1) => {
-      if (err) {
-        console.error(err);
-        errors.push({ message: err });
-        return res.render("orderbook", {
-          layout: "./layouts/index-layout",
-          errors,
-          orders: [],
-          startDate: "0/0/0",
-          endDate: "0/0/0",
-          columns,
-        });
-      }
-      pool.query(
-        "SELECT * FROM order_book_dates ORDER BY date_uploaded DESC LIMIT 1",
-        [],
-        (err, results2) => {
-          if (err) {
-            console.error(err);
-            errors.push({ message: err });
+    pool.query(
+      "SELECT * FROM order_book_dates ORDER BY date_uploaded DESC LIMIT 1",
+      [],
+      (err, results2) => {
+        if (err) {
+          console.error(err);
+          errors.push({ message: err });
 
-            return res.render("orderbook", {
-              layout: "./layouts/index-layout",
-              errors,
-              orders: [],
-              startDate: "0/0/0",
-              endDate: "0/0/0",
-              columns,
-            });
-          }
-          let startDate = "";
-          let endDate = "";
-          if (results2[0]) {
-            startDate = results2[0].start_date;
-            endDate = results2[0].end_date;
-          }
-
-          res.render("orderbook", {
+          return res.render("orderbook", {
             layout: "./layouts/index-layout",
             errors,
-            orders: results1,
-            startDate,
-            endDate,
+            orders: [],
+            startDate: "0/0/0",
+            endDate: "0/0/0",
             columns,
+            dryColumnTotals,
+            perishableColumnTotals,
           });
         }
-      );
-    });
+        let startDate = "";
+        let endDate = "";
+        if (results2[0]) {
+          startDate = results2[0].start_date;
+          endDate = results2[0].end_date;
+        }
+        pool.query(
+          "SELECT * FROM order_book WHERE start_date = ? AND end_date = ?",
+          [startDate, endDate],
+          (err, results1) => {
+            if (err) {
+              console.error(err);
+              errors.push({ message: err });
+              return res.render("orderbook", {
+                layout: "./layouts/index-layout",
+                errors,
+                orders: [],
+                startDate: "0/0/0",
+                endDate: "0/0/0",
+                columns,
+                dryColumnTotals,
+                perishableColumnTotals,
+              });
+            }
+            pool.query("SELECT * FROM products", [], (err, results3a) => {
+              if (err) {
+                console.error(err);
+                errors.push({ message: err });
+                return res.render("orderbook", {
+                  layout: "./layouts/index-layout",
+                  errors,
+                  orders: [],
+                  startDate: "0/0/0",
+                  endDate: "0/0/0",
+                  columns,
+                  dryColumnTotals,
+                  perishableColumnTotals,
+                });
+              }
+              if (results1) {
+                dryProducts.push("id");
+                dryProducts.push("start_date");
+                dryProducts.push("end_date");
+                dryProducts.push("unit");
+                dryProducts.push("delivery_point");
+                perishableProducts.push("id");
+                perishableProducts.push("start_date");
+                perishableProducts.push("end_date");
+                perishableProducts.push("unit");
+                perishableProducts.push("delivery_point");
+                columns.forEach((order) => {
+                  // Flag to track if the order has been pushed to any array
+                  let orderPushed = false;
+
+                  // Iterate over the products array to find a match for the product name
+                  for (product of results3a) {
+                    // Skip if paramName is id, start_date, end_date, unit, or delivery_point
+                    if (
+                      ![
+                        "id",
+                        "start_date",
+                        "end_date",
+                        "unit",
+                        "delivery_point",
+                      ].includes(order)
+                    ) {
+                      // Find a matching product in results3a
+                      const matchingProduct = results3a.find(
+                        (product) =>
+                          order === removeSpaces(product.product_name)
+                      );
+
+                      // If a matching product is found
+                      if (matchingProduct) {
+                        // Determine the product type
+                        if (matchingProduct.product_type === "Dry Goods") {
+                          // Push the order into the dryProducts array if not already added
+                          if (!orderPushed) {
+                            dryProducts.push(order);
+                            orderPushed = true;
+                          }
+                        } else if (
+                          matchingProduct.product_type === "Perishable"
+                        ) {
+                          // Push the order into the perishableProducts array if not already added
+                          if (!orderPushed) {
+                            perishableProducts.push(order);
+                            orderPushed = true;
+                          }
+                        }
+                      }
+                    }
+                  }
+                });
+
+                dryProducts.forEach((column) => {
+                  dryColumnTotals[column] = results1.reduce((total, order) => {
+                    return (
+                      total +
+                      (typeof order[column] === "number" ? order[column] : 0)
+                    );
+                  }, 0);
+                });
+                perishableProducts.forEach((column) => {
+                  perishableColumnTotals[column] = results1.reduce(
+                    (total, order) => {
+                      return (
+                        total +
+                        (typeof order[column] === "number" ? order[column] : 0)
+                      );
+                    },
+                    0
+                  );
+                });
+              }
+              res.render("orderbook", {
+                layout: "./layouts/index-layout",
+                errors,
+                orders: results1,
+                startDate,
+                endDate,
+                columns,
+                dryProducts,
+                perishableProducts,
+                dryColumnTotals,
+                perishableColumnTotals,
+              });
+            });
+          }
+        );
+      }
+    );
   });
 });
 app.get("/productmovement", checkNotAuthenticated, (req, res) => {
@@ -1061,7 +1168,7 @@ function formatDate(date) {
   return [year, month, day].join("-");
 }
 function checkNotAuthenticated(req, res, next) {
-  if (req.session.email != null) {
+  if (req.session.email == null) {
     authed = true;
     return next();
   }
