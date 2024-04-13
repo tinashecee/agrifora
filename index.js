@@ -50,6 +50,11 @@ const { error } = require("console");
 
 app.get("/", checkNotAuthenticated, (req, res) => {
   let errors = [];
+  let columns = [];
+  const dryColumnTotals = {};
+  const perishableColumnTotals = {};
+  let dryProducts = [];
+  let perishableProducts = [];
   pool.getConnection((err, connection) => {
     if (err) {
       console.error("Error getting MySQL connection:", err);
@@ -80,23 +85,119 @@ GROUP BY
     p.id, p.product_name, p.unit, p.product_type, p.reorder_level, s.warehouse;`,
       [],
       (err, results1) => {
-        connection.release();
-        console.log(results1);
-        if (err) {
-          console.error("Error executing MySQL query:", err);
-          errors.push({ message: err });
-          return res.render("index", {
-            layout: "./layouts/index-layout",
-            errors,
-            prods: [],
-          });
-        } else {
-          res.render("index", {
-            layout: "./layouts/index-layout",
-            errors,
-            prods: results1,
-          });
-        }
+        connection.query(
+          "SELECT * FROM order_summary WHERE YEAR(end_date) = YEAR(CURRENT_DATE()) AND MONTH(end_date) = MONTH(CURRENT_DATE());",
+          [],
+          (err, results1a) => {
+            if (err) {
+              console.error(err);
+              errors.push({ message: err });
+              return res.render("products", {
+                layout: "./layouts/index-layout",
+                errors,
+                products: [],
+              });
+            }
+            pool.query(
+              "SHOW COLUMNS FROM order_summary",
+              [],
+              (err, results1b) => {
+                if (err) {
+                  console.error(err);
+                  errors.push({ message: err });
+                  return res.render("index", {
+                    layout: "./layouts/index-layout",
+                    errors,
+                    prods: [],
+                  });
+                }
+
+                results1b.forEach((e) => {
+                  if (
+                    e.Field != "ser" ||
+                    e.Field != "id" ||
+                    e.Field != "unit" ||
+                    e.Field != "delivery_point"
+                  ) {
+                    columns.push(e.Field);
+                  }
+                });
+                if (results1) {
+                  dryProducts.push("start_date");
+                  dryProducts.push("end_date");
+                  perishableProducts.push("start_date");
+                  perishableProducts.push("end_date");
+                  columns.forEach((order) => {
+                    // Flag to track if the order has been pushed to any array
+                    let orderPushed = false;
+
+                    // Iterate over the products array to find a match for the product name
+                    for (product of results1) {
+                      // Skip if paramName is id, start_date, end_date, unit, or delivery_point
+                      if (
+                        ![
+                          "id",
+                          "start_date",
+                          "end_date",
+                          "unit",
+                          "delivery_point",
+                        ].includes(order)
+                      ) {
+                        // Find a matching product in results3a
+                        const matchingProduct = results1.find(
+                          (product) =>
+                            order === removeSpaces(product.product_name)
+                        );
+
+                        // If a matching product is found
+                        if (matchingProduct) {
+                          // Determine the product type
+                          if (matchingProduct.product_type === "Dry Goods") {
+                            // Push the order into the dryProducts array if not already added
+                            if (!orderPushed) {
+                              dryProducts.push(order);
+                              orderPushed = true;
+                            }
+                          } else if (
+                            matchingProduct.product_type === "Perishable"
+                          ) {
+                            // Push the order into the perishableProducts array if not already added
+                            if (!orderPushed) {
+                              perishableProducts.push(order);
+                              orderPushed = true;
+                            }
+                          }
+                        }
+                      }
+                    }
+                  });
+                }
+                connection.release();
+                if (err) {
+                  console.error("Error executing MySQL query:", err);
+                  errors.push({ message: err });
+                  return res.render("index", {
+                    layout: "./layouts/index-layout",
+                    errors,
+                    prods: [],
+                  });
+                } else {
+                  res.render("index", {
+                    layout: "./layouts/index-layout",
+                    errors,
+                    orders: results1a,
+                    columns,
+                    dryProducts,
+                    dryColumnTotals,
+                    perishableProducts,
+                    perishableColumnTotals,
+                    prods: results1,
+                  });
+                }
+              }
+            );
+          }
+        );
       }
     );
   });
@@ -390,6 +491,8 @@ app.get("/orderbook", checkNotAuthenticated, (req, res) => {
         startDate: "0/0/0",
         endDate: "0/0/0",
         columns,
+        dryProducts,
+        perishableProducts,
         dryColumnTotals,
         perishableColumnTotals,
       });
@@ -413,6 +516,8 @@ app.get("/orderbook", checkNotAuthenticated, (req, res) => {
             startDate: "0/0/0",
             endDate: "0/0/0",
             columns,
+            dryProducts,
+            perishableProducts,
             dryColumnTotals,
             perishableColumnTotals,
           });
@@ -437,6 +542,8 @@ app.get("/orderbook", checkNotAuthenticated, (req, res) => {
                 startDate: "0/0/0",
                 endDate: "0/0/0",
                 columns,
+                dryProducts,
+                perishableProducts,
                 dryColumnTotals,
                 perishableColumnTotals,
               });
@@ -452,6 +559,8 @@ app.get("/orderbook", checkNotAuthenticated, (req, res) => {
                   startDate: "0/0/0",
                   endDate: "0/0/0",
                   columns,
+                  dryProducts,
+                  perishableProducts,
                   dryColumnTotals,
                   perishableColumnTotals,
                 });
@@ -837,7 +946,8 @@ app.post("/add-product", async (req, res) => {
         const columnName = removeSpaces(productName);
 
         // SQL query to create a column with float parameter
-        const createColumnQuery = `ALTER TABLE your_table_name ADD COLUMN ${columnName} FLOAT`;
+        const createColumnQuery = `ALTER TABLE order_book ADD COLUMN ${columnName} FLOAT`;
+        const createColumnQueryB = `ALTER TABLE order_summary ADD COLUMN ${columnName} FLOAT`;
 
         // Execute the SQL query
         connection.query(createColumnQuery, (err, results) => {
@@ -846,10 +956,17 @@ app.post("/add-product", async (req, res) => {
             errors.push({ message: err });
             return res.redirect("/products");
           }
-          console.log("Column created successfully");
-          connection.release();
-          req.flash("success", "You have successfully added a product");
-          res.redirect("/products");
+          connection.query(createColumnQueryB, (err, results) => {
+            if (err) {
+              console.error("Error creating column:", err);
+              errors.push({ message: err });
+              return res.redirect("/products");
+            }
+            console.log("Column created successfully");
+            connection.release();
+            req.flash("success", "You have successfully added a product");
+            res.redirect("/products");
+          });
         });
       }
     );
@@ -1052,6 +1169,7 @@ const upload = multer();
 // Route to handle file upload
 app.post("/upload-excel", upload.single("excelFile"), (req, res) => {
   const { start_date, end_date } = req.body;
+  let errors = [];
 
   // Check if file was uploaded
   if (!req.file) {
@@ -1066,12 +1184,24 @@ app.post("/upload-excel", upload.single("excelFile"), (req, res) => {
       const worksheet = workbook.getWorksheet(1);
       const headers = worksheet.getRow(1).values;
 
-      // Insert data into the database
-      let errors = [];
+      // Initialize array to hold sums for each column
+      const columnSums = Array(headers.length).fill(0);
+
+      // Iterate over each row in the worksheet
       worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
         if (rowNumber > 1) {
           // Skip header row
           const rowData = row.values.slice(1); // Exclude the first value which is assumed to be the ID
+
+          // Iterate over each value in the row
+          rowData.forEach((quantity, columnIndex) => {
+            // Check if the value is a number and add it to the corresponding column sum
+            if (!isNaN(quantity)) {
+              columnSums[columnIndex] += quantity;
+            }
+          });
+
+          // Insert data into the database (order_book table)
           const nonEmptyHeaders = headers.filter((header) => header); // Filter out empty headers
           const placeholders = Array(nonEmptyHeaders.length)
             .fill("?")
@@ -1079,7 +1209,6 @@ app.post("/upload-excel", upload.single("excelFile"), (req, res) => {
           const sql = `INSERT INTO order_book (start_date, end_date, ${nonEmptyHeaders.join(
             ","
           )}) VALUES (?, ?, ${placeholders})`;
-          console.log(sql);
           pool.query(
             sql,
             [formatDate(start_date), formatDate(end_date), ...rowData],
@@ -1095,6 +1224,33 @@ app.post("/upload-excel", upload.single("excelFile"), (req, res) => {
           );
         }
       });
+
+      // Insert summary of order into order_summary table
+      const placeholdersSummary = Array(columnSums.length - 4).fill("?");
+      const valuesSummary = [
+        formatDate(start_date),
+        formatDate(end_date),
+        ...columnSums.slice(3, -1), // Exclude the last value
+      ];
+
+      pool.query(
+        `INSERT INTO order_summary (start_date, end_date, ${headers
+          .filter((header) => header)
+          .slice(3)
+          .join(", ")})
+        VALUES (?, ?, ${placeholdersSummary.join(", ")})`,
+        valuesSummary,
+        (error, resultsSummary) => {
+          if (error) {
+            console.error("Error inserting order summary:", error);
+            return res.status(500).send("Error inserting order summary.");
+          } else {
+            console.log("Order summary inserted successfully.");
+          }
+        }
+      );
+
+      // Insert order book dates
       let yourDate = new Date();
       date_created = formatDate(yourDate);
       pool.query(
@@ -1106,8 +1262,7 @@ app.post("/upload-excel", upload.single("excelFile"), (req, res) => {
           if (err) {
             // Handle error
             console.error(err);
-            errors.push({ message: err });
-            return res.redirect("/orderbook");
+            return res.status(500).send("Error inserting order book dates.");
           }
         }
       );
@@ -1121,9 +1276,6 @@ app.post("/upload-excel", upload.single("excelFile"), (req, res) => {
       res.status(500).send("Error parsing Excel file.");
     });
 });
-
-// Insert data into the database
-function insertDataIntoDatabase(worksheet, headers, start_date, end_date) {}
 
 app.post(
   "/login",
