@@ -97,42 +97,52 @@
                           </div>
                           <!-- Table with Updated Headers -->
                           <div class="table-responsive border rounded">
-                              <table id="editableTable" class="table table-bordered table-striped table-hover">
-                                  <thead class="table-primary">
-                                      <tr>
-                                          <% if (dryProducts) { %> <% for (let dat of dryProducts) { %>
-                                          <th><%= dat %></th>
-                                          <% } %><% } %>
-                                      </tr>
-                                  </thead>
-                                  <tbody class="table-group-divider" id="productTableBody">
-                                      <!-- Iterate over each row of data -->
-                                      <% orders.forEach(order => { %>
+                            <table id="editableTable" class="table table-bordered table-striped table-hover">
+                              <thead class="table-primary">
+                                  <tr>
+                                      <% if (dryProducts) { %>
+                                          <% dryProducts.forEach((dat, index) => { %>
+                                              <% if (index !== 1 && index !== 2) { %>
+                                                  <th><%= dat %></th>
+                                              <% } %>
+                                          <% }) %>
+                                      <% } %>
+                                  </tr>
+                              </thead>
+                              <tbody class="table-group-divider" id="productTableBody">
+                                  <!-- Iterate over each row of data -->
+                                  <% orders.forEach(order => { %>
                                       <tr>
                                           <!-- Iterate over each column in the row and display its value -->
                                           <% dryProducts.forEach((column, columnIndex) => { %>
-                                          <td>
-                                              <% if (columnIndex === 1 || columnIndex === 2) { %> <%= moment(order[column]).format('DD/MM/YY') %> <% } else { %> <%= order[column] %> <% } %>
-                                          </td>
+                                              <% if (columnIndex !== 1 && columnIndex !== 2) { %>
+                                                  <td>
+                                                      <% if (columnIndex === 1 || columnIndex === 2) { %> 
+                                                          <%= moment(order[column]).format('DD/MM/YY') %> 
+                                                      <% } else { %> 
+                                                          <%= order[column] %> 
+                                                      <% } %>
+                                                  </td>
+                                              <% } %>
                                           <% }) %>
                                       </tr>
+                                  <% }) %>
+                              </tbody>
+                              <tfoot>
+                                  <tr>
+                                      <td></td>
+                                      <td></td>
+                                      <td><strong>Total:</strong></td>
+                                      <!-- Place the "Total:" label in column 5 -->
+                                      <% dryProducts.slice(5).forEach((column, columnIndex) => { %>
+                                          <% if (columnIndex !== 1 && columnIndex !== 2) { %>
+                                              <td><strong><%= dryColumnTotals[column] %></strong></td>
+                                          <% } %>
                                       <% }) %>
-                                  </tbody>
-                                  <tfoot>
-                                      <tr>
-                                          <td></td>
-                                          <td></td>
-                                          <td></td>
-                                          <td></td>
-                                          <td><strong>Total:</strong></td>
-                                          <!-- Place the "Total:" label in column 5 -->
-                                          <% dryProducts.slice(5).forEach(column => { %>
-                                          <td><strong><%= dryColumnTotals[column] %></strong></td>
-                                          <!-- Display the column totals from column 6 onwards -->
-                                          <% }) %>
-                                      </tr>
-                                  </tfoot>
-                              </table>
+                                  </tr>
+                              </tfoot>
+                          </table>
+                          
                           </div>
                           <div class="d-flex justify-content-center">
                               <nav aria-label="Page navigation">
@@ -163,42 +173,52 @@
                           </div>
                           <!-- Table with Updated Headers -->
                           <div class="table-responsive border rounded">
-                              <table id="editableTable" class="table table-bordered table-striped table-hover">
-                                  <thead class="table-primary">
-                                      <tr>
-                                          <% if (perishableProducts) { %> <% for (let dat of perishableProducts) { %>
-                                          <th><%= dat %></th>
-                                          <% } %><% } %>
-                                      </tr>
-                                  </thead>
-                                  <tbody class="table-group-divider" id="productTableBody">
-                                      <!-- Iterate over each row of data -->
-                                      <% orders.forEach(order => { %>
+                            <table id="editableTable" class="table table-bordered table-striped table-hover">
+                              <thead class="table-primary">
+                                  <tr>
+                                      <% if (perishableProducts) { %>
+                                          <% perishableProducts.forEach((dat, index) => { %>
+                                              <% if (index !== 1 && index !== 2) { %>
+                                                  <th><%= dat %></th>
+                                              <% } %>
+                                          <% }) %>
+                                      <% } %>
+                                  </tr>
+                              </thead>
+                              <tbody class="table-group-divider" id="productTableBody">
+                                  <!-- Iterate over each row of data -->
+                                  <% orders.forEach(order => { %>
                                       <tr>
                                           <!-- Iterate over each column in the row and display its value -->
                                           <% perishableProducts.forEach((column, columnIndex) => { %>
-                                          <td>
-                                              <% if (columnIndex === 1 || columnIndex === 2) { %> <%= moment(order[column]).format('DD/MM/YY') %> <% } else { %> <%= order[column] %> <% } %>
-                                          </td>
+                                              <% if (columnIndex !== 1 && columnIndex !== 2) { %>
+                                                  <td>
+                                                      <% if (columnIndex === 1 || columnIndex === 2) { %> 
+                                                          <%= moment(order[column]).format('DD/MM/YY') %> 
+                                                      <% } else { %> 
+                                                          <%= order[column] %> 
+                                                      <% } %>
+                                                  </td>
+                                              <% } %>
                                           <% }) %>
                                       </tr>
+                                  <% }) %>
+                              </tbody>
+                              <tfoot>
+                                  <tr>
+                                      <td></td>
+                                      <td></td>
+                                      <td><strong>Total:</strong></td>
+                                      <!-- Place the "Total:" label in column 5 -->
+                                      <% perishableProducts.slice(5).forEach((column, columnIndex) => { %>
+                                          <% if (columnIndex !== 1 && columnIndex !== 2) { %>
+                                              <td><strong><%= perishableColumnTotals[column] %></strong></td>
+                                          <% } %>
                                       <% }) %>
-                                  </tbody>
-                                  <tfoot>
-                                      <tr>
-                                          <td></td>
-                                          <td></td>
-                                          <td></td>
-                                          <td></td>
-                                          <td><strong>Total:</strong></td>
-                                          <!-- Place the "Total:" label in column 5 -->
-                                          <% perishableProducts.slice(5).forEach(column => { %>
-                                          <td><strong><%= perishableColumnTotals[column] %></strong></td>
-                                          <!-- Display the column totals from column 6 onwards -->
-                                          <% }) %>
-                                      </tr>
-                                  </tfoot>
-                              </table>
+                                  </tr>
+                              </tfoot>
+                          </table>
+                          
                           </div>
                           <div class="d-flex justify-content-center">
                               <nav aria-label="Page navigation">
