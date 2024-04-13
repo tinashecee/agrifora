@@ -10,9 +10,10 @@ const initializePassport = require("./passportConfig");
 const session = require("express-session");
 const { pool } = require("./dbConfig");
 const cors = require("cors");
-const multer = require("multer");
 const moment = require("moment");
 const puppeteer = require("puppeteer");
+const multer = require("multer");
+const exceljs = require("exceljs");
 const SENDACTIVATEACCOUNTEMAIL = require("./email-generators/activate_account.js");
 const app = express();
 initializePassport(passport);
@@ -47,7 +48,6 @@ app.use(bodyParser.json());
 const SENDMAIL = require("./mailer.js");
 const { error } = require("console");
 
-//FETCH PAGE SCRIPTS
 app.get("/", checkNotAuthenticated, (req, res) => {
   let errors = [];
   pool.getConnection((err, connection) => {
@@ -373,7 +373,76 @@ app.get("/deliverynotes", checkNotAuthenticated, (req, res) => {
   res.render("dispatchno", { layout: "./layouts/index-layout" });
 });
 app.get("/orderbook", checkNotAuthenticated, (req, res) => {
-  res.render("orderbook", { layout: "./layouts/index-layout" });
+  let errors = [];
+  let columns = [];
+
+  pool.query("SHOW COLUMNS FROM order_book", [], (err, results1a) => {
+    if (err) {
+      console.error(err);
+      errors.push({ message: err });
+      return res.render("orderbook", {
+        layout: "./layouts/index-layout",
+        errors,
+        orders: [],
+        startDate: "0/0/0",
+        endDate: "0/0/0",
+        columns,
+      });
+    }
+
+    results1a.forEach((e) => {
+      console.log(e.Field);
+      columns.push(e.Field);
+    });
+    pool.query("SELECT * FROM order_book", [], (err, results1) => {
+      if (err) {
+        console.error(err);
+        errors.push({ message: err });
+        return res.render("orderbook", {
+          layout: "./layouts/index-layout",
+          errors,
+          orders: [],
+          startDate: "0/0/0",
+          endDate: "0/0/0",
+          columns,
+        });
+      }
+      pool.query(
+        "SELECT * FROM order_book_dates ORDER BY date_uploaded DESC LIMIT 1",
+        [],
+        (err, results2) => {
+          if (err) {
+            console.error(err);
+            errors.push({ message: err });
+
+            return res.render("orderbook", {
+              layout: "./layouts/index-layout",
+              errors,
+              orders: [],
+              startDate: "0/0/0",
+              endDate: "0/0/0",
+              columns,
+            });
+          }
+          let startDate = "";
+          let endDate = "";
+          if (results2[0]) {
+            startDate = results2[0].start_date;
+            endDate = results2[0].end_date;
+          }
+
+          res.render("orderbook", {
+            layout: "./layouts/index-layout",
+            errors,
+            orders: results1,
+            startDate,
+            endDate,
+            columns,
+          });
+        }
+      );
+    });
+  });
 });
 app.get("/productmovement", checkNotAuthenticated, (req, res) => {
   res.render("productmovement", { layout: "./layouts/index-layout" });
@@ -869,6 +938,86 @@ app.post("/reset-password", (req, res) => {
     });
   });
 });
+
+// Multer setup for file upload
+const upload = multer();
+
+// Route to handle file upload
+app.post("/upload-excel", upload.single("excelFile"), (req, res) => {
+  const { start_date, end_date } = req.body;
+
+  // Check if file was uploaded
+  if (!req.file) {
+    return res.status(400).send("No file uploaded.");
+  }
+
+  // Parse the uploaded Excel file from memory
+  const workbook = new exceljs.Workbook();
+  workbook.xlsx
+    .load(req.file.buffer)
+    .then(() => {
+      const worksheet = workbook.getWorksheet(1);
+      const headers = worksheet.getRow(1).values;
+
+      // Insert data into the database
+      let errors = [];
+      worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
+        if (rowNumber > 1) {
+          // Skip header row
+          const rowData = row.values.slice(1); // Exclude the first value which is assumed to be the ID
+          const nonEmptyHeaders = headers.filter((header) => header); // Filter out empty headers
+          const placeholders = Array(nonEmptyHeaders.length)
+            .fill("?")
+            .join(", ");
+          const sql = `INSERT INTO order_book (start_date, end_date, ${nonEmptyHeaders.join(
+            ","
+          )}) VALUES (?, ?, ${placeholders})`;
+          console.log(sql);
+          pool.query(
+            sql,
+            [formatDate(start_date), formatDate(end_date), ...rowData],
+            (error, results, fields) => {
+              if (error) {
+                console.error("Error inserting row:", error);
+                errors.push({ message: error });
+                return res.redirect("/orderbook");
+              } else {
+                console.log("Row inserted successfully:", results.insertId);
+              }
+            }
+          );
+        }
+      });
+      let yourDate = new Date();
+      date_created = formatDate(yourDate);
+      pool.query(
+        `
+    INSERT INTO order_book_dates ( start_date, end_date, date_uploaded)
+    VALUES (?, ?, ?)`,
+        [formatDate(start_date), formatDate(end_date), date_created],
+        (err, results) => {
+          if (err) {
+            // Handle error
+            console.error(err);
+            errors.push({ message: err });
+            return res.redirect("/orderbook");
+          }
+        }
+      );
+    })
+    .then(() => {
+      req.flash("success", "Order Book Updated!");
+      return res.redirect("/orderbook");
+    })
+    .catch((err) => {
+      console.error("Error parsing Excel file:", err);
+      res.status(500).send("Error parsing Excel file.");
+    });
+});
+
+// Insert data into the database
+function insertDataIntoDatabase(worksheet, headers, start_date, end_date) {}
+
 app.post(
   "/login",
   passport.authenticate("local", {
