@@ -582,6 +582,7 @@ let productsArray = JSON.parse(params5);
        
   `;
   let count =1;
+  replace.innerHTML = ``;
           productsArray.forEach((product) => {
             if (product.stock_id+'' === params2) {
                  replace.innerHTML += `

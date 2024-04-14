@@ -344,6 +344,7 @@ app.get("/dispatch", checkNotAuthenticated, (req, res) => {
         users: [],
         transporters: [],
         unit: [],
+        products: [],
       });
     }
     connection.query("SELECT * FROM dispatch", [], (err, results1) => {
@@ -359,13 +360,27 @@ app.get("/dispatch", checkNotAuthenticated, (req, res) => {
           users: [],
           transporters: [],
           unit: [],
+          products: [],
         });
       }
-      connection.query(
-        "SELECT * FROM dispatched_products",
-        [],
-        (err, results2) => {
-          let errors = [];
+      connection.query("SELECT * FROM dispatch_units", [], (err, results2) => {
+        let errors = [];
+        if (err) {
+          console.error(err);
+          errors.push({ message: err });
+          return res.render("dispatch", {
+            layout: "./layouts/index-layout",
+            errors,
+            dispatch: [],
+            dispatched_products: [],
+            warehouse: [],
+            users: [],
+            transporters: [],
+            unit: [],
+            products: [],
+          });
+        }
+        connection.query("SELECT * FROM warehouse", [], (err, results3) => {
           if (err) {
             console.error(err);
             errors.push({ message: err });
@@ -378,9 +393,10 @@ app.get("/dispatch", checkNotAuthenticated, (req, res) => {
               users: [],
               transporters: [],
               unit: [],
+              products: [],
             });
           }
-          connection.query("SELECT * FROM warehouse", [], (err, results3) => {
+          connection.query("SELECT * FROM users", [], (err, results4) => {
             if (err) {
               console.error(err);
               errors.push({ message: err });
@@ -393,9 +409,10 @@ app.get("/dispatch", checkNotAuthenticated, (req, res) => {
                 users: [],
                 transporters: [],
                 unit: [],
+                products: [],
               });
             }
-            connection.query("SELECT * FROM users", [], (err, results4) => {
+            connection.query("SELECT * FROM products", [], (err, results4a) => {
               if (err) {
                 console.error(err);
                 errors.push({ message: err });
@@ -408,6 +425,7 @@ app.get("/dispatch", checkNotAuthenticated, (req, res) => {
                   users: [],
                   transporters: [],
                   unit: [],
+                  products: [],
                 });
               }
               connection.query(
@@ -426,6 +444,7 @@ app.get("/dispatch", checkNotAuthenticated, (req, res) => {
                       users: [],
                       transporters: [],
                       unit: [],
+                      products: [],
                     });
                   }
                   connection.query(
@@ -446,6 +465,7 @@ app.get("/dispatch", checkNotAuthenticated, (req, res) => {
                           users: [],
                           transporters: [],
                           unit: [],
+                          products: [],
                         });
                       } else {
                         res.render("dispatch", {
@@ -455,6 +475,7 @@ app.get("/dispatch", checkNotAuthenticated, (req, res) => {
                           dispatched_products: results2,
                           warehouse: results3,
                           users: results4,
+                          products: results4a,
                           transporters: results5,
                           unit: results6,
                         });
@@ -465,8 +486,8 @@ app.get("/dispatch", checkNotAuthenticated, (req, res) => {
               );
             });
           });
-        }
-      );
+        });
+      });
     });
   });
 });
@@ -502,7 +523,7 @@ app.get("/orderbook", checkNotAuthenticated, (req, res) => {
       columns.push(e.Field);
     });
     pool.query(
-      "SELECT * FROM order_book_dates ORDER BY date_uploaded DESC LIMIT 1",
+      "SELECT * FROM order_book_dates ORDER BY end_date DESC LIMIT 1",
       [],
       (err, results2) => {
         if (err) {
@@ -1019,49 +1040,96 @@ app.post("/add-dispatch", async (req, res) => {
   let {
     dispatchDate,
     warehouse,
-    staffMember,
+    staffAssigned,
     transporter,
-    deliveryCenter,
-    products,
+    driver,
+    product,
+    units,
+    status,
+    quantity,
+    unit,
   } = req.body;
   let yourDate = new Date();
   date_created = formatDate(yourDate);
-  console.log("ghh");
-  pool.query(
-    `
-      INSERT INTO dispatch (dispatch_date, warehouse, staff_member, transporter, delivery_center)
-      VALUES (?, ?, ?, ?, ?)
+  pool.query("SELECT * FROM unit", [], (err, unitResults) => {
+    pool.query(
+      `
+      INSERT INTO dispatch (dispatch_date, warehouse, staff_member, transporter, product, status, driver, quantity, unit)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ? , ?)
     `,
-    [dispatchDate, warehouse, staffMember, transporter, deliveryCenter],
-    (err, results) => {
-      if (err) {
-        // Handle error
-        console.error(err);
-        errors.push({ message: err });
-        return res.redirect("/dispatch");
-      }
-      const dispatchId = results.insertId;
-      for (let productDetail of products) {
-        const { product, quantity, unit } = productDetail;
-        pool.query(
-          `
-          INSERT INTO dispatched_products (product_name, quantity, unit, dispatch_id)
-          VALUES (?, ?, ?, ?)`,
-          [product, quantity, unit, dispatchId],
-          (err, results) => {
-            if (err) {
-              // Handle error
-              console.error(err);
-              errors.push({ message: err });
-              return res.redirect("/dispatch");
+      [
+        dispatchDate,
+        warehouse,
+        staffAssigned,
+        transporter,
+        product,
+        status,
+        driver,
+        quantity,
+        unit,
+      ],
+      (err, results) => {
+        if (err) {
+          // Handle error
+          console.error(err);
+          errors.push({ message: err });
+          return res.redirect("/dispatch");
+        }
+        const dispatchId = results.insertId;
+
+        for (let productDetail of units) {
+          const { formationUnit, quantity, unitMeasure } = productDetail;
+          let formation_unit;
+          let location;
+          let province;
+          let delivery_point;
+          let contact_person;
+          let phone;
+          unitResults.forEach((e) => {
+            if (e.id == formationUnit) {
+              formation_unit = e.unit_name;
+              location = e.location;
+              province = e.province;
+              delivery_point = e.delivery_point;
+              contact_person = e.contact_person;
+              phone = e.phone;
             }
-          }
-        );
+          });
+
+          pool.query(
+            `
+          INSERT INTO dispatch_units (formation_unit,location,
+            province,
+            delivery_point,
+            contact_person,
+            phone , quantity, unit, dispatch_id)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+              formation_unit,
+              location,
+              province,
+              delivery_point,
+              contact_person,
+              phone,
+              quantity,
+              unitMeasure,
+              dispatchId,
+            ],
+            (err, results) => {
+              if (err) {
+                // Handle error
+                console.error(err);
+                errors.push({ message: err });
+                return res.redirect("/dispatch");
+              }
+            }
+          );
+        }
+        req.flash("success", "You have successfully added dispatch");
+        res.redirect("/dispatch");
       }
-      req.flash("success", "You have successfully added dispatch");
-      res.redirect("/dispatch");
-    }
-  );
+    );
+  });
 });
 app.post("/reorder-level", async (req, res) => {
   let errors = [];
@@ -1144,7 +1212,7 @@ app.post("/reset-password", (req, res) => {
         <p>Hi, <b>${results[0].firstname}</b>,</p>
         <p>We received a request to reset your password for your Prolegal Case Management account. If you did not request this, please disregard this email.</p>
         <p>To reset your password, please click on the following link:</p>
-        <a href="http://localhost:8080/setpassword?email=${email}&secret=${results[0].password}">RESET PASSWORD LINK</a>
+        <a href="https://app.agrifora.co.zw/setpassword?email=${email}&secret=${results[0].password}">RESET PASSWORD LINK</a>
         <p>This link will only be valid for 24 hours.</p>
         <p>If you are unable to click on the link, please copy and paste it into your browser.</p>
         <p>Once you have clicked on the link, you will be taken to a page where you can enter a new password for your account. Please choose a strong password that is at least 8 characters long and includes a mix of upper and lowercase letters, numbers, and symbols.</p>
