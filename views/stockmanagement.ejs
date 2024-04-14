@@ -276,7 +276,17 @@
             </div>
             <div class="col-md-6">
               <label for="unit" class="form-label">Unit Measure</label>
-              <input type="text" class="form-control" id="unit" required>
+              <select class="form-select" id="unit" required>
+                <option value="Kg">Kgs</option>
+                <option value="Litres">Litres</option>
+                <option value="Bags">Bags</option>
+                <option value="Packs">Packs</option>
+                <option value="Loaves">Loaves</option>
+                <option value="Crates">Crates</option>
+                <option value="Heads">Heads</option>
+                <option value="Cases">Cases</option>
+                <!-- Add more unit options as needed -->
+              </select>
             </div>
           </div>
           <button type="button" class="btn btn-primary mt-3" id="addProductBtn">Add Product</button>
