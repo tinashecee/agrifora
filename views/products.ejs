@@ -84,8 +84,10 @@
                       <td><%= dat.description %></td>
                       <td><%= dat.product_type %></td>
                       <td><%= dat.unit %></td>
-                      <td><%= dat.alternative_unit %></td>
-                      <td></td>
+                      <td>
+                        <button type='button' class='btn btn-primary btn-sm viewDispatchBtn' data-bs-toggle='modal' data-bs-target='#viewDispatchModal' ><i class="fa fa-pen"></i></button>
+                        <button type='button' class='btn btn-warning btn-sm viewDispatchBtn' data-bs-toggle='modal' data-bs-target='#viewDispatchModal' ><i class="fa fa-trash"></i></button></td>
+                  
                     </tr>
                     <% } %>
                     <% } %>

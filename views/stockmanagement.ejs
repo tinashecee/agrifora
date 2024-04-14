@@ -93,7 +93,7 @@
                     <!-- Example rows with data -->
                     <% if (stock) { %> <% for (let dat of stock) { %>
                     <tr>
-                      <td><%=  moment(dat.stock_date).format('Do MMMM, YYYY') %></td>
+                      <td><%=  moment(dat.stock_date).format('DD/MM/YY') %></td>
                       <td><%= dat.stock_id %></td>
                       <td><% 
                         let productCount = 0;
