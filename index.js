@@ -98,104 +98,107 @@ GROUP BY
                 products: [],
               });
             }
-            pool.query(
-              "SHOW COLUMNS FROM order_summary",
-              [],
-              (err, results1b) => {
-                if (err) {
-                  console.error(err);
-                  errors.push({ message: err });
-                  return res.render("index", {
-                    layout: "./layouts/index-layout",
-                    errors,
-                    prods: [],
-                  });
-                }
-
-                results1b.forEach((e) => {
-                  if (
-                    e.Field != "ser" ||
-                    e.Field != "id" ||
-                    e.Field != "unit" ||
-                    e.Field != "delivery_point"
-                  ) {
-                    columns.push(e.Field);
+            connection.query("SELECT * FROM unit", [], (err, results2a) => {
+              connection.query(
+                "SHOW COLUMNS FROM order_summary",
+                [],
+                (err, results1b) => {
+                  if (err) {
+                    console.error(err);
+                    errors.push({ message: err });
+                    return res.render("index", {
+                      layout: "./layouts/index-layout",
+                      errors,
+                      prods: [],
+                    });
                   }
-                });
-                if (results1) {
-                  dryProducts.push("start_date");
-                  dryProducts.push("end_date");
-                  perishableProducts.push("start_date");
-                  perishableProducts.push("end_date");
-                  columns.forEach((order) => {
-                    // Flag to track if the order has been pushed to any array
-                    let orderPushed = false;
 
-                    // Iterate over the products array to find a match for the product name
-                    for (product of results1) {
-                      // Skip if paramName is id, start_date, end_date, unit, or delivery_point
-                      if (
-                        ![
-                          "id",
-                          "start_date",
-                          "end_date",
-                          "unit",
-                          "delivery_point",
-                        ].includes(order)
-                      ) {
-                        // Find a matching product in results3a
-                        const matchingProduct = results1.find(
-                          (product) =>
-                            order === removeSpaces(product.product_name)
-                        );
+                  results1b.forEach((e) => {
+                    if (
+                      e.Field != "ser" ||
+                      e.Field != "id" ||
+                      e.Field != "unit" ||
+                      e.Field != "delivery_point"
+                    ) {
+                      columns.push(e.Field);
+                    }
+                  });
+                  if (results1) {
+                    dryProducts.push("start_date");
+                    dryProducts.push("end_date");
+                    perishableProducts.push("start_date");
+                    perishableProducts.push("end_date");
+                    columns.forEach((order) => {
+                      // Flag to track if the order has been pushed to any array
+                      let orderPushed = false;
 
-                        // If a matching product is found
-                        if (matchingProduct) {
-                          // Determine the product type
-                          if (matchingProduct.product_type === "Dry Goods") {
-                            // Push the order into the dryProducts array if not already added
-                            if (!orderPushed) {
-                              dryProducts.push(order);
-                              orderPushed = true;
-                            }
-                          } else if (
-                            matchingProduct.product_type === "Perishable"
-                          ) {
-                            // Push the order into the perishableProducts array if not already added
-                            if (!orderPushed) {
-                              perishableProducts.push(order);
-                              orderPushed = true;
+                      // Iterate over the products array to find a match for the product name
+                      for (product of results1) {
+                        // Skip if paramName is id, start_date, end_date, unit, or delivery_point
+                        if (
+                          ![
+                            "id",
+                            "start_date",
+                            "end_date",
+                            "unit",
+                            "delivery_point",
+                          ].includes(order)
+                        ) {
+                          // Find a matching product in results3a
+                          const matchingProduct = results1.find(
+                            (product) =>
+                              order === removeSpaces(product.product_name)
+                          );
+
+                          // If a matching product is found
+                          if (matchingProduct) {
+                            // Determine the product type
+                            if (matchingProduct.product_type === "Dry Goods") {
+                              // Push the order into the dryProducts array if not already added
+                              if (!orderPushed) {
+                                dryProducts.push(order);
+                                orderPushed = true;
+                              }
+                            } else if (
+                              matchingProduct.product_type === "Perishable"
+                            ) {
+                              // Push the order into the perishableProducts array if not already added
+                              if (!orderPushed) {
+                                perishableProducts.push(order);
+                                orderPushed = true;
+                              }
                             }
                           }
                         }
                       }
-                    }
-                  });
+                    });
+                  }
+                  connection.release();
+                  if (err) {
+                    console.error("Error executing MySQL query:", err);
+                    errors.push({ message: err });
+                    return res.render("index", {
+                      layout: "./layouts/index-layout",
+                      errors,
+                      prods: [],
+                    });
+                  } else {
+                    res.render("index", {
+                      layout: "./layouts/index-layout",
+                      errors,
+                      orders: results1a,
+                      columns,
+                      dryProducts,
+                      dryColumnTotals,
+                      perishableProducts,
+                      perishableColumnTotals,
+                      delivery_units: results2a,
+                      prods: results1,
+                    });
+                  }
                 }
-                connection.release();
-                if (err) {
-                  console.error("Error executing MySQL query:", err);
-                  errors.push({ message: err });
-                  return res.render("index", {
-                    layout: "./layouts/index-layout",
-                    errors,
-                    prods: [],
-                  });
-                } else {
-                  res.render("index", {
-                    layout: "./layouts/index-layout",
-                    errors,
-                    orders: results1a,
-                    columns,
-                    dryProducts,
-                    dryColumnTotals,
-                    perishableProducts,
-                    perishableColumnTotals,
-                    prods: results1,
-                  });
-                }
-              }
-            );
+              );
+            });
           }
         );
       }
