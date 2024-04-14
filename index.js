@@ -1086,7 +1086,7 @@ app.post("/add-dispatch", async (req, res) => {
           let contact_person;
           let phone;
           unitResults.forEach((e) => {
-            if (e.id == formationUnit) {
+            if (e.unit_name == formationUnit) {
               formation_unit = e.unit_name;
               location = e.location;
               province = e.province;
