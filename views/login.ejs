@@ -1,21 +1,16 @@
 
-  <section class="position-relative py-8 login-section">
-    <% for (let error of errors) { %>
-      <div class="alert alert-danger" role="alert"><%= error.message %></div>
-      <% } %> <% if(message.success){ %>
-      <div class="alert alert-success" role="alert"><%= message.success %></div>
-      <% } %>
+  <section class="position-relative py-8 login-section" style="height: 100%;">
         <div class="container">
           <div class="row align-items-center">
-            <div class="col-12 col-lg-6 py-lg-20">
+ <div class="col-12 col-lg-6 py-lg-20">
               <div class="mw-md mx-auto">
                 <a class="d-inline-block h3 mb-12 text-decoration-none" href="#">
                   <div class="position-relative mt-n20 mw-md mx-auto text-center">
                     <!-- Add the d-none class to hide these elements -->
                     <a href="/">
-                        <img src="sirius-assets/images/logos/sirius-logoo.png" alt="" width="196px" class="">
+                        <img src="sirius-assets/images/logos/sirius-logoo.png" alt="" width="496px" class="" style="padding: 50px;">
                     </a>
-                    <h3 class="mb-8">Agrifora Management System</h3>
+                    <h2 class="mb-8">Agrifora Management System</h2>
                     <p class="mb-8">Login to manage inventory, order, delivery notes and more</p>
                 </div>
                 
@@ -41,46 +36,14 @@
                  
                 </form>
               </div>
-              <div class="d-lg-none mt-8 bg-dark py-16 px-8 mw-md mx-auto text-center">
-                <h5 class="mb-4 text-white">Stay up to date with your audience</h5>
-                <p class="mb-10 text-white">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.</p>
-                <button class="btn me-4 p-1 rounded-circle btn-primary-light"></button>
-                <button class="btn me-4 p-1 rounded-circle btn-danger"></button>
-                <button class="btn p-1 rounded-circle btn-primary-light"></button>
-              </div>
+            
             </div>
           </div>
         </div>
-        <div class="d-none d-lg-flex align-items-center justify-content-center position-absolute top-0 bottom-0 end-0 col-6 bg-dark">
-          <img class="img-fluid" style="max-width: 100%; max-height: 624px; object-fit: cover; object-position: bottom;" src="sirius-assets/images/backgroundold.png" alt="">
+        <div class="d-none d-lg-flex align-items-center justify-content-center position-absolute top-0 bottom-0 end-0 col-6 bg-light">
+          <img class="img-fluid" style="max-width: 100%; max-height: 724px; object-fit: cover; object-position: bottom;" src="sirius-assets/images/backgroundold.png" alt="">
       </div>
       
       </section>
-      <!-- Footer container -->
-<div class="main-footer">
-  <span>&copy; 2023. Agrifora Management System. All Rights Reserved.</span>
-  <span>Created by: <a href="http://soxfort.com" target="_blank">Soxfort Solutions | Intuitive Innovation</a></span>
-</div><!-- main-footer -->
-      <!-- Add this script after your HTML content -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const loginForm = document.getElementById('loginForm');
-      const emailInput = document.getElementById('exampleForm1');
-      const passwordInput = document.getElementById('exampleForm2');
-  
-      // Add an event listener to the form submission
-      loginForm.addEventListener('submit', function (event) {
-        event.preventDefault();
-  
-        // Check if the test credentials are entered
-        if (emailInput.value === 'test@soxfort.com' && passwordInput.value === 'test') {
-          // Redirect to the homepage (you should replace 'homepage-url' with the actual URL)
-          window.location.href = 'index.html';
-        } else {
-          // Handle incorrect credentials (show an error message, etc.)
-          alert('Invalid credentials. Please try again.');
-        }
-      });
-    });
-  </script>
+ 
 
