@@ -118,7 +118,7 @@
           <div class="p-8 border rounded-2">
             <div
               class="d-flex mb-6 align-items-start justify-content-between"></div>
-            <h1 class="mb-4">20,200</h1>
+            <h1 class="mb-4"><%= totalPurchases.toLocaleString() %></h1>
             <p class="mb-0">
               <span><strong>Total Purchases (kgs)</strong></span>
             </p>
@@ -128,7 +128,7 @@
           <div class="p-8 border rounded-2">
             <div
               class="d-flex mb-6 align-items-start justify-content-between"></div>
-            <h1 class="mb-4">15,000</h1>
+            <h1 class="mb-4"><%= totalDispatched.toLocaleString() %></h1>
             <p class="mb-0">
               <span><strong>Total Dispatched (kgs)</strong></span>
             </p>
@@ -138,7 +138,7 @@
           <div class="p-8 border rounded-2">
             <div
               class="d-flex mb-6 align-items-start justify-content-between"></div>
-            <h1 class="mb-4">1,500</h1>
+            <h1 class="mb-4">-</h1>
             <p class="mb-0">
               <span><strong>Reorder Level (kgs)</strong></span>
             </p>
@@ -148,7 +148,9 @@
           <div class="p-8 border rounded-2">
             <div
               class="d-flex mb-6 align-items-start justify-content-between"></div>
-            <h1 class="mb-4">4,200</h1>
+            <h1 class="mb-4">
+              <%= (totalPurchases-totalDispatched).toLocaleString() %>
+            </h1>
             <p class="mb-0">
               <span><strong>Current Quantity (kgs)</strong></span>
             </p>
@@ -165,7 +167,7 @@
     </div>
 
     <div class="col-md-5">
-      <h2>Product: Sugar</h2>
+      <h2 id="productTitle">Product: Not Selected</h2>
     </div>
     <div class="col-md-3">
       <div class="input-group">
@@ -202,23 +204,43 @@
   <div class="container mt-5">
     <div class="row">
       <!-- Product Details Card -->
+      <!-- Product Details Card -->
       <div class="col-md-4">
         <div class="card">
           <div class="card-header">
             <h4>Product Details</h4>
           </div>
           <ul class="list-group list-group-flush">
+            <!-- Product Selection Dropdown -->
             <li class="list-group-item">
-              Quantity in Stock: <strong>4,200Kgs</strong>
+              <label for="productSelector" class="form-label"
+                >Select Product for quick details:</label
+              >
+              <select id="productSelector" class="form-select productSelector">
+                <option value="">Select Product</option>
+                <% if (products) { %> <% for (let dat of products) { %>
+                <option value="<%= dat.product_name %>">
+                  <%= dat.product_name %>
+                </option>
+                <% } %> <% } %>
+              </select>
+            </li>
+            <!-- Quantity in Stock -->
+            <li class="list-group-item">Quantity Ordered: <strong></strong></li>
+            <li class="list-group-item">
+              Quantity Delivered: <strong></strong>
             </li>
             <li class="list-group-item">
-              Last Purchase Date: <strong>2023-09-15</strong>
+              Outstanding for the Month: <strong></strong>
             </li>
+            <li class="list-group-item">Variance YTD: <strong></strong></li>
+            <!-- Last Purchase Date -->
             <li class="list-group-item">
-              Last Dispatch Date: <strong>2023-09-10</strong>
+              Last Delivery Date: <strong></strong>
             </li>
+            <!-- Last Dispatch Date -->
             <li class="list-group-item">
-              Reorder Level: <strong>1,500Kgs</strong>
+              Next Deliverey Date: <strong></strong>
             </li>
           </ul>
         </div>
@@ -237,90 +259,7 @@
               <th>Balance</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>2023-09-15</td>
-              <td><a href="#">PO12345</a></td>
-              <td>Stock In</td>
-              <td>10,000</td>
-              <td>-</td>
-              <td>10,000</td>
-            </tr>
-            <tr>
-              <td>2023-09-10</td>
-              <td><a href="#">DO56789</a></td>
-              <td>Dispatch</td>
-              <td>-</td>
-              <td>50</td>
-              <td>9,950</td>
-            </tr>
-            <tr>
-              <td>2023-09-15</td>
-              <td><a href="#">PO12345</a></td>
-              <td>Stock In</td>
-              <td>100</td>
-              <td>-</td>
-              <td>10,050</td>
-            </tr>
-            <tr>
-              <td>2023-09-10</td>
-              <td><a href="#">DO56789</a></td>
-              <td>Dispatch</td>
-              <td>-</td>
-              <td>50</td>
-              <td>10,000</td>
-            </tr>
-            <tr>
-              <td>2023-09-15</td>
-              <td><a href="#">PO12345</a></td>
-              <td>Stock In</td>
-              <td>100</td>
-              <td>-</td>
-              <td>10,100</td>
-            </tr>
-            <tr>
-              <td>2023-09-10</td>
-              <td><a href="#">DO56789</a></td>
-              <td>Dispatch</td>
-              <td>-</td>
-              <td>100</td>
-              <td>10,000</td>
-            </tr>
-            <tr>
-              <td>2023-09-15</td>
-              <td><a href="#">PO12345</a></td>
-              <td>Stock In</td>
-              <td>100</td>
-              <td>-</td>
-              <td>10,100</td>
-            </tr>
-            <tr>
-              <td>2023-09-10</td>
-              <td><a href="#">DO56789</a></td>
-              <td>Dispatch</td>
-              <td>-</td>
-              <td>1000</td>
-              <td>9,100</td>
-            </tr>
-            <tr>
-              <td>2023-09-15</td>
-              <td><a href="#">PO12345</a></td>
-              <td>Stock In</td>
-              <td>100</td>
-              <td>-</td>
-              <td>9,200</td>
-            </tr>
-            <tr>
-              <td>2023-09-10</td>
-              <td><a href="#">DO56789</a></td>
-              <td>Dispatch</td>
-              <td>-</td>
-              <td>5,000</td>
-              <td>4,200</td>
-            </tr>
-            <!-- Add more rows as needed -->
-            <!-- ... -->
-          </tbody>
+          <tbody></tbody>
         </table>
 
         <!-- Pagination -->
@@ -399,86 +338,6 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>2023-09-15</td>
-                        <td><a href="#">PO12345</a></td>
-                        <td>Stock In</td>
-                        <td>10,000</td>
-                        <td>-</td>
-                        <td>10,000</td>
-                      </tr>
-                      <tr>
-                        <td>2023-09-10</td>
-                        <td><a href="#">DO56789</a></td>
-                        <td>Dispatch</td>
-                        <td>-</td>
-                        <td>50</td>
-                        <td>9,950</td>
-                      </tr>
-                      <tr>
-                        <td>2023-09-15</td>
-                        <td><a href="#">PO12345</a></td>
-                        <td>Stock In</td>
-                        <td>100</td>
-                        <td>-</td>
-                        <td>10,050</td>
-                      </tr>
-                      <tr>
-                        <td>2023-09-10</td>
-                        <td><a href="#">DO56789</a></td>
-                        <td>Dispatch</td>
-                        <td>-</td>
-                        <td>50</td>
-                        <td>10,000</td>
-                      </tr>
-                      <tr>
-                        <td>2023-09-15</td>
-                        <td><a href="#">PO12345</a></td>
-                        <td>Stock In</td>
-                        <td>100</td>
-                        <td>-</td>
-                        <td>10,100</td>
-                      </tr>
-                      <tr>
-                        <td>2023-09-10</td>
-                        <td><a href="#">DO56789</a></td>
-                        <td>Dispatch</td>
-                        <td>-</td>
-                        <td>100</td>
-                        <td>10,000</td>
-                      </tr>
-                      <tr>
-                        <td>2023-09-15</td>
-                        <td><a href="#">PO12345</a></td>
-                        <td>Stock In</td>
-                        <td>100</td>
-                        <td>-</td>
-                        <td>10,100</td>
-                      </tr>
-                      <tr>
-                        <td>2023-09-10</td>
-                        <td><a href="#">DO56789</a></td>
-                        <td>Dispatch</td>
-                        <td>-</td>
-                        <td>1000</td>
-                        <td>9,100</td>
-                      </tr>
-                      <tr>
-                        <td>2023-09-15</td>
-                        <td><a href="#">PO12345</a></td>
-                        <td>Stock In</td>
-                        <td>100</td>
-                        <td>-</td>
-                        <td>9,200</td>
-                      </tr>
-                      <tr>
-                        <td>2023-09-10</td>
-                        <td><a href="#">DO56789</a></td>
-                        <td>Dispatch</td>
-                        <td>-</td>
-                        <td>5,000</td>
-                        <td>4,200</td>
-                      </tr>
                       <!-- Add more rows as needed -->
                       <!-- ... -->
                     </tbody>
@@ -518,3 +377,77 @@
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script src="js/charts-demo.js"></script>
+<script>
+  // Add an event listener to the product selector
+  document
+    .getElementById("productSelector")
+    .addEventListener("change", function () {
+      // Get the selected product value
+      const selectedProduct = this.value;
+
+      // Send an AJAX request to the server
+      fetch("/productmovement", {
+        method: "POST",
+        body: JSON.stringify({
+          product: selectedProduct,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // Update the table with the new data
+          console.log(data.movements);
+          updateTable(data.movements);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    });
+  // Function to update the table with new data
+  function updateTable(movements) {
+    let title = document.getElementById("productTitle");
+    title.innerHTML = "";
+    if (movements[0]) {
+      title.innerHTML = "Product: " + movements[0].product_name;
+    }
+    const tableBody = document.querySelector("tbody");
+    tableBody.innerHTML = ""; // Clear the table body
+    let balance = 0;
+    movements.forEach((movement) => {
+      const row = document.createElement("tr");
+      const formattedDate = formatDate(movement.date);
+
+      if (movement.product_name) {
+        balance = parseFloat(balance) + parseFloat(movement.quantity);
+        row.innerHTML = `
+      <td>${formattedDate}</td>
+      <td><a href="#">${movement.id}</a></td>
+      <td>Stock In</td>
+      <td>${movement.quantity}</td>
+      <td>-</td>
+      <td>${balance}</td>
+    `;
+      } else {
+        balance = parseFloat(balance) - parseFloat(movement.quantity);
+        row.innerHTML = `
+      <td>${formattedDate}</td>
+      <td><a href="#">${movement.dispatch_id}</a></td>
+      <td>Dispatch</td>
+      <td>-</td>
+      <td>${movement.quantity}</td>
+      <td>${balance}</td>
+    `;
+      }
+      tableBody.appendChild(row);
+    });
+  }
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+</script>

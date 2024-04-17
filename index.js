@@ -685,7 +685,156 @@ app.get("/orderbook", checkNotAuthenticated, (req, res) => {
   });
 });
 app.get("/productmovement", checkNotAuthenticated, (req, res) => {
-  res.render("productmovement", { layout: "./layouts/index-layout" });
+  let errors = [];
+  pool.query("SELECT * FROM products", [], (err, results1) => {
+    if (err) {
+      console.error(err);
+      errors.push({ message: err });
+      return res.render("productmovement", {
+        layout: "./layouts/index-layout",
+        errors,
+        products: [],
+        stock: [],
+        stock_products: [],
+        dispatch: [],
+        dispatch_units: [],
+      });
+    }
+    pool.query("SELECT * FROM stock_products", [], (err, results2) => {
+      if (err) {
+        console.error(err);
+        errors.push({ message: err });
+        return res.render("productmovement", {
+          layout: "./layouts/index-layout",
+          errors,
+          products: [],
+          stock: [],
+          stock_products: [],
+          dispatch: [],
+          dispatch_units: [],
+        });
+      }
+      pool.query("SELECT * FROM dispatch", [], (err, results3) => {
+        if (err) {
+          console.error(err);
+          errors.push({ message: err });
+          return res.render("productmovement", {
+            layout: "./layouts/index-layout",
+            errors,
+            products: [],
+            stock: [],
+            stock_products: [],
+            dispatch: [],
+            dispatch_units: [],
+          });
+        }
+        let totalPurchases = 0;
+        results2.forEach((e) => {
+          totalPurchases += e.quantity;
+        });
+        let totalDispatched = 0;
+        results3.forEach((e) => {
+          totalDispatched += e.quantity;
+        });
+
+        res.render("productmovement", {
+          layout: "./layouts/index-layout",
+          errors,
+          products: results1,
+          stock_products: results2,
+          dispatch: results3,
+          totalPurchases,
+          totalDispatched,
+        });
+      });
+    });
+  });
+});
+app.post("/productmovement", checkNotAuthenticated, (req, res) => {
+  let errors = [];
+
+  pool.query("SELECT * FROM stock_products", [], (err, stock_products) => {
+    if (err) {
+      console.error(err);
+      errors.push({ message: err });
+      return res.render("productmovement", {
+        layout: "./layouts/index-layout",
+        errors,
+        products: [],
+        stock: [],
+        stock_products: [],
+        dispatch: [],
+        dispatch_units: [],
+      });
+    }
+    pool.query("SELECT * FROM dispatch", [], (err, dispatch) => {
+      if (err) {
+        console.error(err);
+        errors.push({ message: err });
+        return res.render("productmovement", {
+          layout: "./layouts/index-layout",
+          errors,
+          products: [],
+          stock: [],
+          stock_products: [],
+          dispatch: [],
+          dispatch_units: [],
+        });
+      }
+      let stockResults = [];
+      let dispatchResults = [];
+      stock_products.forEach((e) => {
+        if (e.product_name == req.body.product) {
+          stockResults.push(e);
+        }
+      });
+      dispatch.forEach((e) => {
+        if (e.product == req.body.product) {
+          dispatchResults.push(e);
+        }
+      });
+      // Combine and sort the results
+      const movements = [
+        ...stockResults.map((result) => ({
+          ...result,
+          date: result.stock_date,
+        })),
+        ...dispatchResults.map((result) => ({
+          ...result,
+          date: result.dispatch_date,
+        })),
+        /*
+        ...stockResults.map((result) => ({
+          ...result,
+          reference: result.stock_id,
+        })),
+        ...dispatchResults.map((result) => ({
+          ...result,
+          reference: result.dispatch_id,
+        })),
+        ...stockResults.map((result) => ({
+          ...result,
+          productName: result.product_name,
+        })),
+        ...dispatchResults.map((result) => ({
+          ...result,
+          productName: result.product,
+        })),
+        ...stockResults.map((result) => ({
+          ...result,
+          description: "Stock In",
+        })),
+        ...dispatchResults.map((result) => ({
+          ...result,
+          description: "Dispatch",
+        })), */
+      ];
+
+      movements.sort((a, b) => new Date(a.date) - new Date(b.date));
+      console.log(movements);
+      res.send({ movements: movements });
+    });
+  });
 });
 app.get("/orderhistory", checkNotAuthenticated, (req, res) => {
   res.render("orderhistory", { layout: "./layouts/index-layout" });
@@ -745,11 +894,23 @@ app.get("/transporter", checkNotAuthenticated, (req, res) => {
     if (err) {
       console.error(err);
       errors.push({ message: err });
+      res.render("transporter", {
+        layout: "./layouts/index-layout",
+        errors,
+        transporters: [],
+        fleet: [],
+      });
     }
     pool.query("SELECT * FROM fleet", [], (err, results1) => {
       if (err) {
         console.error(err);
         errors.push({ message: err });
+        res.render("transporter", {
+          layout: "./layouts/index-layout",
+          errors,
+          transporters: [],
+          fleet: [],
+        });
       }
       res.render("transporter", {
         layout: "./layouts/index-layout",
@@ -766,6 +927,11 @@ app.get("/warehouse", checkNotAuthenticated, (req, res) => {
     if (err) {
       console.error(err);
       errors.push({ message: err });
+      res.render("warehouse", {
+        layout: "./layouts/index-layout",
+        errors,
+        warehouse: [],
+      });
     }
     res.render("warehouse", {
       layout: "./layouts/index-layout",
@@ -1020,9 +1186,9 @@ app.post("/add-stock", async (req, res) => {
         const { product, quantity, unit } = productDetail;
         pool.query(
           `
-          INSERT INTO stock_products (product_name, quantity, unit, stock_id)
-          VALUES (?, ?, ?, ?)`,
-          [product, quantity, unit, stockId],
+          INSERT INTO stock_products (stock_date, product_name, quantity, unit, stock_id)
+          VALUES (?, ?, ?, ?, ?)`,
+          [stockDate, product, quantity, unit, stockId],
           (err, results) => {
             if (err) {
               // Handle error
