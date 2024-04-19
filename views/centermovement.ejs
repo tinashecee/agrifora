@@ -101,7 +101,7 @@
           id="toDate"
           class="form-control"
           placeholder="To date" />
-        <button id="goButton" class="btn btn-primary">Go</button>
+        <button id="goButton" class="btn btn-primary" onclick="go()">Go</button>
       </div>
     </div>
     <div class="col-md-2">
@@ -112,7 +112,10 @@
         placeholder="Search..." />
     </div>
     <div class="col-md-2">
-      <button type="button" class="btn btn-primary mt-3">
+      <button
+        type="button"
+        class="btn btn-primary mt-3"
+        onclick="generateReport()">
         <i class="fas fa-cog"></i> Generate Report
       </button>
     </div>
@@ -196,6 +199,67 @@
             </li>
           </ul>
         </nav>
+        <div
+          class="modal fade"
+          id="reportModal"
+          tabindex="-1"
+          aria-labelledby="reportModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <h3 style="text-align: center" id="rangeTitle"></h3>
+                <br />
+
+                <hr />
+                <table class="table table-bordered">
+                  <thead class="table-dark">
+                    <tr>
+                      <th scope="col">Product</th>
+                      <th scope="col">Product ID</th>
+                      <th scope="col">Quantity Ordered</th>
+                      <th scope="col">Quantity Received</th>
+                      <th scope="col">Balance</th>
+                      <th scope="col">Comments</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tennis">
+                    <!-- Sample data rows (replace with your actual data) -->
+
+                    <!-- Add more rows as needed -->
+                  </tbody>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-success mx-2">
+                  <i class="fas fa-save"></i> Save
+                </button>
+
+                <!-- Print Button -->
+                <button
+                  type="button"
+                  class="btn btn-primary mx-2"
+                  onclick="window.print()">
+                  <i class="fas fa-print"></i> Print
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal">
+                  Close
+                </button>
+                <!-- You can add additional buttons or actions here if needed -->
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -223,64 +287,20 @@
       .addEventListener("change", function () {
         // Get the selected product value
         selectedUnit = this.value;
-        const fromDate = document.getElementById("fromDate").value;
-        const toDate = document.getElementById("toDate").value;
-
-        // Check if both fromDate and toDate are not empty
-        if (fromDate && toDate) {
-          // Get the selected product value
-          // Send an AJAX request to the server
-          fetch("/unitmovement", {
-            method: "POST",
-            body: JSON.stringify({
-              unit: selectedUnit,
-              fromDate: fromDate,
-              toDate: toDate,
-            }),
-            headers: {
-              "Content-type": "application/json; charset=UTF-8",
-            },
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              // Update the table with the new data
-              updateTable(
-                data.arry,
-                data.contact_person,
-                data.delivery_point,
-                data.phone,
-                data.location,
-                data.province
-              );
-            })
-            .catch((error) => {
-              console.error("Error:", error);
-            });
-        } else {
-          // Display a message or handle the case when either fromDate or toDate is empty
-          window.alert("Please select both From Date and To Date.");
-        }
       });
 
-    function generateReport() {
-      console.log(selectedProduct);
+    function go() {
       const fromDate = document.getElementById("fromDate").value;
       const toDate = document.getElementById("toDate").value;
-      const rangeTitle = document.getElementById("rangeTitle");
-      rangeTitle.innerHTML = "";
-      rangeTitle.innerHTML = `${selectedProduct} movement report from ${fromDate}<br />to ${toDate}`;
 
       // Check if both fromDate and toDate are not empty
-      if (fromDate && toDate) {
+      if (fromDate && toDate && selectedUnit) {
         // Get the selected product value
-        const selectedProduct =
-          document.getElementById("productSelector").value;
-
         // Send an AJAX request to the server
-        fetch("/productmovement", {
+        fetch("/unitmovement", {
           method: "POST",
           body: JSON.stringify({
-            product: selectedProduct,
+            unit: selectedUnit,
             fromDate: fromDate,
             toDate: toDate,
           }),
@@ -290,18 +310,59 @@
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log(data.movements);
             // Update the table with the new data
-            let movements = data.movements;
-            var modal = document.getElementById("movementReportModal");
+            updateTable(
+              data.arry,
+              data.contact_person,
+              data.delivery_point,
+              data.phone,
+              data.location,
+              data.province
+            );
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      } else {
+        // Display a message or handle the case when either fromDate or toDate is empty
+        window.alert("Please select both From Date and To Date.");
+      }
+    }
+
+    function generateReport() {
+      const fromDate = document.getElementById("fromDate").value;
+      const toDate = document.getElementById("toDate").value;
+      const rangeTitle = document.getElementById("rangeTitle");
+      rangeTitle.innerHTML = "";
+      rangeTitle.innerHTML = `
+                  Unit movement statement for <br />
+                  ${selectedUnit} from ${fromDate}<br />to ${toDate}`;
+
+      if (fromDate && toDate && selectedUnit) {
+        // Get the selected product value
+
+        // Send an AJAX request to the server
+        fetch("/unitmovement", {
+          method: "POST",
+          body: JSON.stringify({
+            unit: selectedUnit,
+            fromDate: fromDate,
+            toDate: toDate,
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // Update the table with the new data
+            let movements = data.arry;
+            var modal = document.getElementById("reportModal");
             var modalTitle = modal.querySelector(".modal-title");
             var modalBody = modal.querySelector(".modal-body");
             var modalFooter = modal.querySelector(".modal-footer");
-            const requesterSummary1 =
-              document.getElementById("requesterSummary1");
-            const requesterSummary2 =
-              document.getElementById("requesterSummary2");
-            const tableBody = document.getElementById("yams");
+
+            const tableBody = document.getElementById("tennis");
 
             tableBody.innerHTML = ""; // Clear the table body
             let balance = 0;
@@ -310,36 +371,26 @@
 
             movements.forEach((movement) => {
               const row = document.createElement("tr");
-              const formattedDate = formatDate(movement.date);
+              //const formattedDate = formatDate(movement.date);
 
-              if (movement.product_name) {
-                totalPurchases += parseFloat(movement.quantity);
-                balance = parseFloat(balance) + parseFloat(movement.quantity);
-                row.innerHTML = `
-          <td>${formattedDate}</td>
-          <td><a href="#">${movement.id}</a></td>
-          <td>Stock In</td>
-          <td>${movement.quantity.toLocaleString()}</td>
+              let quantity =
+                movement.ordered !== null
+                  ? movement.ordered.toLocaleString()
+                  : ""; // Check if quantity_ordered is not null
+              row.innerHTML = `
+         
+          <td><a href="#">${movement.product}</a></td>
+          <td>${movement.id}</td>
+          <td>${movement.ordered}</td>
           <td>-</td>
           <td>${balance}</td>
+          <td>Received</td>
         `;
-              } else {
-                balance = parseFloat(balance) - parseFloat(movement.quantity);
-                totalDispatched += parseFloat(movement.quantity);
-                row.innerHTML = `
-          <td>${formattedDate}</td>
-          <td><a href="#">${movement.dispatch_id}</a></td>
-          <td>Dispatch</td>
-          <td>-</td>
-          <td>${movement.quantity.toLocaleString()}</td>
-          <td>${balance}</td>
-        `;
-              }
               tableBody.appendChild(row);
             });
 
             // Show the modal
-            $("#movementReportModal").modal("show");
+            $("#reportModal").modal("show");
           })
           .catch((error) => {
             console.error("Error:", error);

@@ -179,7 +179,7 @@
           id="toDate"
           class="form-control"
           placeholder="To date" />
-        <button id="goButton" class="btn btn-primary">Go</button>
+        <button id="goButton" class="btn btn-primary" onclick="go()">Go</button>
       </div>
     </div>
     <div class="col-md-2">
@@ -366,41 +366,41 @@
     .addEventListener("change", function () {
       // Get the selected product value
       selectedProduct = this.value;
-
-      const fromDate = document.getElementById("fromDate").value;
-      const toDate = document.getElementById("toDate").value;
-
-      // Check if both fromDate and toDate are not empty
-      if (fromDate && toDate) {
-        // Get the selected product value
-        const selectedProduct =
-          document.getElementById("productSelector").value;
-
-        // Send an AJAX request to the server
-        fetch("/productmovement", {
-          method: "POST",
-          body: JSON.stringify({
-            product: selectedProduct,
-            fromDate: fromDate,
-            toDate: toDate,
-          }),
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-          },
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            // Update the table with the new data
-            updateTable(data.movements, data.reorderLevel);
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
-      } else {
-        // Display a message or handle the case when either fromDate or toDate is empty
-        window.alert("Please select both From Date and To Date.");
-      }
     });
+  function go() {
+    const fromDate = document.getElementById("fromDate").value;
+    const toDate = document.getElementById("toDate").value;
+
+    // Check if both fromDate and toDate are not empty
+    if (fromDate && toDate && selectedProduct) {
+      // Get the selected product value
+      const selectedProduct = document.getElementById("productSelector").value;
+
+      // Send an AJAX request to the server
+      fetch("/productmovement", {
+        method: "POST",
+        body: JSON.stringify({
+          product: selectedProduct,
+          fromDate: fromDate,
+          toDate: toDate,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // Update the table with the new data
+          updateTable(data.movements, data.reorderLevel);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    } else {
+      // Display a message or handle the case when either fromDate or toDate is empty
+      window.alert("Please select both From Date and To Date.");
+    }
+  }
 
   function generateReport() {
     console.log(selectedProduct);
@@ -411,9 +411,8 @@
     rangeTitle.innerHTML = `${selectedProduct} movement report from ${fromDate}<br />to ${toDate}`;
 
     // Check if both fromDate and toDate are not empty
-    if (fromDate && toDate) {
+    if (fromDate && toDate && selectedProduct) {
       // Get the selected product value
-      const selectedProduct = document.getElementById("productSelector").value;
 
       // Send an AJAX request to the server
       fetch("/productmovement", {
