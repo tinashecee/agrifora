@@ -118,7 +118,7 @@
           <div class="p-8 border rounded-2">
             <div
               class="d-flex mb-6 align-items-start justify-content-between"></div>
-            <h1 class="mb-4"><%= totalPurchases.toLocaleString() %></h1>
+            <h1 class="mb-4" id="totalPurchases"></h1>
             <p class="mb-0">
               <span><strong>Total Purchases (kgs)</strong></span>
             </p>
@@ -128,7 +128,7 @@
           <div class="p-8 border rounded-2">
             <div
               class="d-flex mb-6 align-items-start justify-content-between"></div>
-            <h1 class="mb-4"><%= totalDispatched.toLocaleString() %></h1>
+            <h1 class="mb-4" id="totalDispatched"></h1>
             <p class="mb-0">
               <span><strong>Total Dispatched (kgs)</strong></span>
             </p>
@@ -138,7 +138,7 @@
           <div class="p-8 border rounded-2">
             <div
               class="d-flex mb-6 align-items-start justify-content-between"></div>
-            <h1 class="mb-4">-</h1>
+            <h1 class="mb-4" id="reorderLevel"></h1>
             <p class="mb-0">
               <span><strong>Reorder Level (kgs)</strong></span>
             </p>
@@ -148,9 +148,7 @@
           <div class="p-8 border rounded-2">
             <div
               class="d-flex mb-6 align-items-start justify-content-between"></div>
-            <h1 class="mb-4">
-              <%= (totalPurchases-totalDispatched).toLocaleString() %>
-            </h1>
+            <h1 class="mb-4" id="currentQuantity"></h1>
             <p class="mb-0">
               <span><strong>Current Quantity (kgs)</strong></span>
             </p>
@@ -195,8 +193,8 @@
       <button
         type="button"
         class="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#movementReportModal">
+        onclick="generateReport()"
+        id="generateReport">
         <i class="fas fa-cog"></i> Generate Report
       </button>
     </div>
@@ -224,23 +222,6 @@
                 </option>
                 <% } %> <% } %>
               </select>
-            </li>
-            <!-- Quantity in Stock -->
-            <li class="list-group-item">Quantity Ordered: <strong></strong></li>
-            <li class="list-group-item">
-              Quantity Delivered: <strong></strong>
-            </li>
-            <li class="list-group-item">
-              Outstanding for the Month: <strong></strong>
-            </li>
-            <li class="list-group-item">Variance YTD: <strong></strong></li>
-            <!-- Last Purchase Date -->
-            <li class="list-group-item">
-              Last Delivery Date: <strong></strong>
-            </li>
-            <!-- Last Dispatch Date -->
-            <li class="list-group-item">
-              Next Deliverey Date: <strong></strong>
             </li>
           </ul>
         </div>
@@ -320,7 +301,7 @@
                 <div class="card-body">
                   <div class="row mb-3">
                     <div class="col-md-6">
-                      <p class="mb-1">
+                      <p class="mb-1" id="rangeTitle">
                         Product movement report from {Date}<br />to {Date}
                       </p>
                     </div>
@@ -337,7 +318,7 @@
                         <th>Balance</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="yams">
                       <!-- Add more rows as needed -->
                       <!-- ... -->
                     </tbody>
@@ -374,22 +355,73 @@
 <!-- main-footer -->
 <script src="js/bootstrap/bootstrap.bundle.min.js"></script>
 <script src="js/main.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script src="js/charts-demo.js"></script>
 <script>
   // Add an event listener to the product selector
+  let selectedProduct;
   document
     .getElementById("productSelector")
     .addEventListener("change", function () {
       // Get the selected product value
-      const selectedProduct = this.value;
+      selectedProduct = this.value;
+
+      const fromDate = document.getElementById("fromDate").value;
+      const toDate = document.getElementById("toDate").value;
+
+      // Check if both fromDate and toDate are not empty
+      if (fromDate && toDate) {
+        // Get the selected product value
+        const selectedProduct =
+          document.getElementById("productSelector").value;
+
+        // Send an AJAX request to the server
+        fetch("/productmovement", {
+          method: "POST",
+          body: JSON.stringify({
+            product: selectedProduct,
+            fromDate: fromDate,
+            toDate: toDate,
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // Update the table with the new data
+            updateTable(data.movements, data.reorderLevel);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      } else {
+        // Display a message or handle the case when either fromDate or toDate is empty
+        window.alert("Please select both From Date and To Date.");
+      }
+    });
+
+  function generateReport() {
+    console.log(selectedProduct);
+    const fromDate = document.getElementById("fromDate").value;
+    const toDate = document.getElementById("toDate").value;
+    const rangeTitle = document.getElementById("rangeTitle");
+    rangeTitle.innerHTML = "";
+    rangeTitle.innerHTML = `${selectedProduct} movement report from ${fromDate}<br />to ${toDate}`;
+
+    // Check if both fromDate and toDate are not empty
+    if (fromDate && toDate) {
+      // Get the selected product value
+      const selectedProduct = document.getElementById("productSelector").value;
 
       // Send an AJAX request to the server
       fetch("/productmovement", {
         method: "POST",
         body: JSON.stringify({
           product: selectedProduct,
+          fromDate: fromDate,
+          toDate: toDate,
         }),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -397,16 +429,68 @@
       })
         .then((response) => response.json())
         .then((data) => {
-          // Update the table with the new data
           console.log(data.movements);
-          updateTable(data.movements);
+          // Update the table with the new data
+          let movements = data.movements;
+          var modal = document.getElementById("movementReportModal");
+          var modalTitle = modal.querySelector(".modal-title");
+          var modalBody = modal.querySelector(".modal-body");
+          var modalFooter = modal.querySelector(".modal-footer");
+          const requesterSummary1 =
+            document.getElementById("requesterSummary1");
+          const requesterSummary2 =
+            document.getElementById("requesterSummary2");
+          const tableBody = document.getElementById("yams");
+
+          tableBody.innerHTML = ""; // Clear the table body
+          let balance = 0;
+          let totalDispatched = 0;
+          let totalPurchases = 0;
+
+          movements.forEach((movement) => {
+            const row = document.createElement("tr");
+            const formattedDate = formatDate(movement.date);
+
+            if (movement.product_name) {
+              totalPurchases += parseFloat(movement.quantity);
+              balance = parseFloat(balance) + parseFloat(movement.quantity);
+              row.innerHTML = `
+      <td>${formattedDate}</td>
+      <td><a href="#">${movement.id}</a></td>
+      <td>Stock In</td>
+      <td>${movement.quantity.toLocaleString()}</td>
+      <td>-</td>
+      <td>${balance}</td>
+    `;
+            } else {
+              balance = parseFloat(balance) - parseFloat(movement.quantity);
+              totalDispatched += parseFloat(movement.quantity);
+              row.innerHTML = `
+      <td>${formattedDate}</td>
+      <td><a href="#">${movement.dispatch_id}</a></td>
+      <td>Dispatch</td>
+      <td>-</td>
+      <td>${movement.quantity.toLocaleString()}</td>
+      <td>${balance}</td>
+    `;
+            }
+            tableBody.appendChild(row);
+          });
+
+          // Show the modal
+          $("#movementReportModal").modal("show");
         })
         .catch((error) => {
           console.error("Error:", error);
         });
-    });
+    } else {
+      // Display a message or handle the case when either fromDate or toDate is empty
+      window.alert("Please select both From Date and To Date.");
+    }
+  }
+
   // Function to update the table with new data
-  function updateTable(movements) {
+  function updateTable(movements, reorderLevel) {
     let title = document.getElementById("productTitle");
     title.innerHTML = "";
     if (movements[0]) {
@@ -415,33 +499,55 @@
     const tableBody = document.querySelector("tbody");
     tableBody.innerHTML = ""; // Clear the table body
     let balance = 0;
+    let totalDispatched = 0;
+    let totalPurchases = 0;
+
     movements.forEach((movement) => {
       const row = document.createElement("tr");
       const formattedDate = formatDate(movement.date);
 
       if (movement.product_name) {
+        totalPurchases += parseFloat(movement.quantity);
         balance = parseFloat(balance) + parseFloat(movement.quantity);
+        let quantity =
+          movement.quantity !== null ? movement.quantity.toLocaleString() : ""; // Check if quantity_ordered is not null
+
         row.innerHTML = `
       <td>${formattedDate}</td>
       <td><a href="#">${movement.id}</a></td>
       <td>Stock In</td>
-      <td>${movement.quantity}</td>
+      <td>${quantity}</td>
       <td>-</td>
       <td>${balance}</td>
     `;
       } else {
         balance = parseFloat(balance) - parseFloat(movement.quantity);
+        totalDispatched += parseFloat(movement.quantity);
+        let quantity =
+          movement.quantity !== null ? movement.quantity.toLocaleString() : ""; // Check if quantity_ordered is not null
         row.innerHTML = `
       <td>${formattedDate}</td>
       <td><a href="#">${movement.dispatch_id}</a></td>
       <td>Dispatch</td>
       <td>-</td>
-      <td>${movement.quantity}</td>
+      <td>${quantity}</td>
       <td>${balance}</td>
     `;
       }
       tableBody.appendChild(row);
     });
+    let tp = document.getElementById("totalPurchases");
+    tp.innerHTML = "";
+    tp.innerHTML = totalPurchases.toLocaleString();
+    let td = document.getElementById("totalDispatched");
+    td.innerHTML = "";
+    td.innerHTML = totalDispatched.toLocaleString();
+    let rl = document.getElementById("reorderLevel");
+    rl.innerHTML = "";
+    rl.innerHTML = reorderLevel.toLocaleString();
+    let cq = document.getElementById("currentQuantity");
+    cq.innerHTML = "";
+    cq.innerHTML = parseFloat(totalPurchases) - parseFloat(totalDispatched);
   }
   function formatDate(dateString) {
     const date = new Date(dateString);

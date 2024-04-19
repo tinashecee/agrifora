@@ -1,400 +1,413 @@
-
-  <div class="mx-auto ms-lg-80 ps-lg-4">
-    <section>
-      <div class="p-8 bg-white navbar-light">
-        <div class="row align-items-center justify-content-between">
-          <div class="col-12 col-lg-6 mb-4 mb-lg-0">
-            <nav aria-label="breadcrumb">
-              <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item" aria-current="page">
-                  <a class="d-flex align-items-center" href="#">
-                    <svg class="text-primary me-2" width="20" height="20" viewbox="0 0 20 20" fill="none"
-                      xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        d="M16.8737 16.875V9.02647C16.8737 8.93939 16.8555 8.85327 16.8202 8.77363C16.785 8.694 16.7335 8.6226 16.6691 8.56402L10.4187 2.88159C10.3036 2.77699 10.1537 2.71904 9.99821 2.71904C9.84272 2.71905 9.69281 2.77701 9.57777 2.88162L3.3282 8.56402C3.26377 8.6226 3.2123 8.69399 3.17707 8.77363C3.14185 8.85326 3.12366 8.93937 3.12366 9.02645V16.875"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                      <path d="M1.24866 16.875H18.7487" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round"></path>
-                      <path
-                        d="M11.8732 16.8743V12.4993C11.8732 12.3336 11.8073 12.1746 11.6901 12.0574C11.5729 11.9402 11.4139 11.8743 11.2482 11.8743H8.74817C8.58241 11.8743 8.42344 11.9402 8.30623 12.0574C8.18902 12.1746 8.12317 12.3336 8.12317 12.4993V16.8743"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                    </svg>
-                    <span>Inventory Management</span>
-                  </a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">
-                  <a class="d-flex align-items-center" href="#">
-                    <svg class="text-primary me-2" width="20" height="20" viewbox="0 0 20 20" fill="none"
-                      xmlns="http://www.w3.org/2000/svg">
-                      <path d="M17.8125 16.25H2.1875" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round"></path>
-                      <path d="M7.8125 16.25V6.875H12.1875" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round"></path>
-                      <path d="M16.5625 3.125H12.1875V16.25H16.5625V3.125Z" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round"></path>
-                      <path d="M3.4375 16.25V10.625H7.8125" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round"></path>
-                    </svg>
-                    <span>Products</span>
-                  </a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">
-                  <a class="d-flex align-items-center" href="#">
-                    <svg class="text-primary me-2" width="20" height="20" viewbox="0 0 20 20" fill="none"
-                      xmlns="http://www.w3.org/2000/svg">
-                      <path d="M17.8125 16.25H2.1875" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round"></path>
-                      <path d="M7.8125 16.25V6.875H12.1875" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round"></path>
-                      <path d="M16.5625 3.125H12.1875V16.25H16.5625V3.125Z" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round"></path>
-                      <path d="M3.4375 16.25V10.625H7.8125" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round"></path>
-                    </svg>
-                    <span>Sugar</span>
-                  </a>
-                </li>
-              </ol>
-            </nav>
-          </div>
-         
-        </div>
-      </div>
-    </section>
-
-    <div class="row">
-      <div class="col-md-6">
-      </div>
-      <div class="col-md-6">
-        <h3>Movement Summary</h3>
-      </div>
-
-      <div class="col-md-5">
-        <h2>Unit: Name of Unit</h2>
-      </div>
-      <div class="col-md-3">
-
-        <div class="input-group">
-          <input type="date" id="fromDate" class="form-control" placeholder="From date">
-          <input type="date" id="toDate" class="form-control" placeholder="To date">
-          <button id="goButton" class="btn btn-primary">Go</button>
-        </div>
-      </div>
-      <div class="col-md-2">
-        <input type="text" id="searchInput" class="form-control" placeholder="Search...">
-      </div>
-      <div class="col-md-2">
-        <button type="button" class="btn btn-primary mt-3"> <i class="fas fa-cog"></i> Generate Report
-        </button>
-      </div>
-    </div>
-    <div class="container mt-5">
-      <div class="row">
-        <!-- Product Details Card -->
-        <div class="col-md-4">
-          <div class="card">
-            <div class="card-header">
-              <h4>Product Details</h4>
-            </div>
-            <ul class="list-group list-group-flush">
-              <!-- Product Selection Dropdown -->
-              <li class="list-group-item">
-                <label for="unitSelector" class="form-label">Select Product:</label>
-                <select id="unitSelector" class="form-select unitSelector">
-                  <option value="">Select Unit</option>
-                  <option>1 AD REGT</option>
-<option>1.3 INF (Beitbridge)</option>
-<option>11 Inf Bn</option>
-<option>32 Inf Bn</option>
-<option>33 RF Bn</option>
-<option>42 INF BN</option>
-<option>AABS</option>
-<option>1.2 INF (Binga)</option>
-<option>Cdo Regt</option>
-<option>1.2 INF (Dekadrum)</option>
-<option>1.3 INF (Guyu)</option>
-<option>1.3 INF (Gwanda)</option>
-<option>1.2 INF (Lupane)</option>
-<option>23 Inf Bn</option>
-<option>1.3 INF (Maitengwe)</option>
-<option>1.2 INF (Masuwe Vic Falls)</option>
-<option>1.3 INF (MPOYEZI)</option>
-<option>MLG (MSASA)</option>
-<option>21 RF Bn</option>
-<option>MTD Regt</option>
-<option>OFFRS MESS</option>
-<option>OSD Hre</option>
-<option>SMI (CHITUNGWIZA)</option>
-<option>ZDF HQ</option>
-<option>ZMA</option>
-<option>ZNDU (MAZOWE RD)</option>
-<option>ZS Inf</option>
-<option>ZSC (KG6)</option>
-
-                </select>
+<div class="mx-auto ms-lg-80 ps-lg-4">
+  <section>
+    <div class="p-8 bg-white navbar-light">
+      <div class="row align-items-center justify-content-between">
+        <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item" aria-current="page">
+                <a class="d-flex align-items-center" href="#">
+                  <svg
+                    class="text-primary me-2"
+                    width="20"
+                    height="20"
+                    viewbox="0 0 20 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M16.8737 16.875V9.02647C16.8737 8.93939 16.8555 8.85327 16.8202 8.77363C16.785 8.694 16.7335 8.6226 16.6691 8.56402L10.4187 2.88159C10.3036 2.77699 10.1537 2.71904 9.99821 2.71904C9.84272 2.71905 9.69281 2.77701 9.57777 2.88162L3.3282 8.56402C3.26377 8.6226 3.2123 8.69399 3.17707 8.77363C3.14185 8.85326 3.12366 8.93937 3.12366 9.02645V16.875"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                    <path
+                      d="M1.24866 16.875H18.7487"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                    <path
+                      d="M11.8732 16.8743V12.4993C11.8732 12.3336 11.8073 12.1746 11.6901 12.0574C11.5729 11.9402 11.4139 11.8743 11.2482 11.8743H8.74817C8.58241 11.8743 8.42344 11.9402 8.30623 12.0574C8.18902 12.1746 8.12317 12.3336 8.12317 12.4993V16.8743"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                  </svg>
+                  <span>Inventory Management</span>
+                </a>
               </li>
-              <!-- Quantity in Stock -->
-              <li class="list-group-item">Delivery Point: <strong>33 Inf Bde</strong></li>
-              <!-- Last Purchase Date -->
-              <li class="list-group-item">Contact Person: <strong>Jane Doe</strong></li>
-              <!-- Last Dispatch Date -->
-              <li class="list-group-item">Phone Number: <strong>0770000000</strong></li>
-              <!-- Reorder Level -->
-              <li class="list-group-item">Location: <strong>Harare</strong></li>
-              <li class="list-group-item">Province: <strong>Harare</strong></li>
-            </ul>
-          </div>
-        </div>
-
-
-        <!-- Movement Table -->
-        <div class="col-md-8">
-
-          <table class="table table-striped table-hover">
-            <thead class="table-primary">
-              <tr>
-                <th>Product</th>
-                <th>Product ID</th>
-
-                <th>Qty Ordered</th>
-                <th>Qty Received
-                </th>
-                <th>Balance</th>
-                <th>Comments</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><a href="./productmovement.html">Sugar</a></td>
-                <td>P00#</td>
-                
-                <td>10,000</td>
-                <td>10,000</td>
-                <td>-</td>
-                <td>Received</td>
-              </tr>
-              <tr>
-                <td><a href="./productmovement.html">Bananas</a></td>
-                <td>P00#</td>
-
-                <td>50</td>
-                <td>50</td>
-                <td>-</td>
-                <td>Received</td>
-              </tr>
-              <tr>
-                <td>Beef</td>
-                <td>P00#</td>
-            
-                <td>100</td>
-                <td>90</td>
-                <td>-10</td>
-                <td>Received</td>
-              </tr>
-              <tr>
-                <td>Bread</td>
-                <td>P00#</td>
-            
-                <td>600</td>
-                <td>650</td>
-                <td>50</td>
-                <td>Received</td>
-              </tr>
-              <tr>
-                <td>Cabbage</td>
-                <td>P00#</td>
-      
-                <td>100</td>
-                <td>100</td>
-                <td>-</td>
-                <td>Received</td>
-              </tr>
-              <tr>
-                <td>Chicken</td>
-                <td>P00#</td>
-      
-                <td>100</td>
-                <td>100</td>
-                <td>-</td>
-                <td>Received</td>
-              </tr>
-              <tr>
-                <td>Coffee</td>
-                <td>PO12345</td>
-               
-                <td>100</td>
-                <td>100</td>
-                <td>-</td>
-                <td>Received</td>
-              </tr>
-              <tr>
-                <td>Cooking Oil</td>
-                <td>P00#</td>
-       
-                <td>1000</td>
-                <td>1000</td>
-                <td>-</td>
-                <td>Received</td>
-              </tr>
-              <tr>
-                <td>Eggs</td>
-                <td>P00#</td>
-             
-                <td>100</td>
-                <td>88</td>
-                <td>-12</td>
-                <td>Received</td>
-              </tr>
-              <tr>
-                <td>Margarine</td>
-                <td>P00#</td>
-
-                <td>5,000</td>
-                <td>5,000</td>
-                <td>-</td>
-                <td>Received</td>
-              </tr>
-              <tr>
-                <td>Mealie-Meal</td>
-                <td>P00#</td>
-         
-                <td>4,000</td>
-                <td>5,000</td>
-                <td>1,000</td>
-                <td>Received</td>
-              </tr>
-              <tr>
-                <td>Milk</td>
-                <td>P00#</td>
-            
-                <td>5,200</td>
-                <td>5,000</td>
-                <td>-200</td>
-                <td>Received</td>
-              </tr>
-              <tr>
-                <td>Onions</td>
-                <td>P00#</td>
-         
-                <td>5,000</td>
-                <td>5,000</td>
-                <td>-</td>
-                <td>Received</td>
-              </tr>
-              <tr>
-                <td>Oranges</td>
-                <td>P00#</td>
-       
-                <td>5,000</td>
-                <td>5,000</td>
-                <td>-</td>
-                <td>Received</td>
-              </tr>
-              <tr>
-                <td>Potatoes</td>
-                <td>P00#</td>
-    
-                <td>5,000</td>
-                <td>5,000</td>
-                <td>-</td>
-                <td>Received</td>
-              </tr>
-              <tr>
-                <td>Rice</td>
-                <td>P00#</td>
-             
-                <td>4,200</td>
-                <td>4,200</td>
-                <td>-</td>
-                <td>Received</td>
-              </tr>
-              <tr>
-                <td>Salt</td>
-                <td>P00#</td>
-         
-                <td>5,500</td>
-                <td>5,000</td>
-                <td>-500</td>
-                <td>Received</td>
-              </tr>
-              <tr>
-                <td>24 Hour Ration Pack</td>
-                <td>P00#</td>
-              
-                <td>670</td>
-                <td>650</td>
-                <td>20</td>
-                <td>Received</td>
-              </tr>
-              <tr>
-                <td>Tea</td>
-                <td>P00#</td>
-          
-                <td>4,800</td>
-                <td>5,000</td>
-                <td>200</td>
-                <td>Received</td>
-              </tr>
-              <tr>
-                <td>Tomatoes</td>
-                <td>P00#</td>
-            
-                <td>4,200</td>
-                <td>5,000</td>
-                <td>800</td>
-                <td>Received</td>
-              </tr>
-            </tbody>
-          </table>
-
-
-          <!-- Pagination -->
-          <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-end">
-              <li class="page-item disabled">
-                <span class="page-link">Previous</span>
+              <li class="breadcrumb-item active" aria-current="page">
+                <a class="d-flex align-items-center" href="#">
+                  <svg
+                    class="text-primary me-2"
+                    width="20"
+                    height="20"
+                    viewbox="0 0 20 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M17.8125 16.25H2.1875"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                    <path
+                      d="M7.8125 16.25V6.875H12.1875"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                    <path
+                      d="M16.5625 3.125H12.1875V16.25H16.5625V3.125Z"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                    <path
+                      d="M3.4375 16.25V10.625H7.8125"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                  </svg>
+                  <span>Products</span>
+                </a>
               </li>
-              <li class="page-item active" aria-current="page">
-                <span class="page-link">1 <span class="sr-only">(current)</span></span>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-              </li>
-            </ul>
+            </ol>
           </nav>
         </div>
-
-
       </div>
     </div>
-    <!-- Footer container -->
-    <div class="main-footer">
-      <span>&copy; 2023. Agrifora Management System. All Rights Reserved.</span>
-      <span>Created by: <a href="http://soxfort.com" target="_blank">Soxfort Solutions | Intuitive Innovation</a></span>
-    </div><!-- main-footer -->
-    <script src="js/bootstrap/bootstrap.bundle.min.js"></script>
-    <script src="js/main.js"></script>
+  </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <script src="js/charts-demo.js"></script>
-    <script>
-      // Get the product selection dropdown and the heading element
-      const productSelector = document.getElementById("productSelector");
-      const productHeading = document.querySelector(".col-md-5 h2");
+  <div class="row">
+    <div class="col-md-6"></div>
+    <div class="col-md-6">
+      <h3>Movement Summary</h3>
+    </div>
 
-      // Add an event listener to the product selection dropdown
-      productSelector.addEventListener("change", function () {
-        // Update the heading text with the selected product
-        productHeading.textContent = "Product: " + productSelector.value;
+    <div class="col-md-5">
+      <h2 id="productTitle">Unit: Name of Unit</h2>
+    </div>
+    <div class="col-md-3">
+      <div class="input-group">
+        <input
+          type="date"
+          id="fromDate"
+          class="form-control"
+          placeholder="From date" />
+        <input
+          type="date"
+          id="toDate"
+          class="form-control"
+          placeholder="To date" />
+        <button id="goButton" class="btn btn-primary">Go</button>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <input
+        type="text"
+        id="searchInput"
+        class="form-control"
+        placeholder="Search..." />
+    </div>
+    <div class="col-md-2">
+      <button type="button" class="btn btn-primary mt-3">
+        <i class="fas fa-cog"></i> Generate Report
+      </button>
+    </div>
+  </div>
+  <div class="container mt-5">
+    <div class="row">
+      <!-- Product Details Card -->
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header">
+            <h4>Unit Details</h4>
+          </div>
+          <ul class="list-group list-group-flush">
+            <!-- Product Selection Dropdown -->
+            <li class="list-group-item">
+              <label for="unitSelector" class="form-label"
+                >Select Product:</label
+              >
+              <select id="unitSelector" class="form-select unitSelector">
+                <option value="">Select Unit</option>
+                <% if (units) { %> <% for (let dat of units) { %>
+                <option><%= dat.unit_name %></option>
+                <% } %> <% } %>
+              </select>
+            </li>
+            <!-- Quantity in Stock -->
+            <li class="list-group-item" id="deliveryPoint">
+              Delivery Point: <strong></strong>
+            </li>
+            <!-- Last Purchase Date -->
+            <li class="list-group-item" id="contactPerson">
+              Contact Person: <strong></strong>
+            </li>
+            <!-- Last Dispatch Date -->
+            <li class="list-group-item" id="phoneNumber">
+              Phone Number: <strong></strong>
+            </li>
+            <!-- Reorder Level -->
+            <li class="list-group-item" id="location">
+              Location: <strong></strong>
+            </li>
+            <li class="list-group-item" id="province">
+              Province: <strong></strong>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Movement Table -->
+      <div class="col-md-8">
+        <table class="table table-striped table-hover">
+          <thead class="table-primary">
+            <tr>
+              <th>Product</th>
+              <th>Product ID</th>
+
+              <th>Qty Ordered</th>
+              <th>Qty Received</th>
+              <th>Balance</th>
+              <th>Comments</th>
+            </tr>
+          </thead>
+          <tbody id="unitTable"></tbody>
+        </table>
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation">
+          <ul class="pagination justify-content-end">
+            <li class="page-item disabled">
+              <span class="page-link">Previous</span>
+            </li>
+            <li class="page-item active" aria-current="page">
+              <span class="page-link"
+                >1 <span class="sr-only">(current)</span></span
+              >
+            </li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#">Next</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <!-- Footer container -->
+  <div class="main-footer">
+    <span>&copy; 2023. Agrifora Management System. All Rights Reserved.</span>
+    <span
+      >Created by:
+      <a href="http://soxfort.com" target="_blank"
+        >Soxfort Solutions | Intuitive Innovation</a
+      ></span
+    >
+  </div>
+  <!-- main-footer -->
+  <script src="js/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="js/main.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="js/charts-demo.js"></script>
+  <script>
+    // Add an event listener to the product selector
+    let selectedUnit;
+    document
+      .getElementById("unitSelector")
+      .addEventListener("change", function () {
+        // Get the selected product value
+        selectedUnit = this.value;
+        const fromDate = document.getElementById("fromDate").value;
+        const toDate = document.getElementById("toDate").value;
+
+        // Check if both fromDate and toDate are not empty
+        if (fromDate && toDate) {
+          // Get the selected product value
+          // Send an AJAX request to the server
+          fetch("/unitmovement", {
+            method: "POST",
+            body: JSON.stringify({
+              unit: selectedUnit,
+              fromDate: fromDate,
+              toDate: toDate,
+            }),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              // Update the table with the new data
+              updateTable(
+                data.arry,
+                data.contact_person,
+                data.delivery_point,
+                data.phone,
+                data.location,
+                data.province
+              );
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        } else {
+          // Display a message or handle the case when either fromDate or toDate is empty
+          window.alert("Please select both From Date and To Date.");
+        }
       });
-    </script>
-    <script>$('.productSelector').select2({
-        placeholder: 'Select an option',
-        dropdownParent: 'productSelector'
+
+    function generateReport() {
+      console.log(selectedProduct);
+      const fromDate = document.getElementById("fromDate").value;
+      const toDate = document.getElementById("toDate").value;
+      const rangeTitle = document.getElementById("rangeTitle");
+      rangeTitle.innerHTML = "";
+      rangeTitle.innerHTML = `${selectedProduct} movement report from ${fromDate}<br />to ${toDate}`;
+
+      // Check if both fromDate and toDate are not empty
+      if (fromDate && toDate) {
+        // Get the selected product value
+        const selectedProduct =
+          document.getElementById("productSelector").value;
+
+        // Send an AJAX request to the server
+        fetch("/productmovement", {
+          method: "POST",
+          body: JSON.stringify({
+            product: selectedProduct,
+            fromDate: fromDate,
+            toDate: toDate,
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data.movements);
+            // Update the table with the new data
+            let movements = data.movements;
+            var modal = document.getElementById("movementReportModal");
+            var modalTitle = modal.querySelector(".modal-title");
+            var modalBody = modal.querySelector(".modal-body");
+            var modalFooter = modal.querySelector(".modal-footer");
+            const requesterSummary1 =
+              document.getElementById("requesterSummary1");
+            const requesterSummary2 =
+              document.getElementById("requesterSummary2");
+            const tableBody = document.getElementById("yams");
+
+            tableBody.innerHTML = ""; // Clear the table body
+            let balance = 0;
+            let totalDispatched = 0;
+            let totalPurchases = 0;
+
+            movements.forEach((movement) => {
+              const row = document.createElement("tr");
+              const formattedDate = formatDate(movement.date);
+
+              if (movement.product_name) {
+                totalPurchases += parseFloat(movement.quantity);
+                balance = parseFloat(balance) + parseFloat(movement.quantity);
+                row.innerHTML = `
+          <td>${formattedDate}</td>
+          <td><a href="#">${movement.id}</a></td>
+          <td>Stock In</td>
+          <td>${movement.quantity.toLocaleString()}</td>
+          <td>-</td>
+          <td>${balance}</td>
+        `;
+              } else {
+                balance = parseFloat(balance) - parseFloat(movement.quantity);
+                totalDispatched += parseFloat(movement.quantity);
+                row.innerHTML = `
+          <td>${formattedDate}</td>
+          <td><a href="#">${movement.dispatch_id}</a></td>
+          <td>Dispatch</td>
+          <td>-</td>
+          <td>${movement.quantity.toLocaleString()}</td>
+          <td>${balance}</td>
+        `;
+              }
+              tableBody.appendChild(row);
+            });
+
+            // Show the modal
+            $("#movementReportModal").modal("show");
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      } else {
+        // Display a message or handle the case when either fromDate or toDate is empty
+        window.alert("Please select both From Date and To Date.");
+      }
+    }
+
+    // Function to update the table with new data
+    function updateTable(
+      movements,
+      contact_person,
+      delivery_point,
+      phone,
+      location,
+      province
+    ) {
+      let title = document.getElementById("productTitle");
+      title.innerHTML = "";
+      title.innerHTML = "Unit:" + selectedUnit;
+      let deliveryPoint = document.getElementById("deliveryPoint");
+      deliveryPoint.innerHTML = "";
+      deliveryPoint.innerHTML = `Delivery Point: <strong>${delivery_point}</strong>`;
+      let contactPerson = document.getElementById("contactPerson");
+      contactPerson.innerHTML = "";
+      contactPerson.innerHTML = `Contact Person: <strong>${contact_person}</strong>`;
+      let phoneNumber = document.getElementById("phoneNumber");
+      phoneNumber.innerHTML = "";
+      phoneNumber.innerHTML = `Phone: <strong>${phone}</strong>`;
+      let loc = document.getElementById("location");
+      loc.innerHTML = "";
+      loc.innerHTML = `Location: <strong>${location}</strong>`;
+      let prov = document.getElementById("province");
+      prov.innerHTML = "";
+      prov.innerHTML = `Province: <strong>${province}</strong>`;
+
+      const tableBody = document.querySelector("tbody");
+      tableBody.innerHTML = ""; // Clear the table body
+      let balance = 0;
+      let totalDispatched = 0;
+      let totalPurchases = 0;
+
+      movements.forEach((movement) => {
+        const row = document.createElement("tr");
+        //const formattedDate = formatDate(movement.date);
+
+        let quantity =
+          movement.ordered !== null ? movement.ordered.toLocaleString() : ""; // Check if quantity_ordered is not null
+        row.innerHTML = `
+         
+          <td><a href="#">${movement.product}</a></td>
+          <td>${movement.id}</td>
+          <td>${movement.ordered}</td>
+          <td>-</td>
+          <td>${balance}</td>
+          <td>Received</td>
+        `;
+        tableBody.appendChild(row);
       });
-    </script>
-
-
-</html>
+    }
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+  </script>
+</div>

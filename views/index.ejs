@@ -139,7 +139,7 @@
                 <td>
                   <% if (columnIndex === 0 || columnIndex === 1) { %> <%=
                   moment(order[column]).format('DD/MM/YY') %> <% } else { %> <%=
-                  order[column] %> <% } %>
+                  order[column].toLocaleString() %> <% } %>
                 </td>
                 <% }) %>
               </tr>
@@ -175,7 +175,7 @@
                 <td>
                   <% if (columnIndex === 0 || columnIndex === 1) { %> <%=
                   moment(order[column]).format('DD/MM/YY') %> <% } else { %> <%=
-                  order[column] %> <% } %>
+                  order[column].toLocaleString() %> <% } %>
                 </td>
                 <% }) %>
               </tr>
@@ -439,7 +439,12 @@
             id="toDate"
             class="form-control"
             placeholder="To date" />
-          <button id="goButton" class="btn btn-primary">Go</button>
+          <button
+            id="goButton"
+            class="btn btn-primary"
+            onclick="stockReconciliation()">
+            Go
+          </button>
         </div>
       </div>
       <div class="col-md-2">
@@ -562,167 +567,7 @@
                 <th>Balance</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td><a href="/stockrecon">Sugar</a></td>
-                <td><a href="./dnote.html">PO12345</a></td>
-                <td>Received</td>
-                <td>10,000</td>
-                <td>10,000</td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <td><a href="/stockrecon">Bananas</a></td>
-                <td><a href="./dnote.html">DO56789</a></td>
-                <td>Received</td>
-                <td>50</td>
-                <td>50</td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <td>Beef</td>
-                <td><a href="#">PO12345</a></td>
-                <td>Received</td>
-                <td>100</td>
-                <td>90</td>
-                <td>-10</td>
-              </tr>
-              <tr>
-                <td>Bread</td>
-                <td><a href="#">DO56789</a></td>
-                <td>Received</td>
-                <td>600</td>
-                <td>650</td>
-                <td>50</td>
-              </tr>
-              <tr>
-                <td>Cabbage</td>
-                <td><a href="#">PO12345</a></td>
-                <td>Received</td>
-                <td>100</td>
-                <td>100</td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <td>Chicken</td>
-                <td><a href="#">DO56789</a></td>
-                <td>Received</td>
-                <td>100</td>
-                <td>100</td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <td>Coffee</td>
-                <td><a href="#">PO12345</a></td>
-                <td>Received</td>
-                <td>100</td>
-                <td>100</td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <td>Cooking Oil</td>
-                <td><a href="#">DO56789</a></td>
-                <td>Received</td>
-                <td>1000</td>
-                <td>1000</td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <td>Eggs</td>
-                <td><a href="#">PO12345</a></td>
-                <td>Received</td>
-                <td>100</td>
-                <td>88</td>
-                <td>-12</td>
-              </tr>
-              <tr>
-                <td>Margarine</td>
-                <td><a href="#">DO56789</a></td>
-                <td>Received</td>
-                <td>5,000</td>
-                <td>5,000</td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <td>Mealie-Meal</td>
-                <td><a href="#">DO56789</a></td>
-                <td>Received</td>
-                <td>4,000</td>
-                <td>5,000</td>
-                <td>1,000</td>
-              </tr>
-              <tr>
-                <td>Milk</td>
-                <td><a href="#">DO56789</a></td>
-                <td>Received</td>
-                <td>5,200</td>
-                <td>5,000</td>
-                <td>-200</td>
-              </tr>
-              <tr>
-                <td>Onions</td>
-                <td><a href="#">DO56789</a></td>
-                <td>Received</td>
-                <td>5,000</td>
-                <td>5,000</td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <td>Oranges</td>
-                <td><a href="#">DO56789</a></td>
-                <td>Received</td>
-                <td>5,000</td>
-                <td>5,000</td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <td>Potatoes</td>
-                <td><a href="#">DO56789</a></td>
-                <td>Received</td>
-                <td>5,000</td>
-                <td>5,000</td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <td>Rice</td>
-                <td><a href="#">DO56789</a></td>
-                <td>Received</td>
-                <td>4,200</td>
-                <td>4,200</td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <td>Salt</td>
-                <td><a href="#">DO56789</a></td>
-                <td>Received</td>
-                <td>5,500</td>
-                <td>5,000</td>
-                <td>-500</td>
-              </tr>
-              <tr>
-                <td>24 Hour Ration Pack</td>
-                <td><a href="#">DO56789</a></td>
-                <td>Received</td>
-                <td>670</td>
-                <td>650</td>
-                <td>20</td>
-              </tr>
-              <tr>
-                <td>Tea</td>
-                <td><a href="#">DO56789</a></td>
-                <td>Received</td>
-                <td>4,800</td>
-                <td>5,000</td>
-                <td>200</td>
-              </tr>
-              <tr>
-                <td>Tomatoes</td>
-                <td><a href="#">DO56789</a></td>
-                <td>Received</td>
-                <td>4,200</td>
-                <td>5,000</td>
-                <td>800</td>
-              </tr>
+            <tbody id="stockmovement">
               <!-- Add more rows as needed -->
               <!-- ... -->
             </tbody>
@@ -789,4 +634,55 @@
       $(this).tab("show");
     });
   });
+
+  function stockReconciliation() {
+    const fromDate = document.getElementById("fromDate").value;
+    const toDate = document.getElementById("toDate").value;
+
+    if (fromDate && toDate) {
+      // Get the selected product value
+
+      // Send an AJAX request to the server
+      fetch("/stockmovement", {
+        method: "POST",
+        body: JSON.stringify({
+          fromDate: fromDate,
+          toDate: toDate,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // Update the table with the new data
+          const tableBody = document.getElementById("stockmovement");
+
+          tableBody.innerHTML = ""; // Clear the table body
+          let balance = 0;
+
+          data.arry.forEach((movement) => {
+            const row = document.createElement("tr");
+            let quantity_ordered =
+              movement.quantity_ordered !== null
+                ? movement.quantity_ordered.toLocaleString()
+                : ""; // Check if quantity_ordered is not null
+
+            row.innerHTML = `
+<td>${movement.product}</td>
+<td><a href="#">${movement.id}</a></td>
+<td>Received</td>
+<td>${quantity_ordered}</td>
+<td>-</td>
+<td>${balance}</td>
+`;
+
+            tableBody.appendChild(row);
+          });
+        });
+    } else {
+      // Display a message or handle the case when either fromDate or toDate is empty
+      window.alert("Please select both From Date and To Date.");
+    }
+  }
 </script>

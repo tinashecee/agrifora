@@ -497,6 +497,9 @@ app.get("/dispatch", checkNotAuthenticated, (req, res) => {
 app.get("/deliverynotes", checkNotAuthenticated, (req, res) => {
   res.render("dispatchno", { layout: "./layouts/index-layout" });
 });
+app.get("/warehousemovement", checkNotAuthenticated, (req, res) => {
+  res.render("warehousemovement", { layout: "./layouts/index-layout" });
+});
 app.get("/orderbook", checkNotAuthenticated, (req, res) => {
   let errors = [];
   let columns = [];
@@ -752,22 +755,12 @@ app.get("/productmovement", checkNotAuthenticated, (req, res) => {
 });
 app.post("/productmovement", checkNotAuthenticated, (req, res) => {
   let errors = [];
-
-  pool.query("SELECT * FROM stock_products", [], (err, stock_products) => {
-    if (err) {
-      console.error(err);
-      errors.push({ message: err });
-      return res.render("productmovement", {
-        layout: "./layouts/index-layout",
-        errors,
-        products: [],
-        stock: [],
-        stock_products: [],
-        dispatch: [],
-        dispatch_units: [],
-      });
-    }
-    pool.query("SELECT * FROM dispatch", [], (err, dispatch) => {
+  let fromDate = req.body.fromDate;
+  let toDate = req.body.toDate;
+  pool.query(
+    "SELECT * FROM products WHERE product_name = ?",
+    [req.body.product],
+    (err, results) => {
       if (err) {
         console.error(err);
         errors.push({ message: err });
@@ -781,60 +774,222 @@ app.post("/productmovement", checkNotAuthenticated, (req, res) => {
           dispatch_units: [],
         });
       }
-      let stockResults = [];
-      let dispatchResults = [];
-      stock_products.forEach((e) => {
-        if (e.product_name == req.body.product) {
-          stockResults.push(e);
-        }
-      });
-      dispatch.forEach((e) => {
-        if (e.product == req.body.product) {
-          dispatchResults.push(e);
-        }
-      });
-      // Combine and sort the results
-      const movements = [
-        ...stockResults.map((result) => ({
-          ...result,
-          date: result.stock_date,
-        })),
-        ...dispatchResults.map((result) => ({
-          ...result,
-          date: result.dispatch_date,
-        })),
-        /*
-        ...stockResults.map((result) => ({
-          ...result,
-          reference: result.stock_id,
-        })),
-        ...dispatchResults.map((result) => ({
-          ...result,
-          reference: result.dispatch_id,
-        })),
-        ...stockResults.map((result) => ({
-          ...result,
-          productName: result.product_name,
-        })),
-        ...dispatchResults.map((result) => ({
-          ...result,
-          productName: result.product,
-        })),
-        ...stockResults.map((result) => ({
-          ...result,
-          description: "Stock In",
-        })),
-        ...dispatchResults.map((result) => ({
-          ...result,
-          description: "Dispatch",
-        })), */
-      ];
+      pool.query(
+        "SELECT * FROM stock_products WHERE stock_date >= ? AND stock_date <= ?",
+        [fromDate, toDate],
+        (err, stock_products) => {
+          if (err) {
+            console.error(err);
+            errors.push({ message: err });
+            return res.render("productmovement", {
+              layout: "./layouts/index-layout",
+              errors,
+              products: [],
+              stock: [],
+              stock_products: [],
+              dispatch: [],
+              dispatch_units: [],
+            });
+          }
+          pool.query(
+            "SELECT * FROM dispatch WHERE dispatch_date >= ? AND dispatch_date <= ?",
+            [fromDate, toDate],
+            (err, dispatch) => {
+              if (err) {
+                console.error(err);
+                errors.push({ message: err });
+                return res.render("productmovement", {
+                  layout: "./layouts/index-layout",
+                  errors,
+                  products: [],
+                  stock: [],
+                  stock_products: [],
+                  dispatch: [],
+                  dispatch_units: [],
+                });
+              }
+              let stockResults = [];
+              let dispatchResults = [];
+              stock_products.forEach((e) => {
+                if (e.product_name == req.body.product) {
+                  stockResults.push(e);
+                }
+              });
+              dispatch.forEach((e) => {
+                if (e.product == req.body.product) {
+                  dispatchResults.push(e);
+                }
+              });
+              // Combine and sort the results
+              const movements = [
+                ...stockResults.map((result) => ({
+                  ...result,
+                  date: result.stock_date,
+                })),
+                ...dispatchResults.map((result) => ({
+                  ...result,
+                  date: result.dispatch_date,
+                })),
+              ];
 
-      movements.sort((a, b) => new Date(a.date) - new Date(b.date));
-      console.log(movements);
-      res.send({ movements: movements });
-    });
+              movements.sort((a, b) => new Date(a.date) - new Date(b.date));
+              console.log(movements);
+              res.send({
+                movements: movements,
+                reorderLevel: results[0].reorder_level,
+              });
+            }
+          );
+        }
+      );
+    }
+  );
+});
+app.post("/stockmovement", checkNotAuthenticated, (req, res) => {
+  let errors = [];
+  let fromDate = req.body.fromDate;
+  let toDate = req.body.toDate;
+  let arry = [];
+  pool.query("SELECT * FROM products ", [], (err, results) => {
+    if (err) {
+      console.error(err);
+      errors.push({ message: err });
+      return res.render("index", {
+        layout: "./layouts/index-layout",
+        errors,
+        orders: [],
+        columns: [],
+        dryProducts: [],
+        dryColumnTotals: [],
+        perishableProducts: [],
+        perishableColumnTotals: [],
+        delivery_units: [],
+        prods: [],
+      });
+    }
+    pool.query(
+      "SELECT * FROM order_summary WHERE start_date >= ? AND end_date <= ?",
+      [fromDate, toDate],
+      (err, results1) => {
+        if (err) {
+          console.error(err);
+          errors.push({ message: err });
+          return res.render("index", {
+            layout: "./layouts/index-layout",
+            errors,
+            orders: [],
+            columns: [],
+            dryProducts: [],
+            dryColumnTotals: [],
+            perishableProducts: [],
+            perishableColumnTotals: [],
+            delivery_units: [],
+            prods: [],
+          });
+        }
+        results.forEach((e) => {
+          let ttl = 0;
+          const columnName = removeSpaces(e.product_name);
+          results1.forEach((f) => {
+            ttl += f[columnName];
+          });
+          arry.push({
+            id: e.id,
+            product: e.product_name,
+            quantity_ordered: ttl,
+          });
+        });
+
+        console.log(arry);
+
+        res.send({ arry: arry });
+      }
+    );
   });
+});
+app.post("/unitmovement", checkNotAuthenticated, (req, res) => {
+  let errors = [];
+  let fromDate = req.body.fromDate;
+  let toDate = req.body.toDate;
+  const unit = req.body.unit;
+  let arry = [];
+  console.log("HJHJH");
+  pool.query(
+    "SELECT * FROM order_book WHERE start_date >= ? AND end_date <= ? AND unit = ?",
+    [fromDate, toDate, unit],
+    (err, results1) => {
+      if (err) {
+        console.error(err);
+        errors.push({ message: err });
+        return res.render("centermovement", {
+          layout: "./layouts/index-layout",
+          errors,
+          units: [],
+        });
+      }
+      pool.query("SELECT * FROM products", [], (err, results1a) => {
+        if (err) {
+          console.error(err);
+          errors.push({ message: err });
+          return res.render("centermovement", {
+            layout: "./layouts/index-layout",
+            errors,
+            prods: [],
+          });
+        }
+        pool.query(
+          "SELECT * FROM unit WHERE unit_name = ?",
+          [unit],
+          (err, results2) => {
+            if (err) {
+              console.error(err);
+              errors.push({ message: err });
+              return res.render("centermovement", {
+                layout: "./layouts/index-layout",
+                errors,
+                prods: [],
+              });
+            }
+
+            results1a.forEach((e) => {
+              const columnName = removeSpaces(e.product_name);
+              let totalProduct = 0;
+              results1.forEach((row) => {
+                // Check if the row contains the 'Salt' field
+                if (columnName in row) {
+                  // If 'Salt' field exists, add its value to the totalSalt
+                  totalProduct += parseFloat(row[columnName]);
+                }
+              });
+              arry.push({
+                product: e.product_name,
+                id: e.id,
+                ordered: totalProduct,
+              });
+            });
+
+            console.log({
+              arry: arry,
+              contact_person: results2[0].contact_person,
+              delivery_point: results2[0].delivery_point,
+              phone: results2[0].phone,
+              location: results2[0].location,
+              province: results2[0].province,
+            });
+
+            res.send({
+              arry: arry,
+              contact_person: results2[0].contact_person,
+              delivery_point: results2[0].delivery_point,
+              phone: results2[0].phone,
+              location: results2[0].location,
+              province: results2.province,
+            });
+          }
+        );
+      });
+    }
+  );
 });
 app.get("/orderhistory", checkNotAuthenticated, (req, res) => {
   res.render("orderhistory", { layout: "./layouts/index-layout" });
@@ -864,7 +1019,23 @@ app.get("/stockrecon", checkNotAuthenticated, (req, res) => {
   res.render("stockrecon", { layout: "./layouts/index-layout" });
 });
 app.get("/centermovement", checkNotAuthenticated, (req, res) => {
-  res.render("centermovement", { layout: "./layouts/index-layout" });
+  let errors = [];
+  pool.query("SELECT * FROM unit", [], (err, units) => {
+    if (err) {
+      console.error(err);
+      errors.push({ message: err });
+      return res.render("centermovement", {
+        layout: "./layouts/index-layout",
+        errors,
+        units: [],
+      });
+    }
+    res.render("centermovement", {
+      layout: "./layouts/index-layout",
+      errors,
+      units,
+    });
+  });
 });
 app.get("/reports", checkNotAuthenticated, (req, res) => {
   res.render("reports", { layout: "./layouts/index-layout" });
