@@ -129,9 +129,9 @@
           <div class="p-8 border rounded-2">
             <div
               class="d-flex mb-6 align-items-start justify-content-between"></div>
-            <h1 class="mb-4">10,400</h1>
+            <h1 class="mb-4" id="totalPurchases"></h1>
             <p class="mb-0">
-              <span><strong>Total Stock Purchased {Unit measure}</strong></span>
+              <span><strong id="unit1">Total Stock Purchased </strong></span>
             </p>
           </div>
         </div>
@@ -139,9 +139,9 @@
           <div class="p-8 border rounded-2">
             <div
               class="d-flex mb-6 align-items-start justify-content-between"></div>
-            <h1 class="mb-4">6,200</h1>
+            <h1 class="mb-4" id="totalDispatched"></h1>
             <p class="mb-0">
-              <span><strong>Total Dispatched {Unit measure}</strong></span>
+              <span><strong id="unit2">Total Dispatched </strong></span>
             </p>
           </div>
         </div>
@@ -149,9 +149,9 @@
           <div class="p-8 border rounded-2">
             <div
               class="d-flex mb-6 align-items-start justify-content-between"></div>
-            <h1 class="mb-4 text-success">4,200</h1>
+            <h1 class="mb-4 text-success" id="currentQuantity"></h1>
             <p class="mb-0">
-              <span><strong>Quantity on Hand {Unit measure}</strong></span>
+              <span><strong id="unit3">Quantity on Hand </strong></span>
             </p>
           </div>
         </div>
@@ -178,7 +178,7 @@
           id="toDate"
           class="form-control"
           placeholder="To date" />
-        <button id="goButton" class="btn btn-primary">Go</button>
+        <button id="goButton" class="btn btn-primary" onclick="go()">Go</button>
       </div>
     </div>
     <div class="col-md-2">
@@ -193,8 +193,7 @@
       <button
         type="button"
         class="btn btn-primary mt-3"
-        data-bs-toggle="modal"
-        data-bs-target="#reportModal">
+        onclick="generateReport()">
         <i class="fas fa-cog"></i> Generate Report
       </button>
     </div>
@@ -214,37 +213,22 @@
                 id="warehouseSelector"
                 class="form-select warehouseSelector">
                 <option value="">Select Warehouse/Supplier</option>
-                <option value="Bak Logistics">Bak Logistics</option>
-                <option value="Koala">Koala Park</option>
-                <option value="Bakers Inn">Bakers Inn</option>
+                <% if (warehouses) { %> <% for (let dat of warehouses) { %>
+                <option value="<%= dat.warehouse_name %>">
+                  <%= dat.warehouse_name %>
+                </option>
+                <% } %><% } %>
               </select>
             </li>
             <!-- Product Selection Dropdown -->
             <li class="list-group-item">
               <select id="productSelector" class="form-select productSelector">
                 <option value="">Select Product</option>
-                <option value="Bread">Bread</option>
-                <option value="Milk">Milk</option>
-                <option value="Sugar">Sugar</option>
-                <option value="Tea">Tea</option>
-                <option value="Coffee">Coffee</option>
-                <option value="Eggs">Eggs</option>
-                <option value="Margarine">Margarine</option>
-                <option value="Mealie-Meal">Mealie-Meal</option>
-                <option value="Rice">Rice</option>
-                <option value="Cooking Oil">Cooking Oil</option>
-                <option value="Beef">Beef</option>
-                <option value="Chicken">Chicken</option>
-                <option value="Potatoes">Potatoes</option>
-                <option value="Tomatoes">Tomatoes</option>
-                <option value="Onions">Onions</option>
-                <option value="Cabbages">Cabbages</option>
-                <option value="Salt">Salt</option>
-                <option value="Bananas">Bananas</option>
-                <option value="Oranges">Oranges</option>
-                <option value="24-Hour Ration Packs">
-                  24-Hour Ration Packs
+                <% if (products) { %> <% for (let dat of products) { %>
+                <option value="<%= dat.product_name %>">
+                  <%= dat.product_name %>
                 </option>
+                <% } %><% } %>
               </select>
             </li>
           </ul>
@@ -266,86 +250,6 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>2023-09-15</td>
-              <td><a href="#">PO12345</a></td>
-              <td>Stock In</td>
-              <td>10,000</td>
-              <td>-</td>
-              <td>10,000</td>
-            </tr>
-            <tr>
-              <td>2023-09-10</td>
-              <td><a href="#">DO56789</a></td>
-              <td>Dispatch</td>
-              <td>-</td>
-              <td>50</td>
-              <td>9,950</td>
-            </tr>
-            <tr>
-              <td>2023-09-15</td>
-              <td><a href="#">PO12345</a></td>
-              <td>Stock In</td>
-              <td>100</td>
-              <td>-</td>
-              <td>10,050</td>
-            </tr>
-            <tr>
-              <td>2023-09-10</td>
-              <td><a href="#">DO56789</a></td>
-              <td>Dispatch</td>
-              <td>-</td>
-              <td>50</td>
-              <td>10,000</td>
-            </tr>
-            <tr>
-              <td>2023-09-15</td>
-              <td><a href="#">PO12345</a></td>
-              <td>Stock In</td>
-              <td>100</td>
-              <td>-</td>
-              <td>10,100</td>
-            </tr>
-            <tr>
-              <td>2023-09-10</td>
-              <td><a href="#">DO56789</a></td>
-              <td>Dispatch</td>
-              <td>-</td>
-              <td>100</td>
-              <td>10,000</td>
-            </tr>
-            <tr>
-              <td>2023-09-15</td>
-              <td><a href="#">PO12345</a></td>
-              <td>Stock In</td>
-              <td>100</td>
-              <td>-</td>
-              <td>10,100</td>
-            </tr>
-            <tr>
-              <td>2023-09-10</td>
-              <td><a href="#">DO56789</a></td>
-              <td>Dispatch</td>
-              <td>-</td>
-              <td>1000</td>
-              <td>9,100</td>
-            </tr>
-            <tr>
-              <td>2023-09-15</td>
-              <td><a href="#">PO12345</a></td>
-              <td>Stock In</td>
-              <td>100</td>
-              <td>-</td>
-              <td>9,200</td>
-            </tr>
-            <tr>
-              <td>2023-09-10</td>
-              <td><a href="#">DO56789</a></td>
-              <td>Dispatch</td>
-              <td>-</td>
-              <td>5,000</td>
-              <td>4,200</td>
-            </tr>
             <!-- Add more rows as needed -->
             <!-- ... -->
           </tbody>
@@ -387,17 +291,13 @@
                   aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <h3 style="text-align: center">
-                  {Warehouse Nme} <br />
-                  Product movement statement for <br />
-                  Sugar as at 18/12/2023
-                </h3>
+                <h3 style="text-align: center" id="rangeTitle"></h3>
                 <br />
 
                 <h4>Overview</h4>
-                <p>Total Stock In: <strong>150Kg</strong></p>
-                <p>Total Dispatched: <strong>30Kg</strong></p>
-                <p>Stock on Hand: <strong>120Kg</strong></p>
+                <p>Total Stock In: <strong id="d1"></strong></p>
+                <p>Total Dispatched: <strong id="d2"></strong></p>
+                <p>Stock on Hand: <strong id="d3"></strong></p>
 
                 <hr />
                 <table class="table table-bordered">
@@ -409,26 +309,9 @@
                       <th scope="col">Balance</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="mint">
                     <!-- Sample data rows (replace with your actual data) -->
-                    <tr>
-                      <td>2023-01-01</td>
-                      <td>Balance bf</td>
-                      <td></td>
-                      <td>100</td>
-                    </tr>
-                    <tr>
-                      <td>2023-01-02</td>
-                      <td>Stock In</td>
-                      <td>50</td>
-                      <td>150</td>
-                    </tr>
-                    <tr>
-                      <td>2023-01-03</td>
-                      <td>Dispatch</td>
-                      <td>20</td>
-                      <td>130</td>
-                    </tr>
+
                     <!-- Add more rows as needed -->
                   </tbody>
                 </table>
@@ -477,6 +360,8 @@
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script src="js/charts-demo.js"></script>
 <script>
+  let totalDispatched = 0;
+  let totalPurchases = 0;
   // Get the product selection dropdown and the heading element
   const productSelector = document.getElementById("productSelector");
   const productHeading = document.querySelector(".col-md-5 h3");
@@ -486,8 +371,7 @@
     // Update the heading text with the selected product
     productHeading.textContent = "Product: " + productSelector.value;
   });
-</script>
-<script>
+
   // Get the warehouse selection dropdown and the heading element
   const warehouseSelector = document.getElementById("warehouseSelector");
   const warehouseHeading = document.querySelector(".warehouse-info h3");
@@ -497,4 +381,220 @@
     // Update the heading text with the selected warehouse
     warehouseHeading.textContent = "Warehouse: " + warehouseSelector.value;
   });
+  const fromDate = document.getElementById("fromDate").value;
+  const toDate = document.getElementById("toDate").value;
+  function go() {
+    // Check if both fromDate and toDate are not empty
+    const fromDate = document.getElementById("fromDate").value;
+    const toDate = document.getElementById("toDate").value;
+    console.log(
+      fromDate,
+      toDate,
+      warehouseSelector.value,
+      productSelector.value
+    );
+    if (
+      fromDate &&
+      toDate &&
+      warehouseSelector.value &&
+      productSelector.value
+    ) {
+      // Get the selected product value
+      const selectedProduct = document.getElementById("productSelector").value;
+
+      // Send an AJAX request to the server
+      fetch("/warehousemovement", {
+        method: "POST",
+        body: JSON.stringify({
+          product: productSelector.value,
+          warehouse: warehouseSelector.value,
+          fromDate: fromDate,
+          toDate: toDate,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // Update the table with the new data
+          updateTable(data.movements);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    } else {
+      // Display a message or handle the case when either fromDate or toDate is empty
+      window.alert("Please select  From Date, To Date Warehouse and Product");
+    }
+  }
+  function updateTable(movements) {
+    const tableBody = document.querySelector("tbody");
+    tableBody.innerHTML = ""; // Clear the table body
+    let balance = 0;
+
+    movements.forEach((movement) => {
+      const row = document.createElement("tr");
+      const formattedDate = formatDate(movement.date);
+
+      if (movement.product_name) {
+        totalPurchases += parseFloat(movement.quantity);
+        balance = parseFloat(balance) + parseFloat(movement.quantity);
+        let quantity =
+          movement.quantity !== null ? movement.quantity.toLocaleString() : ""; // Check if quantity_ordered is not null
+
+        row.innerHTML = `
+      <td>${formattedDate}</td>
+      <td><a href="#">${movement.id}</a></td>
+      <td>Stock In</td>
+      <td>${quantity}</td>
+      <td>-</td>
+      <td>${balance.toLocaleString()}</td>
+    `;
+      } else {
+        balance = parseFloat(balance) - parseFloat(movement.quantity);
+
+        totalDispatched += parseFloat(movement.quantity);
+        let quantity =
+          movement.quantity !== null ? movement.quantity.toLocaleString() : ""; // Check if quantity_ordered is not null
+        row.innerHTML = `
+      <td>${formattedDate}</td>
+      <td><a href="#">${movement.dispatch_id}</a></td>
+      <td>Dispatch</td>
+      <td>-</td>
+      <td>${quantity}</td>
+      <td>${balance.toLocaleString()}</td>
+    `;
+      }
+      tableBody.appendChild(row);
+    });
+    let tp = document.getElementById("totalPurchases");
+    tp.innerHTML = "";
+    tp.innerHTML = totalPurchases.toLocaleString();
+    let td = document.getElementById("totalDispatched");
+    td.innerHTML = "";
+    td.innerHTML = totalDispatched.toLocaleString();
+
+    let cq = document.getElementById("currentQuantity");
+    cq.innerHTML = "";
+    cq.innerHTML = (
+      parseFloat(totalPurchases) - parseFloat(totalDispatched)
+    ).toLocaleString();
+
+    let unit1 = document.getElementById("unit1");
+    unit1.innerHTML = "";
+    unit1.innerHTML = `Total Stock Purchased  ${movements[0].unit}`;
+    let unit2 = document.getElementById("unit2");
+    unit2.innerHTML = "";
+    unit2.innerHTML = `Total Purchased ${movements[0].unit}`;
+
+    let unit3 = document.getElementById("unit3");
+    unit3.innerHTML = "";
+    unit3.innerHTML = `Quantity on Hand ${movements[0].unit}`;
+  }
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+  function generateReport() {
+    const fromDate = document.getElementById("fromDate").value;
+    const toDate = document.getElementById("toDate").value;
+    const rangeTitle = document.getElementById("rangeTitle");
+    rangeTitle.innerHTML = "";
+    rangeTitle.innerHTML = ` ${warehouseSelector.value} <br />
+                  Product movement statement for <br />
+                  ${productSelector.value} from ${fromDate}<br />to ${toDate}`;
+
+    if (
+      fromDate &&
+      toDate &&
+      warehouseSelector.value &&
+      productSelector.value
+    ) {
+      // Get the selected product value
+      const selectedProduct = document.getElementById("productSelector").value;
+
+      // Send an AJAX request to the server
+      fetch("/warehousemovement", {
+        method: "POST",
+        body: JSON.stringify({
+          product: productSelector.value,
+          warehouse: warehouseSelector.value,
+          fromDate: fromDate,
+          toDate: toDate,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // Update the table with the new data
+          let movements = data.movements;
+          var modal = document.getElementById("reportModal");
+          var modalTitle = modal.querySelector(".modal-title");
+          var modalBody = modal.querySelector(".modal-body");
+          var modalFooter = modal.querySelector(".modal-footer");
+
+          const tableBody = document.getElementById("mint");
+
+          tableBody.innerHTML = ""; // Clear the table body
+          let balance = 0;
+          let totalDispatched = 0;
+          let totalPurchases = 0;
+
+          movements.forEach((movement) => {
+            const row = document.createElement("tr");
+            const formattedDate = formatDate(movement.date);
+
+            if (movement.product_name) {
+              totalPurchases += parseFloat(movement.quantity);
+              balance = parseFloat(balance) + parseFloat(movement.quantity);
+              row.innerHTML = `
+      <td>${formattedDate}</td>
+      <td>Stock In</td>
+      <td>${movement.quantity.toLocaleString()}</td>
+      <td>${balance.toLocaleString()}</td>
+    `;
+            } else {
+              balance = parseFloat(balance) - parseFloat(movement.quantity);
+              totalDispatched += parseFloat(movement.quantity);
+              row.innerHTML = `
+      <td>${formattedDate}</td>
+      <td>Dispatch</td>
+      <td>${movement.quantity.toLocaleString()}</td>
+      <td>${balance.toLocaleString()}</td>
+    `;
+            }
+            tableBody.appendChild(row);
+          });
+          let d1 = document.getElementById("d1");
+          d1.innerHTML = "";
+          d1.innerHTML = `${totalPurchases.toLocaleString()} ${
+            movements[0].unit
+          }`;
+          let d2 = document.getElementById("d2");
+          d2.innerHTML = "";
+          d2.innerHTML = `${totalDispatched.toLocaleString()} ${
+            movements[0].unit
+          }`;
+          let d3 = document.getElementById("d3");
+          let diff = totalPurchases - totalDispatched;
+          d3.innerHTML = "";
+          d3.innerHTML = `${diff.toLocaleString()} ${movements[0].unit}`;
+
+          // Show the modal
+          $("#reportModal").modal("show");
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    } else {
+      // Display a message or handle the case when either fromDate or toDate is empty
+      window.alert("Please select both From Date and To Date.");
+    }
+  }
 </script>

@@ -518,7 +518,7 @@
       <td>Stock In</td>
       <td>${quantity}</td>
       <td>-</td>
-      <td>${balance}</td>
+      <td>${balance.toLocaleString()}</td>
     `;
       } else {
         balance = parseFloat(balance) - parseFloat(movement.quantity);
@@ -531,7 +531,7 @@
       <td>Dispatch</td>
       <td>-</td>
       <td>${quantity}</td>
-      <td>${balance}</td>
+      <td>${balance.toLocaleString()}</td>
     `;
       }
       tableBody.appendChild(row);
@@ -547,7 +547,9 @@
     rl.innerHTML = reorderLevel.toLocaleString();
     let cq = document.getElementById("currentQuantity");
     cq.innerHTML = "";
-    cq.innerHTML = parseFloat(totalPurchases) - parseFloat(totalDispatched);
+    cq.innerHTML = (
+      parseFloat(totalPurchases) - parseFloat(totalDispatched)
+    ).toLocaleString();
   }
   function formatDate(dateString) {
     const date = new Date(dateString);

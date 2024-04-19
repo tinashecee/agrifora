@@ -498,7 +498,38 @@ app.get("/deliverynotes", checkNotAuthenticated, (req, res) => {
   res.render("dispatchno", { layout: "./layouts/index-layout" });
 });
 app.get("/warehousemovement", checkNotAuthenticated, (req, res) => {
-  res.render("warehousemovement", { layout: "./layouts/index-layout" });
+  let errors = [];
+  pool.query("SELECT * FROM warehouse", [], (err, warehouses) => {
+    if (err) {
+      console.error(err);
+      errors.push({ message: err });
+      res.render("warehousehouse", {
+        layout: "./layouts/index-layout",
+        errors,
+        warehouses: [],
+        products: [],
+      });
+    }
+    pool.query("SELECT * FROM products", [], (err, products) => {
+      if (err) {
+        console.error(err);
+        errors.push({ message: err });
+        res.render("warehousehouse", {
+          layout: "./layouts/index-layout",
+          errors,
+          warehouses: [],
+          products: [],
+        });
+      }
+      res.render("warehousemovement", {
+        layout: "./layouts/index-layout",
+        errors,
+        errors,
+        warehouses,
+        products,
+      });
+    });
+  });
 });
 app.get("/orderbook", checkNotAuthenticated, (req, res) => {
   let errors = [];
@@ -988,6 +1019,102 @@ app.post("/unitmovement", checkNotAuthenticated, (req, res) => {
           }
         );
       });
+    }
+  );
+});
+app.post("/warehousemovement", checkNotAuthenticated, (req, res) => {
+  let errors = [];
+  let fromDate = req.body.fromDate;
+  let toDate = req.body.toDate;
+  let warehouse = req.body.warehouse;
+  let product = req.body.product;
+  pool.query(
+    "SELECT stock_id FROM stock WHERE warehouse = ?",
+    [warehouse],
+    (err, results) => {
+      if (err) {
+        console.error(err);
+        errors.push({ message: err });
+        return res.render("warehousemovement", {
+          layout: "./layouts/index-layout",
+          errors,
+          products: [],
+          stock: [],
+          stock_products: [],
+          dispatch: [],
+          dispatch_units: [],
+        });
+      }
+      pool.query(
+        "SELECT * FROM stock_products WHERE stock_date >= ? AND stock_date <= ?",
+        [fromDate, toDate],
+        (err, stock_products) => {
+          if (err) {
+            console.error(err);
+            errors.push({ message: err });
+            return res.render("warehousemovement", {
+              layout: "./layouts/index-layout",
+              errors,
+              products: [],
+              stock: [],
+              stock_products: [],
+              dispatch: [],
+              dispatch_units: [],
+            });
+          }
+          pool.query(
+            "SELECT * FROM dispatch WHERE dispatch_date >= ? AND dispatch_date <= ?",
+            [fromDate, toDate],
+            (err, dispatch) => {
+              if (err) {
+                console.error(err);
+                errors.push({ message: err });
+                return res.render("warehousemovement", {
+                  layout: "./layouts/index-layout",
+                  errors,
+                  products: [],
+                  stock: [],
+                  stock_products: [],
+                  dispatch: [],
+                  dispatch_units: [],
+                });
+              }
+              let stockResults = [];
+              let dispatchResults = [];
+              stock_products.forEach((e) => {
+                const stockIdMatches = results.some(
+                  (result) => result.stock_id === e.stock_id
+                );
+                if (e.product_name == product && stockIdMatches) {
+                  stockResults.push(e);
+                }
+              });
+              dispatch.forEach((e) => {
+                if (e.product == product && e.warehouse == warehouse) {
+                  dispatchResults.push(e);
+                }
+              });
+              // Combine and sort the results
+              const movements = [
+                ...stockResults.map((result) => ({
+                  ...result,
+                  date: result.stock_date,
+                })),
+                ...dispatchResults.map((result) => ({
+                  ...result,
+                  date: result.dispatch_date,
+                })),
+              ];
+
+              movements.sort((a, b) => new Date(a.date) - new Date(b.date));
+              console.log(movements);
+              res.send({
+                movements: movements,
+              });
+            }
+          );
+        }
+      );
     }
   );
 });
