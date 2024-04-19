@@ -1126,12 +1126,27 @@ app.get("/login", (req, res) => {
   res.render("login", { layout: "./layouts/login-layout", errors });
 });
 app.get("/setpassword", (req, res) => {
+  // Extract email and key from query parameters
   let errors = [];
-  let email = req.query.email;
+  const email = req.query.email;
+  const key = req.query.key;
+
+  // Check if both parameters are present
+  if (!email || !key) {
+    errors.push("Missing email or key in the query string");
+    return res.render("setpassword", {
+      layout: "./layouts/login-layout",
+      errors,
+    });
+  }
+
+  console.log(email, key); // Logging for verification
+
   res.render("setpassword", {
     layout: "./layouts/login-layout",
     errors,
     email,
+    key,
   });
 });
 app.get("/resetpassword", (req, res) => {
@@ -1619,39 +1634,54 @@ app.post("/reorder-level", async (req, res) => {
 });
 app.post("/set-password", async (req, res) => {
   const email = req.body.email;
+  const key = req.body.key;
   const password1 = req.body.new_password;
   const password2 = req.body.confirm_password;
   const errors = [];
-
-  if (password1 !== password2) {
-    errors.push({ message: "Passwords do not match" });
-    return res.render("setpassword", {
-      layout: "./layouts/login-layout",
-      errors: errors,
-    });
-  } else {
-    const hashedPassword = await bcrypt.hash(password1, 10);
-    pool.query(
-      "UPDATE users SET password = ?, activated = ? WHERE email = ?",
-      [hashedPassword, true, email],
-      (err, results) => {
-        if (err) {
-          console.error(err);
-          errors.push({ message: err });
+  console.log(email, key);
+  pool.query(
+    "SELECT * FROM users WHERE email = ?",
+    [email],
+    async (err, resultsA) => {
+      if (resultsA[0].auth_code == key) {
+        if (password1 !== password2) {
+          errors.push({ message: "Passwords do not match" });
           return res.render("setpassword", {
             layout: "./layouts/login-layout",
             errors: errors,
           });
         } else {
-          req.flash(
-            "success",
-            "Password setup successful, you can now login into your account"
+          const hashedPassword = await bcrypt.hash(password1, 10);
+          pool.query(
+            "UPDATE users SET password = ?, activated = ?, auth_code = ? WHERE email = ?",
+            [hashedPassword, true, makeid(50), email],
+            (err, results) => {
+              if (err) {
+                console.error(err);
+                errors.push({ message: err });
+                return res.render("setpassword", {
+                  layout: "./layouts/login-layout",
+                  errors: errors,
+                });
+              } else {
+                req.flash(
+                  "success",
+                  "Password setup successful, you can now login into your account"
+                );
+                res.redirect("/login");
+              }
+            }
           );
-          res.redirect("/login");
         }
+      } else {
+        errors.push({ message: "Password Change Not Authorised" });
+        return res.render("setpassword", {
+          layout: "./layouts/login-layout",
+          errors: errors,
+        });
       }
-    );
-  }
+    }
+  );
 });
 app.post("/reset-password", (req, res) => {
   let errors = [];
@@ -1667,19 +1697,30 @@ app.post("/reset-password", (req, res) => {
       errors.push({ message: err });
       return res.redirect("/passwordreset");
     }
+    let uid = makeid(12);
+    pool.query(
+      `UPDATE users SET auth_code = ? WHERE email = ?`,
+      [uid, email],
+      (err, resul) => {
+        if (err) {
+          // Handle error
+          console.error(err);
+          errors.push({ message: err });
+          return res.redirect("/stockmanagement");
+        }
 
-    // Code to send reset password email
-    const message = "Email to reset password of your Agrifora account";
-    const options = {
-      from: "Agrifora", // sender address
-      to: email, // receiver email
-      subject: "Agrifora System - Account Verification", // Subject line
-      text: message,
-      html: `<div>
+        // Code to send reset password email
+        const message = "Email to reset password of your Agrifora account";
+        const options = {
+          from: "Agrifora", // sender address
+          to: email, // receiver email
+          subject: "Agrifora System - Account Verification", // Subject line
+          text: message,
+          html: `<div>
         <p>Hi, <b>${results[0].firstname}</b>,</p>
         <p>We received a request to reset your password for your Prolegal Case Management account. If you did not request this, please disregard this email.</p>
         <p>To reset your password, please click on the following link:</p>
-        <a href="https://app.agrifora.co.zw/setpassword?email=${email}&secret=${results[0].password}">RESET PASSWORD LINK</a>
+        <a href="https://app.agrifora.co.zw/setpassword?email=${email}&key=${uid}">RESET PASSWORD LINK</a>
         <p>This link will only be valid for 24 hours.</p>
         <p>If you are unable to click on the link, please copy and paste it into your browser.</p>
         <p>Once you have clicked on the link, you will be taken to a page where you can enter a new password for your account. Please choose a strong password that is at least 8 characters long and includes a mix of upper and lowercase letters, numbers, and symbols.</p>
@@ -1688,13 +1729,15 @@ app.post("/reset-password", (req, res) => {
         <p>Thank you,</p>
         <p>Agrifora Team</p>
 </div>`,
-    };
+        };
 
-    // Send the email
-    SENDMAIL(options, (info) => {
-      req.flash("success", "Reset Password email sent");
-      res.redirect("/resetconfirmation");
-    });
+        // Send the email
+        SENDMAIL(options, (info) => {
+          req.flash("success", "Reset Password email sent");
+          res.redirect("/resetconfirmation");
+        });
+      }
+    );
   });
 });
 
@@ -1853,6 +1896,18 @@ function formatDate(date) {
   if (day.length < 2) day = "0" + day;
 
   return [year, month, day].join("-");
+}
+function makeid(length) {
+  let result = "";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const charactersLength = characters.length;
+  let counter = 0;
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
+  }
+  return result;
 }
 function checkNotAuthenticated(req, res, next) {
   if (req.session.email == null) {
