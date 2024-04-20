@@ -331,6 +331,12 @@
             <div class="modal-footer">
               <button
                 type="button"
+                class="btn btn-primary"
+                onclick="exportToExcel()">
+                <i class="fa-download"></i>Export
+              </button>
+              <button
+                type="button"
                 class="btn btn-secondary"
                 data-bs-dismiss="modal">
                 Close
@@ -358,6 +364,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script src="js/charts-demo.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
 <script>
   // Add an event listener to the product selector
   let selectedProduct;
@@ -398,7 +405,7 @@
         });
     } else {
       // Display a message or handle the case when either fromDate or toDate is empty
-      window.alert("Please select both From Date and To Date.");
+      window.alert("Please select Product, From Date and To Date.");
     }
   }
 
@@ -408,7 +415,7 @@
     const toDate = document.getElementById("toDate").value;
     const rangeTitle = document.getElementById("rangeTitle");
     rangeTitle.innerHTML = "";
-    rangeTitle.innerHTML = `${selectedProduct} movement report from ${fromDate}<br />to ${toDate}`;
+    rangeTitle.innerHTML = `${selectedProduct} movement report from ${fromDate}  to  ${toDate}`;
 
     // Check if both fromDate and toDate are not empty
     if (fromDate && toDate && selectedProduct) {
@@ -435,10 +442,7 @@
           var modalTitle = modal.querySelector(".modal-title");
           var modalBody = modal.querySelector(".modal-body");
           var modalFooter = modal.querySelector(".modal-footer");
-          const requesterSummary1 =
-            document.getElementById("requesterSummary1");
-          const requesterSummary2 =
-            document.getElementById("requesterSummary2");
+
           const tableBody = document.getElementById("yams");
 
           tableBody.innerHTML = ""; // Clear the table body
@@ -484,7 +488,7 @@
         });
     } else {
       // Display a message or handle the case when either fromDate or toDate is empty
-      window.alert("Please select both From Date and To Date.");
+      window.alert("Please select product, From Date and To Date.");
     }
   }
 
@@ -556,5 +560,68 @@
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     return `${day}/${month}/${year}`;
+  }
+  function exportToExcel() {
+    // Retrieve the range title
+    const rangeTitle = document.getElementById("rangeTitle").innerText;
+
+    // Retrieve the table body
+    const tableBody = document.getElementById("yams");
+
+    // Create a new workbook
+    const workbook = new ExcelJS.Workbook();
+
+    // Add a worksheet
+    const worksheet = workbook.addWorksheet("Product Movement Report");
+
+    // Add range title as the first row with bold formatting
+    const titleRow = worksheet.addRow([rangeTitle]);
+    titleRow.font = { bold: true };
+
+    // Add table headers as the second row with bold formatting
+    const headers = [
+      "Date",
+      "Reference",
+      "Description",
+      "Qty In",
+      "Qty Out",
+      "Balance",
+    ];
+    const headerRow = worksheet.addRow(headers);
+    headerRow.font = { bold: true };
+
+    // Set cell width to 25 pixels
+    worksheet.columns.forEach((column) => {
+      column.width = 25;
+    });
+
+    // Iterate over table rows and write data to worksheet
+    tableBody.querySelectorAll("tr").forEach((row) => {
+      const rowData = [];
+      row.querySelectorAll("td").forEach((cell) => {
+        rowData.push(cell.textContent);
+      });
+      worksheet.addRow(rowData);
+    });
+
+    // Generate the Excel file
+    workbook.xlsx
+      .writeBuffer()
+      .then((buffer) => {
+        // Convert buffer to Blob
+        const blob = new Blob([buffer], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+        // Create download link
+        const downloadLink = document.createElement("a");
+        downloadLink.href = window.URL.createObjectURL(blob);
+        downloadLink.download = "Product_Movement_Report.xlsx";
+        // Trigger download
+        downloadLink.click();
+      })
+      .catch((error) => {
+        console.error("Error exporting Excel:", error);
+        alert("Error exporting Excel. Please try again.");
+      });
   }
 </script>

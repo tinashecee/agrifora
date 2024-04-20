@@ -57,7 +57,7 @@
             <input type="text" id="searchInput" class="form-control" placeholder="Search...">
           </div>
           <div class="col-md-4">
-            <button type="button" class="btn btn-primary mt-3"> <i class="fas fa-cog"></i> Generate Report
+            <button type="button" class="btn btn-primary mt-3" onclick="exportToExcel1()"> <i class="fas fa-cog"></i> Generate Report
             </button>
           </div> 
           </div>
@@ -802,6 +802,69 @@ workbook.xlsx.writeBuffer().then(buffer => {
   alert('Error exporting Excel. Please try again.');
 });
 
+}
+function exportToExcel1() {
+  // Create a new workbook
+  const workbook = new ExcelJS.Workbook();
+
+  // Add worksheet for Purchases
+  const purchasesWorksheet = workbook.addWorksheet('Purchases');
+  const purchaseHeaders = ['Date', 'Reference Number', 'Number of Products', 'Supplier', 'Warehouse'];
+  addTableDataToWorksheet(purchasesWorksheet, 'alex', purchaseHeaders);
+  makeHeadersBold(purchasesWorksheet);
+
+  // Add worksheet for Reorder Level
+  const reorderLevelWorksheet = workbook.addWorksheet('Reorder Level');
+  const reorderLevelHeaders = ['Product ID', 'Product', 'Unit Measure', 'Reorder Level', 'Current Stock Level', 'Last Stock In Date', 'Last Issue Date'];
+  addTableDataToWorksheet(reorderLevelWorksheet, 'completed', reorderLevelHeaders);
+  makeHeadersBold(reorderLevelWorksheet);
+
+  // Generate the Excel file
+  workbook.xlsx.writeBuffer().then(buffer => {
+    // Convert buffer to Blob
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    // Create download link
+    const downloadLink = document.createElement('a');
+    downloadLink.href = window.URL.createObjectURL(blob);
+    downloadLink.download = 'Requisitions.xlsx';
+    // Trigger download
+    downloadLink.click();
+  }).catch(error => {
+    console.error('Error exporting Excel:', error);
+    alert('Error exporting Excel. Please try again.');
+  });
+}
+
+function addTableDataToWorksheet(worksheet, tableId, headers) {
+  const table = document.getElementById(tableId);
+  const rows = table.querySelectorAll('tr');
+
+  // Add table headers as the first row in the worksheet
+  worksheet.addRow(headers);
+
+  // Add table data
+  rows.forEach((row, index) => {
+    if (index === 0) return; // Skip the first row (headers)
+    const rowData = [];
+    // Only include the columns specified in headers
+    row.querySelectorAll('td').forEach((cell, cellIndex) => {
+      if (cellIndex < headers.length) {
+        rowData.push(cell.textContent);
+      }
+    });
+    worksheet.addRow(rowData);
+  });
+}
+
+function makeHeadersBold(worksheet) {
+  worksheet.eachRow({ includeEmpty: true }, function(row, rowNumber) {
+    row.eachCell({ includeEmpty: true }, function(cell, colNumber) {
+      if (rowNumber === 1) {
+        cell.font = { bold: true };
+        worksheet.getColumn(colNumber).width = 25;
+      }
+    });
+  });
 }
 
   function formatDate(dateString) {
