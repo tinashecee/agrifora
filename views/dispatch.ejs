@@ -1,869 +1,1190 @@
 
-  <div class="mx-auto ms-lg-80 ps-lg-4">
-    <section>
-      <div class="p-8 bg-white navbar-light">
-        <div class="row align-items-center justify-content-between">
-          <div class="col-12 col-lg-6 mb-4 mb-lg-0">
-            <nav aria-label="breadcrumb">
-              <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item" aria-current="page">
-                  <a class="d-flex align-items-center" href="#">
-                    <svg class="text-primary me-2" width="20" height="20" viewbox="0 0 20 20" fill="none"
-                      xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        d="M16.8737 16.875V9.02647C16.8737 8.93939 16.8555 8.85327 16.8202 8.77363C16.785 8.694 16.7335 8.6226 16.6691 8.56402L10.4187 2.88159C10.3036 2.77699 10.1537 2.71904 9.99821 2.71904C9.84272 2.71905 9.69281 2.77701 9.57777 2.88162L3.3282 8.56402C3.26377 8.6226 3.2123 8.69399 3.17707 8.77363C3.14185 8.85326 3.12366 8.93937 3.12366 9.02645V16.875"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                      <path d="M1.24866 16.875H18.7487" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round"></path>
-                      <path
-                        d="M11.8732 16.8743V12.4993C11.8732 12.3336 11.8073 12.1746 11.6901 12.0574C11.5729 11.9402 11.4139 11.8743 11.2482 11.8743H8.74817C8.58241 11.8743 8.42344 11.9402 8.30623 12.0574C8.18902 12.1746 8.12317 12.3336 8.12317 12.4993V16.8743"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                    </svg>
-                    <span>Inventory Management</span>
-                  </a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">
-                  <a class="d-flex align-items-center" href="#">
-                    <svg class="text-primary me-2" width="20" height="20" viewbox="0 0 20 20" fill="none"
-                      xmlns="http://www.w3.org/2000/svg">
-                      <path d="M17.8125 16.25H2.1875" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round"></path>
-                      <path d="M7.8125 16.25V6.875H12.1875" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round"></path>
-                      <path d="M16.5625 3.125H12.1875V16.25H16.5625V3.125Z" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round"></path>
-                      <path d="M3.4375 16.25V10.625H7.8125" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round"></path>
-                    </svg>
-                    <span>Dispatch</span>
-                  </a>
-                </li>
-              </ol>
-            </nav>
+<div class="mx-auto ms-lg-80 ps-lg-4">
+  <section>
+    <div class="p-8 bg-white navbar-light">
+      <div class="row align-items-center justify-content-between">
+        <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item" aria-current="page">
+                <a class="d-flex align-items-center" href="#">
+                  <svg class="text-primary me-2" width="20" height="20" viewbox="0 0 20 20" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M16.8737 16.875V9.02647C16.8737 8.93939 16.8555 8.85327 16.8202 8.77363C16.785 8.694 16.7335 8.6226 16.6691 8.56402L10.4187 2.88159C10.3036 2.77699 10.1537 2.71904 9.99821 2.71904C9.84272 2.71905 9.69281 2.77701 9.57777 2.88162L3.3282 8.56402C3.26377 8.6226 3.2123 8.69399 3.17707 8.77363C3.14185 8.85326 3.12366 8.93937 3.12366 9.02645V16.875"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M1.24866 16.875H18.7487" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                    <path
+                      d="M11.8732 16.8743V12.4993C11.8732 12.3336 11.8073 12.1746 11.6901 12.0574C11.5729 11.9402 11.4139 11.8743 11.2482 11.8743H8.74817C8.58241 11.8743 8.42344 11.9402 8.30623 12.0574C8.18902 12.1746 8.12317 12.3336 8.12317 12.4993V16.8743"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                  <span>Inventory Management</span>
+                </a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">
+                <a class="d-flex align-items-center" href="#">
+                  <svg class="text-primary me-2" width="20" height="20" viewbox="0 0 20 20" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.8125 16.25H2.1875" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                    <path d="M7.8125 16.25V6.875H12.1875" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M16.5625 3.125H12.1875V16.25H16.5625V3.125Z" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M3.4375 16.25V10.625H7.8125" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                  <span>Dispatch</span>
+                </a>
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12 col-lg-6 d-flex">
+          <a class="btn btn-outline-light d-inline-flex align-items-center justify-content-center p-0 ms-lg-auto me-2 shadow rounded-2"
+            href="#" style="width: 40px; height: 40px;">
+            <svg width="12" height="12" viewbox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M5.4375 9.375C7.61212 9.375 9.375 7.61212 9.375 5.4375C9.375 3.26288 7.61212 1.5 5.4375 1.5C3.26288 1.5 1.5 3.26288 1.5 5.4375C1.5 7.61212 3.26288 9.375 5.4375 9.375Z"
+                stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M8.22156 8.22189L10.4997 10.5" stroke="#7A899B" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round"></path>
+            </svg>
+          </a>
+          <a class="btn btn-outline-light d-inline-flex align-items-center justify-content-center p-0 me-2 shadow rounded-2"
+            href="#" style="width: 40px; height: 40px;">
+            <svg width="12" height="12" viewbox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M2.12974 8.29964C1.57041 7.35675 1.37453 6.2421 1.57887 5.165C1.78322 4.0879 2.37374 3.12245 3.23955 2.44994C4.10535 1.77742 5.18688 1.4441 6.28105 1.51257C7.37522 1.58104 8.40676 2.04659 9.18197 2.8218C9.95718 3.597 10.4227 4.62854 10.4912 5.72271C10.5597 6.81688 10.2264 7.89841 9.55386 8.76422C8.88135 9.63003 7.9159 10.2206 6.8388 10.4249C5.76171 10.6293 4.64706 10.4334 3.70416 9.87406L3.70417 9.87401L2.14931 10.3183C2.08498 10.3366 2.01691 10.3375 1.95214 10.3207C1.88738 10.3039 1.82828 10.2701 1.78097 10.2228C1.73366 10.1755 1.69986 10.1164 1.68308 10.0516C1.6663 9.98687 1.66714 9.9188 1.68552 9.85447L2.12977 8.29961L2.12974 8.29964Z"
+                stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </a>
+          <a class="btn btn-outline-light d-inline-flex align-items-center justify-content-center p-0 me-2 shadow rounded-2"
+            href="#" style="width: 40px; height: 40px;">
+            <svg width="10" height="12" viewbox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 11H6" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              </path>
+              <path
+                d="M1.6988 4.14999C1.69819 3.73489 1.78393 3.32378 1.95108 2.94036C2.11823 2.55694 2.36348 2.20879 2.6727 1.91598C2.98192 1.62317 3.34899 1.39148 3.75275 1.23429C4.15651 1.07709 4.58897 0.997483 5.02522 1.00006C6.84554 1.01294 8.30157 2.45262 8.30157 4.18953V4.49999C8.30157 6.06693 8.64611 6.9762 8.94956 7.47317C8.98225 7.52627 8.99965 7.58663 8.99999 7.64817C9.00034 7.70971 8.98362 7.77025 8.95153 7.82368C8.91944 7.87711 8.87311 7.92155 8.81721 7.9525C8.76131 7.98346 8.69783 7.99984 8.63315 8H1.36685C1.30217 7.99984 1.23867 7.98345 1.18277 7.95249C1.12686 7.92153 1.08053 7.87708 1.04844 7.82364C1.01636 7.7702 0.999648 7.70965 1.00001 7.64811C1.00036 7.58656 1.01777 7.52619 1.05048 7.47309C1.3541 6.97611 1.69879 6.06685 1.69879 4.49999L1.6988 4.14999Z"
+                stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#newDispatchModal">
+        <i class="fas fa-plus"></i> Initiate Dispatch
+      </button>
+      <button type="button" class="btn btn-warning mt-3" data-bs-toggle="modal" data-bs-target="#uploadModal"> <i
+          class="fas fa-upload"></i>
+        Upload
+      </button>
+
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Upload Excel File</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="col-12 col-lg-6 d-flex">
-            <a class="btn btn-outline-light d-inline-flex align-items-center justify-content-center p-0 ms-lg-auto me-2 shadow rounded-2"
-              href="#" style="width: 40px; height: 40px;">
-              <svg width="12" height="12" viewbox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M5.4375 9.375C7.61212 9.375 9.375 7.61212 9.375 5.4375C9.375 3.26288 7.61212 1.5 5.4375 1.5C3.26288 1.5 1.5 3.26288 1.5 5.4375C1.5 7.61212 3.26288 9.375 5.4375 9.375Z"
-                  stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                <path d="M8.22156 8.22189L10.4997 10.5" stroke="#7A899B" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round"></path>
-              </svg>
-            </a>
-            <a class="btn btn-outline-light d-inline-flex align-items-center justify-content-center p-0 me-2 shadow rounded-2"
-              href="#" style="width: 40px; height: 40px;">
-              <svg width="12" height="12" viewbox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M2.12974 8.29964C1.57041 7.35675 1.37453 6.2421 1.57887 5.165C1.78322 4.0879 2.37374 3.12245 3.23955 2.44994C4.10535 1.77742 5.18688 1.4441 6.28105 1.51257C7.37522 1.58104 8.40676 2.04659 9.18197 2.8218C9.95718 3.597 10.4227 4.62854 10.4912 5.72271C10.5597 6.81688 10.2264 7.89841 9.55386 8.76422C8.88135 9.63003 7.9159 10.2206 6.8388 10.4249C5.76171 10.6293 4.64706 10.4334 3.70416 9.87406L3.70417 9.87401L2.14931 10.3183C2.08498 10.3366 2.01691 10.3375 1.95214 10.3207C1.88738 10.3039 1.82828 10.2701 1.78097 10.2228C1.73366 10.1755 1.69986 10.1164 1.68308 10.0516C1.6663 9.98687 1.66714 9.9188 1.68552 9.85447L2.12977 8.29961L2.12974 8.29964Z"
-                  stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-              </svg>
-            </a>
-            <a class="btn btn-outline-light d-inline-flex align-items-center justify-content-center p-0 me-2 shadow rounded-2"
-              href="#" style="width: 40px; height: 40px;">
-              <svg width="10" height="12" viewbox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4 11H6" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                </path>
-                <path
-                  d="M1.6988 4.14999C1.69819 3.73489 1.78393 3.32378 1.95108 2.94036C2.11823 2.55694 2.36348 2.20879 2.6727 1.91598C2.98192 1.62317 3.34899 1.39148 3.75275 1.23429C4.15651 1.07709 4.58897 0.997483 5.02522 1.00006C6.84554 1.01294 8.30157 2.45262 8.30157 4.18953V4.49999C8.30157 6.06693 8.64611 6.9762 8.94956 7.47317C8.98225 7.52627 8.99965 7.58663 8.99999 7.64817C9.00034 7.70971 8.98362 7.77025 8.95153 7.82368C8.91944 7.87711 8.87311 7.92155 8.81721 7.9525C8.76131 7.98346 8.69783 7.99984 8.63315 8H1.36685C1.30217 7.99984 1.23867 7.98345 1.18277 7.95249C1.12686 7.92153 1.08053 7.87708 1.04844 7.82364C1.01636 7.7702 0.999648 7.70965 1.00001 7.64811C1.00036 7.58656 1.01777 7.52619 1.05048 7.47309C1.3541 6.97611 1.69879 6.06685 1.69879 4.49999L1.6988 4.14999Z"
-                  stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-              </svg>
-            </a>
+          <div class="modal-body">
+            <form id="dispatchForm">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="dispatchDate" class="form-label">Dispatch Date</label>
+                  <input type="date" class="form-control" id="dispatchDat" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="warehouse" class="form-label">Warehouse</label>
+                  <select class="form-select" id="warehous" required>
+                    <option value="">Select Warehouse</option>
+                    <option value="Warehouse A">Bak Logistics</option>
+                    <option value="Warehouse B">Supplier</option>
+                    <!-- Add more warehouse options as needed -->
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="staffMember" class="form-label">Staff Member Assigned</label>
+                  <select class="form-select" id="staffMembe" required>
+                    <option value="">Select Staff Member</option>
+                    <option value="Staff A">Staff A</option>
+                    <option value="Staff B">Staff B</option>
+                    <!-- Add more staff member options as needed -->
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="transporter" class="form-label">Transporter</label>
+                  <input type="text" class="form-control" id="transporte" required>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="driver" class="form-label">Driver</label>
+                <input type="text" class="form-control" id="drive" required>
+              </div>
+            </form>
+
+            <!-- File Upload Card -->
+            <div class="container mt-5">
+              <h2>Upload Excel File</h2>
+              <input type="file" id="excelFile" accept=".xls, .xlsx">
+
+            </div>
+            <!-- Table to guide file format -->
+            <div class="mt-3">
+              <h5>Upload File Format</h5>
+              <table class="table table-bordered">
+                <caption><i>Products to be ordered alphabetically</i></caption>
+                <thead>
+                  <tr>
+                    <th>Unit</th>
+                    <th>Delivery Point</th>
+                    <th>Products:</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                    <th>5</th>
+                    <th>6</th>
+                    <th>Etc..</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- Link to download sample import document -->
+            <div class="mt-3">
+              <p>Download sample import document <a href="sample_import_document.xlsx" download>here</a>.</p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="uploadBtn">Upload</button>
           </div>
         </div>
       </div>
-    </section>
-
-    <div class="container">
-      <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#newDispatchModal">
-          <i class="fas fa-plus"></i> Initiate Dispatch
-        </button>
-        <button type="button" class="btn btn-warning mt-3" data-bs-toggle="modal" data-bs-target="#uploadModal"> <i
-            class="fas fa-upload"></i>
-          Upload
-        </button>
-
+    </div>
+    </br></br>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="input-group">
+          <input type="date" id="fromDate" class="form-control" placeholder="From date">
+          <input type="date" id="toDate" class="form-control" placeholder="To date">
+          <button id="goButton" class="btn btn-primary">Go</button>
+        </div>
       </div>
-      <!-- Modal -->
-      <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Upload Excel File</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <form id="dispatchForm">
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label for="dispatchDate" class="form-label">Dispatch Date</label>
-                    <input type="date" class="form-control" id="dispatchDat" required>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="warehouse" class="form-label">Warehouse</label>
-                    <select class="form-select" id="warehous" required>
-                      <option value="">Select Warehouse</option>
-                      <option value="Warehouse A">Bak Logistics</option>
-                      <option value="Warehouse B">Supplier</option>
-                      <!-- Add more warehouse options as needed -->
-                    </select>
-                  </div>
+      <div class="col-md-4">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search...">
+      </div>
+      <div class="col-md-4">
+        <button type="button" class="btn btn-primary mt-3"> <i class="fas fa-cog"></i> Generate Report
+        </button>
+      </div>
+    </div>
+
+
+
+
+
+
+
+    <!-- Nav Tabs -->
+    <ul class="nav nav-tabs mt-3" id="dispatchTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="pending-tab" data-bs-toggle="tab" href="#pending" role="tab"
+          aria-controls="pending" aria-selected="true">Pending Dispatch</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="approved-tab" data-bs-toggle="tab" href="#approved" role="tab"
+          aria-controls="approved" aria-selected="false">Approved</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="completed-tab" data-bs-toggle="tab" href="#completed" role="tab"
+          aria-controls="completed" aria-selected="false">Completed</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="cancelled-tab" data-bs-toggle="tab" href="#cancelled" role="tab"
+          aria-controls="cancelled" aria-selected="false">Cancelled</a>
+      </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="dispatchTabsContent">
+      <!-- Pending Dispatch Tab -->
+      <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
+        <h2 class="mt-3">Pending Dispatch</h2>
+        List of pending dispatch cards.
+        <!-- Table for pending dispatches goes here -->
+        <table class="table table-striped table-hover">
+          <thead class="table-primary">
+            <tr>
+              <th scope="col">Dispatch No.</th>
+              <th scope="col">Dispatch Date</th>
+              <th scope="col">Product</th>
+              <th scope="col">Warehouse</th>
+              <th scope="col">Transporter</th>
+              <th scope="col">Staff Assigned</th>
+              <th scope="col">Number of Units</th>
+              <th scope="col">Status</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="pendingDispatchTableBody">
+            <!-- Pending dispatches will be populated here -->
+            <% if (dispatch) { %> <% for (let dat of dispatch) { %>
+              <% if(dat.status == 'Pending') { %>
+              <tr>
+                <td><%= dat.dispatch_id %></td>
+                <td><%= moment(dat.dispatch_date).format('DD/MM/YY') %></td>
+                <td><%= dat.product %></td>
+                <td><%= dat.warehouse %></td>
+                <td><%= dat.transporter %></td>
+                <td><%= dat.staff_member %></td>
+                <td><% 
+                  let productCount = 0;
+                  for (let productData of dispatched_products) {
+                    if (productData.dispatch_id === dat.dispatch_id) {
+                      productCount++;
+                    }
+                  }
+                %>
+                <%= productCount %></td>
+                <td><%= dat.status %></td>
+                <td><button type='button' class='btn btn-info btn-sm viewDispatchBtn' data-bs-toggle='modal' data-bs-target='#viewDispatchModal' onclick="openViewModal('<%= dat.dispatch_id %>','<%= dat.dispatch_date %>','<%= dat.product %>','<%= dat.quantity %>','<%= dat.transporter %>','<%= dat.driver %>','<%= productCount %>','<%=  JSON.stringify(dispatched_products) %>', '<%= dat.quantity %>', '<%= dat.unit %>') ">View</button></td>
+              </tr>
+              <% } %>
+              <% } %><% } %>
+          </tbody>
+        </table>
+      </div>
+
+      
+      <!-- Approved Dispatch Tab -->
+      <div class="tab-pane fade" id="approved" role="tabpanel" aria-labelledby="approved-tab">
+        <h2 class="mt-3">Approved</h2>
+        <!-- Table for cancelled dispatches goes here -->
+        <table class="table table-striped" id="approvedDispatchTable">
+          <thead>
+            <tr>
+              <th scope="col">Dispatch No.</th>
+              <th scope="col">Dispatch Date</th>
+              <th scope="col">Product</th>
+              <th scope="col">Warehouse</th>
+              <th scope="col">Transporter</th>
+              <th scope="col">Staff Assigned</th>
+              <th scope="col">Number of Units</th>
+              <th scope="col">Status</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="approvedDispatchTableBody">
+            <% if (dispatch) { %> <% for (let dat of dispatch) { %>
+              <% if(dat.status == 'Approved') { %>
+              <tr>
+                <td><%= dat.dispatch_id %></td>
+                <td><%= moment(dat.dispatch_date).format('DD/MM/YY') %></td>
+                <td><%= dat.product %></td>
+                <td><%= dat.warehouse %></td>
+                <td><%= dat.transporter %></td>
+                <td><%= dat.staff_member %></td>
+                <td><% 
+                  let productCount = 0;
+                  for (let productData of dispatched_products) {
+                    if (productData.dispatch_id === dat.dispatch_id) {
+                      productCount++;
+                    }
+                  }
+                %>
+                <%= productCount %></td>
+                <td><%= dat.status %></td>
+                <td><button type='button' class='btn btn-info btn-sm viewDispatchBtn' data-bs-toggle='modal' data-bs-target='#viewDispatchModal' onclick="openViewModalApproved('<%= dat.dispatch_id %>','<%= dat.dispatch_date %>','<%= dat.product %>','<%= dat.quantity %>','<%= dat.transporter %>','<%= dat.driver %>','<%= productCount %>','<%=  JSON.stringify(dispatched_products) %>', '<%= dat.quantity %>', '<%= dat.unit %>') ">View</button></td>
+              </tr>
+              <% } %>
+              <% } %><% } %>
+          </tbody>
+        </table>
+      </div>
+
+       <!-- Completed Dispatch Tab -->
+       <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completed-tab">
+        <h2 class="mt-3">Completed</h2>
+        <!-- Table for completed dispatches goes here -->
+        <table class="table table-striped" id="completedDispatchTable">
+          <thead>
+            <tr>
+              <th scope="col">Dispatch No.</th>
+              <th scope="col">Dispatch Date</th>
+              <th scope="col">Product</th>
+              <th scope="col">Warehouse</th>
+              <th scope="col">Transporter</th>
+              <th scope="col">Staff Assigned</th>
+              <th scope="col">Number of Units</th>
+              <th scope="col">Status</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="completedDispatchTableBody">
+            <!-- Completed dispatches will be populated here -->
+            <% if (dispatch) { %> <% for (let dat of dispatch) { %>
+              <% if(dat.status == 'Completed') { %>
+              <tr>
+                <td><%= dat.dispatch_id %></td>
+                <td><%= moment(dat.dispatch_date).format('DD/MM/YY') %></td>
+                <td><%= dat.product %></td>
+                <td><%= dat.warehouse %></td>
+                <td><%= dat.transporter %></td>
+                <td><%= dat.staff_member %></td>
+                <td><% 
+                  let productCount = 0;
+                  for (let productData of dispatched_products) {
+                    if (productData.dispatch_id === dat.dispatch_id) {
+                      productCount++;
+                    }
+                  }
+                %>
+                <%= productCount %></td>
+                <td><%= dat.status %></td>
+                <td><button type='button' class='btn btn-info btn-sm viewDispatchBtn' data-bs-toggle='modal' data-bs-target='#viewDispatchModal' onclick="openViewModalCompleted('<%= dat.dispatch_id %>','<%= dat.dispatch_date %>','<%= dat.product %>','<%= dat.quantity %>','<%= dat.transporter %>','<%= dat.driver %>','<%= productCount %>','<%=  JSON.stringify(dispatched_products) %>', '<%= dat.quantity %>', '<%= dat.unit %>') ">View</button></td>
+              </tr>
+              <% } %>
+              <% } %><% } %>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Cancelled Dispatch Tab -->
+      <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
+        <h2 class="mt-3">Cancelled</h2>
+        <!-- Table for cancelled dispatches goes here -->
+        <table class="table table-striped" id="cancelledDispatchTable">
+          <thead>
+            <tr>
+              <th scope="col">Dispatch No.</th>
+              <th scope="col">Dispatch Date</th>
+              <th scope="col">Product</th>
+              <th scope="col">Warehouse</th>
+              <th scope="col">Transporter</th>
+              <th scope="col">Staff Assigned</th>
+              <th scope="col">Number of Units</th>
+              <th scope="col">Status</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="cancelledDispatchTableBody">
+            <!-- Cancelled dispatches will be populated here -->
+            <% if (dispatch) { %> <% for (let dat of dispatch) { %>
+              <% if(dat.status == 'Rejected') { %>
+              <tr>
+                <td><%= dat.dispatch_id %></td>
+                <td><%= moment(dat.dispatch_date).format('DD/MM/YY') %></td>
+                <td><%= dat.product %></td>
+                <td><%= dat.warehouse %></td>
+                <td><%= dat.transporter %></td>
+                <td><%= dat.staff_member %></td>
+                <td><% 
+                  let productCount = 0;
+                  for (let productData of dispatched_products) {
+                    if (productData.dispatch_id === dat.dispatch_id) {
+                      productCount++;
+                    }
+                  }
+                %>
+                <%= productCount %></td>
+                <td><%= dat.status %></td>
+                <td><button type='button' class='btn btn-info btn-sm viewDispatchBtn' data-bs-toggle='modal' data-bs-target='#viewDispatchModal' onclick="openViewModalCancel('<%= dat.dispatch_id %>','<%= dat.dispatch_date %>','<%= dat.product %>','<%= dat.quantity %>','<%= dat.transporter %>','<%= dat.driver %>','<%= productCount %>','<%=  JSON.stringify(dispatched_products) %>', '<%= dat.quantity %>', '<%= dat.unit %>') ">View</button></td>
+              </tr>
+              <% } %>
+              <% } %><% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+     
+    </div>
+
+
+
+
+    <!-- New Dispatch Modal -->
+    <div class="modal fade" id="newDispatchModal" tabindex="-1" aria-labelledby="newDispatchModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="newDispatchModalLabel">New Stock Dispatch Card</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="dispatchForm">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="dispatchDate" class="form-label">Dispatch Date</label>
+                  <input type="date" class="form-control" id="dispatchDate" required>
                 </div>
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label for="staffMember" class="form-label">Staff Member Assigned</label>
-                    <select class="form-select" id="staffMembe" required>
-                      <option value="">Select Staff Member</option>
-                      <option value="Staff A">Staff A</option>
-                      <option value="Staff B">Staff B</option>
-                      <!-- Add more staff member options as needed -->
-                    </select>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="transporter" class="form-label">Transporter</label>
-                    <input type="text" class="form-control" id="transporte" required>
-                  </div>
+                <div class="col-md-6 mb-3">
+                  <label for="warehouse" class="form-label">Warehouse</label>
+                  <select class="form-select" id="warehouse" required>
+                    <option value="">Select Warehouse</option>
+                    <% if (warehouse.length > 0) { %> <% for (let dat of warehouse) { %>
+                      <option value="<%= dat.warehouse_name %>"><%= dat.warehouse_name %></option>
+                      <% } %><% } %>
+                    <!-- Add more warehouse options as needed -->
+                </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="staffMember" class="form-label">Staff Member Assigned</label>
+                  <select class="form-select" id="staffMember" required>
+                    <option value="">Select Staff Member</option>
+                    <% if (users.length > 0) { %> <% for (let dat of users) { %>
+                      <option value="<%= dat.firstname %> <%= dat.surname %>"><%= dat.firstname %> <%= dat.surname %></option>
+                      <% } %><% } %>
+                    <!-- Add more staff member options as needed -->
+                </select>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label for="transporter" class="form-label">Transporter</label>
+                  <select class="form-select" id="transporter" required>
+                    <option value="">Select Transporter</option>
+                  <% if (transporters.length > 0) { %> <% for (let dat of transporters) { %>
+                    <option value="<%= dat.transporter_name %>"><%= dat.transporter_name %></option>
+                    <% } %><% } %>
+                  </select>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="driver" class="form-label">Driver</label>
-                  <input type="text" class="form-control" id="drive" required>
+                  <input type="text" class="form-control" id="driver">
                 </div>
-              </form>
-
-              <!-- File Upload Card -->
-              <div class="container mt-5">
-                <h2>Upload Excel File</h2>
-                <input type="file" id="excelFile" accept=".xls, .xlsx">
 
               </div>
-              <!-- Table to guide file format -->
-              <div class="mt-3">
-                <h5>Upload File Format</h5>
-                <table class="table table-bordered">
-                  <caption><i>Products to be ordered alphabetically</i></caption>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="product" class="form-label">Product</label>
+                  <select class="form-select" id="product" required>
+                    <option value="">Select Product</option>
+                  <% if (products.length > 0) { %> <% for (let dat of products) { %>
+                    <option value="<%= dat.product_name %>"><%= dat.product_name %></option>
+                    <% } %><% } %>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="quantity" class="form-label">Total Quantity Dispatched</label>
+                  <div class="input-group mb-3">
+                    <select class="form-select" id="unitt" required>
+                      <option value="Kg">Kgs</option>
+                      <option value="Litres">Litres</option>
+                      <option value="Bags">Bags</option>
+                      <option value="Packs">Packs</option>
+                      <option value="Loaves">Loaves</option>
+                      <option value="Crates">Crates</option>
+                      <option value="Heads">Heads</option>
+                      <option value="Cases">Cases</option>
+                      <!-- Add more unit options as needed -->
+                    </select>
+                    <input type="text" class="form-control" id="quantityy" aria-label="Text input with unit selector">
+                  </div>
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="mb-3 col-md-6">
+                  <label for="unit_formation" class="form-label">Formation/Unit</label>
+                  <select class="form-select  js-example-basic-single" id="unit_formation" required>
+                    <option value="">Select Delivery Center</option>
+                  <% if (unit.length > 0) { %> <% for (let dat of unit) { %>
+                    <option value="<%= dat.unit_name %>"><%= dat.unit_name %></option>
+                    <% } %><% } %>
+                  </select>
+                </div>
+
+                <div class="mb-3 col-md-6">
+                  <label for="quantity" class="form-label">Quantity</label>
+                  <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="quantity" aria-label="Text input with unit selector">
+                    <select class="form-select" id="unit" required>
+                      <option value="Kg">Kgs</option>
+                      <option value="Litres">Litres</option>
+                      <option value="Bags">Bags</option>
+                      <option value="Packs">Packs</option>
+                      <option value="Loaves">Loaves</option>
+                      <option value="Crates">Crates</option>
+                      <option value="Heads">Heads</option>
+                      <option value="Cases">Cases</option>
+                      <!-- Add more unit options as needed -->
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="btn btn-primary mt-3" id="addUnitBtn">Add Unit</button>
+              <div class="table-responsive mt-3">
+                <table class="table table-bordered" id="unitTable">
                   <thead>
                     <tr>
-                      <th>Unit</th>
-                      <th>Delivery Point</th>
-                      <th>Products:</th>
-                      <th>1</th>
-                      <th>2</th>
-                      <th>3</th>
-                      <th>4</th>
-                      <th>5</th>
-                      <th>6</th>
-                      <th>Etc..</th>
+                      <th>No.</th>
+                      <th>Formation/Unit</th>
+                      <th>Quantity</th>
+                      <th>Unit Measure</th>
+                      <th>Remove</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-
-                    </tr>
+                  <tbody id="unitTableBody">
+                    <!-- Unit rows will be added dynamically here -->
                   </tbody>
                 </table>
               </div>
-              <!-- Link to download sample import document -->
-              <div class="mt-3">
-                <p>Download sample import document <a href="sample_import_document.xlsx" download>here</a>.</p>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" id="uploadBtn">Upload</button>
-            </div>
+            </form>
           </div>
-        </div>
-      </div>
-      <br></br>
-      <div class="row">
-        <div class="col-md-4">
-          <div class="input-group">
-            <input type="date" id="fromDate" class="form-control" placeholder="From date">
-            <input type="date" id="toDate" class="form-control" placeholder="To date">
-            <button id="goButton" class="btn btn-primary">Go</button>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <input type="text" id="searchInput" class="form-control" placeholder="Search...">
-        </div>
-        <div class="col-md-4">
-          <button type="button" class="btn btn-primary mt-3"> <i class="fas fa-cog"></i> Generate Report
-          </button>
-        </div>
-      </div>
-
-
-
-
-
-
-
-      <!-- Nav Tabs -->
-      <ul class="nav nav-tabs mt-3" id="dispatchTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-          <a class="nav-link active" id="pending-tab" data-bs-toggle="tab" href="#pending" role="tab"
-            aria-controls="pending" aria-selected="true">Pending Dispatch</a>
-        </li>
-        <li class="nav-item" role="presentation">
-          <a class="nav-link" id="approved-tab" data-bs-toggle="tab" href="#approved" role="tab"
-            aria-controls="approved" aria-selected="false">Approved</a>
-        </li>
-        <li class="nav-item" role="presentation">
-          <a class="nav-link" id="completed-tab" data-bs-toggle="tab" href="#completed" role="tab"
-            aria-controls="completed" aria-selected="false">Completed</a>
-        </li>
-        <li class="nav-item" role="presentation">
-          <a class="nav-link" id="cancelled-tab" data-bs-toggle="tab" href="#cancelled" role="tab"
-            aria-controls="cancelled" aria-selected="false">Cancelled</a>
-        </li>
-      </ul>
-
-      <!-- Tab Content -->
-      <div class="tab-content" id="dispatchTabsContent">
-        <!-- Pending Dispatch Tab -->
-        <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
-          <h2 class="mt-3">Pending Dispatch</h2>
-          List of pending dispatch cards.
-          <!-- Table for pending dispatches goes here -->
-          <table class="table table-striped table-hover">
-            <thead class="table-primary">
-              <tr>
-                <th scope="col">Dispatch No.</th>
-                <th scope="col">Dispatch Date</th>
-                <th scope="col">Product</th>
-                <th scope="col">Warehouse</th>
-                <th scope="col">Transporter</th>
-                <th scope="col">Staff Assigned</th>
-                <th scope="col">Number of Units</th>
-                <th scope="col">Status</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="pendingDispatchTableBody">
-              <!-- Pending dispatches will be populated here -->
-              <% if (dispatch) { %> <% for (let dat of dispatch) { %>
-                <tr>
-                  <td><%= dat.dispatch_id %></td>
-                  <td><%= moment(dat.dispatch_date).format('Do MMMM, YYYY') %></td>
-                  <td><%= dat.product %></td>
-                  <td><%= dat.warehouse %></td>
-                  <td><%= dat.transporter %></td>
-                  <td><%= dat.staff_member %></td>
-                  <td><% 
-                    let productCount = 0;
-                    for (let productData of dispatched_products) {
-                      if (productData.dispatch_id === dat.dispatch_id) {
-                        productCount++;
-                      }
-                    }
-                  %>
-                  <%= productCount %></td>
-                  <td><%= dat.status %></td>
-                  <td><button type='button' class='btn btn-info btn-sm viewDispatchBtn' data-bs-toggle='modal' data-bs-target='#viewDispatchModal' onclick="openViewModal('<%= dat.dispatch_id %>','<%= dat.dispatch_date %>','<%= dat.product %>','<%= dat.quantity %>','<%= dat.transporter %>','<%= dat.driver %>','<%= productCount %>','<%=  JSON.stringify(dispatched_products) %>', '<%= dat.quantity %>', '<%= dat.unit %>') ">View</button></td>
-                </tr>
-                <% } %><% } %>
-            </tbody>
-          </table>
-        </div>
-
-        
-        <!-- Approved Dispatch Tab -->
-        <div class="tab-pane fade" id="approved" role="tabpanel" aria-labelledby="approved-tab">
-          <h2 class="mt-3">Approved</h2>
-          <!-- Table for cancelled dispatches goes here -->
-          <table class="table table-striped" id="approvedDispatchTable">
-            <thead>
-              <tr>
-                <th scope="col">Dispatch No.</th>
-                <th scope="col">Dispatch Date</th>
-                <th scope="col">Product</th>
-                <th scope="col">Warehouse</th>
-                <th scope="col">Transporter</th>
-                <th scope="col">Staff Assigned</th>
-                <th scope="col">Number of Units</th>
-                <th scope="col">Status</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="approvedDispatchTableBody">
-            </tbody>
-          </table>
-        </div>
-
-         <!-- Completed Dispatch Tab -->
-         <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completed-tab">
-          <h2 class="mt-3">Completed</h2>
-          <!-- Table for completed dispatches goes here -->
-          <table class="table table-striped" id="completedDispatchTable">
-            <thead>
-              <tr>
-                <th scope="col">Dispatch No.</th>
-                <th scope="col">Dispatch Date</th>
-                <th scope="col">Product</th>
-                <th scope="col">Warehouse</th>
-                <th scope="col">Transporter</th>
-                <th scope="col">Staff Assigned</th>
-                <th scope="col">Number of Units</th>
-                <th scope="col">Status</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="completedDispatchTableBody">
-              <!-- Completed dispatches will be populated here -->
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Cancelled Dispatch Tab -->
-        <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
-          <h2 class="mt-3">Cancelled</h2>
-          <!-- Table for cancelled dispatches goes here -->
-          <table class="table table-striped" id="cancelledDispatchTable">
-            <thead>
-              <tr>
-                <th scope="col">Dispatch No.</th>
-                <th scope="col">Dispatch Date</th>
-                <th scope="col">Product</th>
-                <th scope="col">Warehouse</th>
-                <th scope="col">Transporter</th>
-                <th scope="col">Staff Assigned</th>
-                <th scope="col">Number of Units</th>
-                <th scope="col">Status</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="cancelledDispatchTableBody">
-              <!-- Cancelled dispatches will be populated here -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-
-       
-      </div>
-
-
-
-
-      <!-- New Dispatch Modal -->
-      <div class="modal fade" id="newDispatchModal" tabindex="-1" aria-labelledby="newDispatchModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="newDispatchModalLabel">New Stock Dispatch Card</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <form id="dispatchForm">
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label for="dispatchDate" class="form-label">Dispatch Date</label>
-                    <input type="date" class="form-control" id="dispatchDate" required>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="warehouse" class="form-label">Warehouse</label>
-                    <select class="form-select" id="warehouse" required>
-                      <option value="">Select Warehouse</option>
-                      <% if (warehouse.length > 0) { %> <% for (let dat of warehouse) { %>
-                        <option value="<%= dat.warehouse_name %>"><%= dat.warehouse_name %></option>
-                        <% } %><% } %>
-                      <!-- Add more warehouse options as needed -->
-                  </select>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label for="staffMember" class="form-label">Staff Member Assigned</label>
-                    <select class="form-select" id="staffMember" required>
-                      <option value="">Select Staff Member</option>
-                      <% if (users.length > 0) { %> <% for (let dat of users) { %>
-                        <option value="<%= dat.firstname %> <%= dat.surname %>"><%= dat.firstname %> <%= dat.surname %></option>
-                        <% } %><% } %>
-                      <!-- Add more staff member options as needed -->
-                  </select>
-                  </div>
-
-                  <div class="col-md-6 mb-3">
-                    <label for="transporter" class="form-label">Transporter</label>
-                    <select class="form-select" id="transporter" required>
-                      <option value="">Select Transporter</option>
-                    <% if (transporters.length > 0) { %> <% for (let dat of transporters) { %>
-                      <option value="<%= dat.transporter_name %>"><%= dat.transporter_name %></option>
-                      <% } %><% } %>
-                    </select>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="driver" class="form-label">Driver</label>
-                    <input type="text" class="form-control" id="driver">
-                  </div>
-
-                </div>
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label for="product" class="form-label">Product</label>
-                    <select class="form-select" id="product" required>
-                      <option value="">Select Product</option>
-                    <% if (products.length > 0) { %> <% for (let dat of products) { %>
-                      <option value="<%= dat.product_name %>"><%= dat.product_name %></option>
-                      <% } %><% } %>
-                    </select>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="quantity" class="form-label">Total Quantity Dispatched</label>
-                    <div class="input-group mb-3">
-                      <select class="form-select" id="unitt" required>
-                        <option value="Kg">Kgs</option>
-                        <option value="Litres">Litres</option>
-                        <option value="Bags">Bags</option>
-                        <option value="Packs">Packs</option>
-                        <option value="Loaves">Loaves</option>
-                        <option value="Crates">Crates</option>
-                        <option value="Heads">Heads</option>
-                        <option value="Cases">Cases</option>
-                        <!-- Add more unit options as needed -->
-                      </select>
-                      <input type="text" class="form-control" id="quantityy" aria-label="Text input with unit selector">
-                    </div>
-                  </div>
-
-                </div>
-                <div class="row">
-                  <div class="mb-3 col-md-6">
-                    <label for="unit_formation" class="form-label">Formation/Unit</label>
-                    <select class="form-select  js-example-basic-single" id="unit_formation" required>
-                      <option value="">Select Delivery Center</option>
-                    <% if (unit.length > 0) { %> <% for (let dat of unit) { %>
-                      <option value="<%= dat.unit_name %>"><%= dat.unit_name %></option>
-                      <% } %><% } %>
-                    </select>
-                  </div>
-
-                  <div class="mb-3 col-md-6">
-                    <label for="quantity" class="form-label">Quantity</label>
-                    <div class="input-group mb-3">
-                      <input type="text" class="form-control" id="quantity" aria-label="Text input with unit selector">
-                      <select class="form-select" id="unit" required>
-                        <option value="Kg">Kgs</option>
-                        <option value="Litres">Litres</option>
-                        <option value="Bags">Bags</option>
-                        <option value="Packs">Packs</option>
-                        <option value="Loaves">Loaves</option>
-                        <option value="Crates">Crates</option>
-                        <option value="Heads">Heads</option>
-                        <option value="Cases">Cases</option>
-                        <!-- Add more unit options as needed -->
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <button type="button" class="btn btn-primary mt-3" id="addUnitBtn">Add Unit</button>
-                <div class="table-responsive mt-3">
-                  <table class="table table-bordered" id="unitTable">
-                    <thead>
-                      <tr>
-                        <th>No.</th>
-                        <th>Formation/Unit</th>
-                        <th>Quantity</th>
-                        <th>Unit Measure</th>
-                        <th>Remove</th>
-                      </tr>
-                    </thead>
-                    <tbody id="unitTableBody">
-                      <!-- Unit rows will be added dynamically here -->
-                    </tbody>
-                  </table>
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" id="saveDispatchButton">Save Dispatch</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-      <!-- View Dispatch Modal -->
-      <div class="modal fade" id="viewDispatchModal" tabindex="-1" aria-labelledby="viewDispatchModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="viewDispatchModalLabel">View Dispatch Details</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-
-              <div class="card">
-
-                <div class="card-header d-flex justify-content-between align-items-center">
-
-                </div>
-                <div class="d-flex justify-content-center bg-dark">
-                  <img src="./sirius-assets/images/logos/sirius-logo.png" alt="Agrifora Logo" class="me-3"
-                    style="width: 250px; height: auto;">
-                </div>
-                <br>
-                <div id="requesterSummary1">
-                
-                </div>
-                <div class="card-body">
-                  <div id="requesterSummary2">
-                 
-                  </div>
-
-                  <table class="table table-striped" id="dispatchedproducts">
-                    <thead class="table-primary">
-                      <tr>
-                        <th>Formation/Unit</th>
-                        <th>Location</th>
-                        <th>Delivery Point</th>
-                        <th>Quantity</th>
-                        <th>Contact</th>
-                        <th>Phone Number</th>
-                      </tr>
-                    </thead>
-                    <tbody id="productTableBody">
-                     
-                      <!-- Add more rows as needed -->
-                    </tbody>
-                    <tfoot id="footer">
-                      
-                    </tfoot>
-                  </table>
-
-                  <div><br>
-
-                    <footer style="font-size: 12px; line-height: 1;display: none;">
-                      <h6><b>Terms and Conditions</b></h6>
-                      <p style="margin-bottom: 6px;"><b>Acceptance of Dispatch:</b> By accepting this dispatch card, the
-                        transporter/supplier acknowledges receipt of the dispatched products and agrees to adhere to the
-                        terms and conditions outlined herein.</p>
-                      <p style="margin-bottom: 6px;"><b>Product Handling:</b> The transporter/supplier shall handle the
-                        dispatched products with utmost care and diligence to prevent damage or loss during transit.</p>
-                      <p style="margin-bottom: 6px;"><b>Documentation:</b> The transporter/supplier shall ensure that
-                        all necessary documentation, including invoices, delivery notes, and any other relevant
-                        paperwork, is completed accurately and submitted as required.</p>
-                      <p style="margin-bottom: 6px;"><b>Product Verification:</b> Upon delivery, the
-                        transporter/supplier must allow the recipient to inspect the dispatched products for quantity
-                        and quality. Any discrepancies or damages should be reported immediately.</p>
-                    </footer>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-success" data-bs-dismiss="modal">APPROVE</button>
-              <button type="button" class="btn btn-danger">REJECT</button>
-              <button type="button" class="btn btn-secondary">CLOSE</button>
-            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="saveDispatchButton">Save Dispatch</button>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="main-footer">
-      <span>&copy; 20234. Agrifora Management System. All Rights Reserved.</span>
-      <span>Created by: <a href="http://soxfort.com" target="_blank">Soxfort Solutions | Intuitive Innovation</a></span>
-    </div><!-- main-footer -->
-    <script src="js/bootstrap/bootstrap.bundle.min.js"></script>
-    <script src="js/main.js"></script>
 
-    
-   
-    <script>
-      $(document).ready(function () {
-        // Add Unit button click event
-        $("#addUnitBtn").click(function () {
-          addUnitRow();
+    <!-- View Dispatch Modal -->
+    <div class="modal fade" id="viewDispatchModal" tabindex="-1" aria-labelledby="viewDispatchModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="viewDispatchModalLabel">View Dispatch Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+            <div class="card">
+
+              <div class="card-header d-flex justify-content-between align-items-center">
+
+              </div>
+              <div class="d-flex justify-content-center bg-dark">
+                <img src="./sirius-assets/images/logos/sirius-logo.png" alt="Agrifora Logo" class="me-3"
+                  style="width: 250px; height: auto;">
+              </div>
+              <br>
+              <div id="requesterSummary1">
+              
+              </div>
+              <div class="card-body">
+                <div id="requesterSummary2">
+               
+                </div>
+
+                <table class="table table-striped" id="dispatchedproducts">
+                  <thead class="table-primary">
+                    <tr>
+                      <th>Formation/Unit</th>
+                      <th>Location</th>
+                      <th>Delivery Point</th>
+                      <th>Quantity</th>
+                      <th>Contact</th>
+                      <th>Phone Number</th>
+                    </tr>
+                  </thead>
+                  <tbody id="productTableBody">
+                   
+                    <!-- Add more rows as needed -->
+                  </tbody>
+                  <tfoot id="footer">
+                    
+                  </tfoot>
+                </table>
+
+                <div><br>
+
+                  <footer style="font-size: 12px; line-height: 1;display: none;">
+                    <h6><b>Terms and Conditions</b></h6>
+                    <p style="margin-bottom: 6px;"><b>Acceptance of Dispatch:</b> By accepting this dispatch card, the
+                      transporter/supplier acknowledges receipt of the dispatched products and agrees to adhere to the
+                      terms and conditions outlined herein.</p>
+                    <p style="margin-bottom: 6px;"><b>Product Handling:</b> The transporter/supplier shall handle the
+                      dispatched products with utmost care and diligence to prevent damage or loss during transit.</p>
+                    <p style="margin-bottom: 6px;"><b>Documentation:</b> The transporter/supplier shall ensure that
+                      all necessary documentation, including invoices, delivery notes, and any other relevant
+                      paperwork, is completed accurately and submitted as required.</p>
+                    <p style="margin-bottom: 6px;"><b>Product Verification:</b> Upon delivery, the
+                      transporter/supplier must allow the recipient to inspect the dispatched products for quantity
+                      and quality. Any discrepancies or damages should be reported immediately.</p>
+                  </footer>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="modal-footer">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-footer">
+    <span>&copy; 20234. Agrifora Management System. All Rights Reserved.</span>
+    <span>Created by: <a href="http://soxfort.com" target="_blank">Soxfort Solutions | Intuitive Innovation</a></span>
+  </div><!-- main-footer -->
+  <script src="js/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="js/main.js"></script>
+
+  
+ 
+  <script>
+    $(document).ready(function () {
+      // Add Unit button click event
+      $("#addUnitBtn").click(function () {
+        addUnitRow();
+      });
+
+      
+
+      // Function to add a new row to the unit table
+      function addUnitRow() {
+        var formationUnit = $("#unit_formation").val();
+        var quantity = $("#quantity").val();
+        var unitMeasure = $("#unit").val();
+
+        // Validate input
+        if (formationUnit === "" || quantity === "" || unitMeasure === "") {
+          alert("Please fill in all fields before adding a unit.");
+          return;
+        }
+
+        // Add row to table
+        var newRow =
+          "<tr>" +
+          "<td></td>" +
+          "<td>" + formationUnit + "</td>" +
+          "<td>" + quantity + "</td>" +
+          "<td>" + unitMeasure + "</td>" +
+          "<td><button type='button' class='btn btn-danger btn-sm removeUnitBtn'>Remove</button></td>" +
+          "</tr>";
+
+        $("#unitTableBody").append(newRow);
+
+        // Update row numbers
+        updateRowNumbers();
+      }
+
+      // Function to update row numbers in the unit table
+      function updateRowNumbers() {
+        $("#unitTableBody tr").each(function (index) {
+          $(this).find("td:first").text(index + 1);
         });
+      }
 
+      // Function to handle removing a unit row
+      $(document).on("click", ".removeUnitBtn", function () {
+        $(this).closest("tr").remove();
+        updateRowNumbers();
+      });
+
+    });
+  </script>
+
+  <script>
+    // Assuming you have a global array to store pending dispatch data
+    var pendingDispatches = [];
+
+    $(document).ready(function () {
+      // Save Dispatch button click event
+      $("#saveDispatchButton").click(function () {
+        saveDispatch();
+      });
+
+      // Function to save dispatch
+      function saveDispatch() {
+        var dispatchData = {
+          dispatchNo: generateDispatchNo(), // You can implement your own dispatch number logic
+          dispatchDate: $("#dispatchDate").val(),
+          product: $("#product").val(),
+          warehouse: $("#warehouse").val(),
+          transporter: $("#transporter").val(),
+          staffAssigned: $("#staffMember").val(),
+          units: getUnitTableData(),
+          status: "Pending", // You can set initial status as "Pending"
+        };
+         // Validate input
+         if ($("#dispatchDate").val() === "" || $("#product").val() === "" || $("#warehouse").val() === "" || $("#transporter").val() === "" || $("#staffMember").val() === "") {
+          alert("Please fill in all fields before adding a unit.");
+          return;
+        }
+
+      
+        let total = 0;
+        getUnitTableData().forEach(e=>{
+           total = parseFloat(total) + parseFloat(e.quantity)
+        })
+        if(total != $("#quantityy").val()){
+          console.log(total,$("#quantityy").val())
+          alert("Quantity not matching.");
+          return;
+        }
+
+         console.log(dispatchData);
+              // Send data to server
+        fetch('/add-dispatch', {
+        method: 'POST',
+        body: JSON.stringify({
+          dispatchDate: $("#dispatchDate").val(),
+          product: $("#product").val(),
+          warehouse: $("#warehouse").val(),
+          transporter: $("#transporter").val(),
+          staffAssigned: $("#staffMember").val(),
+          quantity: $("#quantityy").val(),
+          unit: $("#unitt").val(),
+          driver: $("#driver").val(),
+          units: getUnitTableData(),
+          status: "Pending",
+        }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8'
+        },
+        }).then(function (response) { window.location.reload(true); })
+        .catch(error => console.error('Error:', error));
         
+      }
 
-        // Function to add a new row to the unit table
-        function addUnitRow() {
-          var formationUnit = $("#unit_formation").val();
-          var quantity = $("#quantity").val();
-          var unitMeasure = $("#unit").val();
+      // Function to get unit table data
+      function getUnitTableData() {
+        var unitData = [];
+        $("#unitTableBody tr").each(function () {
+          var formationUnit = $(this).find("td:eq(1)").text();
+          var quantity = $(this).find("td:eq(2)").text();
+          var unitMeasure = $(this).find("td:eq(3)").text();
 
-          // Validate input
-          if (formationUnit === "" || quantity === "" || unitMeasure === "") {
-            alert("Please fill in all fields before adding a unit.");
-            return;
-          }
+          unitData.push({
+            formationUnit: formationUnit,
+            quantity: quantity,
+            unitMeasure: unitMeasure,
+          });
+        });
+        return unitData;
+      }
 
-          // Add row to table
-          var newRow =
+      // Function to update the pending dispatch table
+      function updatePendingDispatchTable() {
+        $("#pendingDispatchTableBody").empty();
+
+        for (var i = 0; i < pendingDispatches.length; i++) {
+          var dispatch = pendingDispatches[i];
+
+          var unitsCount = dispatch.units.length;
+
+          var row =
             "<tr>" +
-            "<td></td>" +
-            "<td>" + formationUnit + "</td>" +
-            "<td>" + quantity + "</td>" +
-            "<td>" + unitMeasure + "</td>" +
-            "<td><button type='button' class='btn btn-danger btn-sm removeUnitBtn'>Remove</button></td>" +
+            "<td>" + dispatch.dispatchNo + "</td>" +
+            "<td>" + dispatch.dispatchDate + "</td>" +
+            "<td>" + dispatch.product + "</td>" +
+            "<td>" + dispatch.warehouse + "</td>" +
+            "<td>" + dispatch.transporter + "</td>" +
+            "<td>" + dispatch.staffAssigned + "</td>" +
+            "<td>" + unitsCount + "</td>" +
+            "<td>" + dispatch.status + "</td>" +
+            "<td><button type='button' class='btn btn-info btn-sm viewDispatchBtn' data-bs-toggle='modal' data-bs-target='#viewDispatchModal' on>View</button></td>" +
             "</tr>";
 
-          $("#unitTableBody").append(newRow);
-
-          // Update row numbers
-          updateRowNumbers();
+          $("#pendingDispatchTableBody").append(row);
         }
-
-        // Function to update row numbers in the unit table
-        function updateRowNumbers() {
-          $("#unitTableBody tr").each(function (index) {
-            $(this).find("td:first").text(index + 1);
-          });
-        }
-
-        // Function to handle removing a unit row
-        $(document).on("click", ".removeUnitBtn", function () {
-          $(this).closest("tr").remove();
-          updateRowNumbers();
-        });
-
-      });
-    </script>
-
-    <script>
-      // Assuming you have a global array to store pending dispatch data
-      var pendingDispatches = [];
-
-      $(document).ready(function () {
-        // Save Dispatch button click event
-        $("#saveDispatchButton").click(function () {
-          saveDispatch();
-        });
-
-        // Function to save dispatch
-        function saveDispatch() {
-          var dispatchData = {
-            dispatchNo: generateDispatchNo(), // You can implement your own dispatch number logic
-            dispatchDate: $("#dispatchDate").val(),
-            product: $("#product").val(),
-            warehouse: $("#warehouse").val(),
-            transporter: $("#transporter").val(),
-            staffAssigned: $("#staffMember").val(),
-            units: getUnitTableData(),
-            status: "Pending", // You can set initial status as "Pending"
-          };
-           // Validate input
-           if ($("#dispatchDate").val() === "" || $("#product").val() === "" || $("#warehouse").val() === "" || $("#transporter").val() === "" || $("#staffMember").val() === "") {
-            alert("Please fill in all fields before adding a unit.");
-            return;
-          }
-
-        
-          let total = 0;
-          getUnitTableData().forEach(e=>{
-             total = parseFloat(total) + parseFloat(e.quantity)
-          })
-          if(total != $("#quantityy").val()){
-            console.log(total,$("#quantityy").val())
-            alert("Quantity not matching.");
-            return;
-          }
-
-           console.log(dispatchData);
-                // Send data to server
-          fetch('/add-dispatch', {
-          method: 'POST',
-          body: JSON.stringify({
-            dispatchDate: $("#dispatchDate").val(),
-            product: $("#product").val(),
-            warehouse: $("#warehouse").val(),
-            transporter: $("#transporter").val(),
-            staffAssigned: $("#staffMember").val(),
-            quantity: $("#quantityy").val(),
-            unit: $("#unitt").val(),
-            driver: $("#driver").val(),
-            units: getUnitTableData(),
-            status: "Pending",
-          }),
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8'
-          },
-          }).then(function (response) { window.location.reload(true); })
-          .catch(error => console.error('Error:', error));
-          
-        }
-
-        // Function to get unit table data
-        function getUnitTableData() {
-          var unitData = [];
-          $("#unitTableBody tr").each(function () {
-            var formationUnit = $(this).find("td:eq(1)").text();
-            var quantity = $(this).find("td:eq(2)").text();
-            var unitMeasure = $(this).find("td:eq(3)").text();
-
-            unitData.push({
-              formationUnit: formationUnit,
-              quantity: quantity,
-              unitMeasure: unitMeasure,
-            });
-          });
-          return unitData;
-        }
-
-        // Function to update the pending dispatch table
-        function updatePendingDispatchTable() {
-          $("#pendingDispatchTableBody").empty();
-
-          for (var i = 0; i < pendingDispatches.length; i++) {
-            var dispatch = pendingDispatches[i];
-
-            var unitsCount = dispatch.units.length;
-
-            var row =
-              "<tr>" +
-              "<td>" + dispatch.dispatchNo + "</td>" +
-              "<td>" + dispatch.dispatchDate + "</td>" +
-              "<td>" + dispatch.product + "</td>" +
-              "<td>" + dispatch.warehouse + "</td>" +
-              "<td>" + dispatch.transporter + "</td>" +
-              "<td>" + dispatch.staffAssigned + "</td>" +
-              "<td>" + unitsCount + "</td>" +
-              "<td>" + dispatch.status + "</td>" +
-              "<td><button type='button' class='btn btn-info btn-sm viewDispatchBtn' data-bs-toggle='modal' data-bs-target='#viewDispatchModal' on>View</button></td>" +
-              "</tr>";
-
-            $("#pendingDispatchTableBody").append(row);
-          }
-        }
-
-        // Function to clear the dispatch form
-        function clearDispatchForm() {
-          $("#dispatchForm")[0].reset();
-          $("#unitTableBody").empty();
-        }
-
-        // Function to generate a dispatch number (you can customize this logic)
-        function generateDispatchNo() {
-          // Implement your own logic to generate a dispatch number
-          return "D" + Math.floor(Math.random() * 1000);
-        }
-      });
-    </script>
-
-    <script>
-      // Function to populate the View Dispatch Modal
-      function populateViewDispatchModal(dispatchData) {
-        // Update modal title
-        $("#viewDispatchModalLabel").text("View Dispatch Details");
-
-        // Populate date, product, quantity, transporter, driver, and number of units
-        $("#viewDispatchModal .modal-body .row .col-md-6").html(`
-        <p class="mb-1"><strong>Date Dispatched:</strong> ${dispatchData.dispatchDate}</p>
-        <p class="mb-1"><strong>Product Dispatched:</strong> ${dispatchData.product}</p>
-        <p class="mb-1"><strong>Quantity:</strong> ${dispatchData.quantity} ${dispatchData.unit}</p>
-      `);
-        $("#viewDispatchModal .modal-body .row .col-md-6").append(`
-        <p class="mb-1"><strong>Transporter:</strong> ${dispatchData.transporter}</p>
-        <p class="mb-1"><strong>Driver:</strong> ${dispatchData.driver}</p>
-        <p class="mb-1"><strong>Number of Units:</strong> ${dispatchData.units.length}</p>
-      `);
-       
-        // Populate table with units data
-        var tableBody = $("#viewDispatchModal .modal-body table tbody");
-        tableBody.empty();
-        dispatchData.units.forEach(function (unit) {
-          var row = `
-          <tr>
-            <td>${unit.formationUnit}</td>
-            <td>${unit.location}</td>
-            <td>${unit.deliveryPoint}</td>
-            <td>${unit.quantity} ${unit.unitMeasure}</td>
-          </tr>
-        `;
-          tableBody.append(row);
-        });
-
-        // Populate total in the table footer
-        var tableFooter = $("#viewDispatchModal .modal-body table tfoot tr");
-        var totalQuantity = dispatchData.units.reduce((total, unit) => total + parseFloat(unit.quantity), 0);
-        tableFooter.html(`
-        <td colspan="3" class="text-end"><strong>Total:</strong></td>
-        <td>${totalQuantity} ${dispatchData.unit}</td>
-      `);
-
-        // Show the modal
-        $("#viewDispatchModal").modal("show");
       }
-    </script>
-    <script>
-      function openViewModal(params1,params2,params3,params4,params5,params6,params7,params8, params9, params10) {
-        var modal = document.getElementById('viewDispatchModal');
-    var modalTitle = modal.querySelector('.modal-title');
-    var modalBody = modal.querySelector('.modal-body');
-    var modalFooter = modal.querySelector('.modal-footer');
-    const requesterSummary1 = document.getElementById('requesterSummary1');
-    const requesterSummary2 = document.getElementById('requesterSummary2');
-    const replace = document.getElementById('productTableBody');
-    const footer = document.getElementById('footer');
-    let productsArray = JSON.parse(params8);
-    const formattedDate = formatDate(params2);
-      // Set the modal title and body content
-      requesterSummary1.innerHTML =  `
-      <div class="text-center">
-                  <h2>DISPATCH CARD</h2>
-                  <h3 style="color: red;">${params1}</h3>
-                </div>   
-      `;
-      requesterSummary2.innerHTML =  `
-      <div class="row mb-3">
-                    <div class="col-md-6">
-                      <p class="mb-1"><strong>Date Dispatched:</strong> ${formattedDate}</p>
-                      <p class="mb-1"><strong>Product Dispatched:</strong> ${params3}</p>
-                      <p class="mb-1"><strong>Quantity:</strong> ${params4}</p>
-                    </div>
-                    <div class="col-md-6">
-                      <p class="mb-1"><strong>Transporter:</strong> ${params5}</p>
-                      <p class="mb-1"><strong>Driver:</strong> ${params6}</p>
-                      <p class="mb-1"><strong>Number of Units:</strong> ${params7}</p>
-                    </div>
-                  </div>  
-      `;
-      let count =1;
-      replace.innerHTML = ``;
-              productsArray.forEach((product) => {
-                if (product.dispatch_id+'' === params1) {
-                     replace.innerHTML += `
-                     <tr>
-                  <td>${product.formation_unit}</td>
-                  <td>${product.location}</td>
-                  <td>${product.delivery_point}</td>
-                  <td>${product.quantity} ${product.unit}</td>
-                  <td>${product.contact_person}</td>
-                  <td>${product.phone}</td>
-                     </tr>
-                     
-                     `;
-               
-                    count +=1
-                }
-                 });
-      footer.innerHTML = `<tr>
-                        <td colspan="3" class="text-end"><strong>Total:</strong></td>
-                        <td>${params9} ${params10}</td>
-                      </tr>`;
-                }
-                function formatDate(dateString) {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  }
 
-    
-    </script>
-    <script>$('.js-example-basic-single').select2({
-      placeholder: 'Select an option',
-      dropdownParent: '#newDispatchModal'
+      // Function to clear the dispatch form
+      function clearDispatchForm() {
+        $("#dispatchForm")[0].reset();
+        $("#unitTableBody").empty();
+      }
+
+      // Function to generate a dispatch number (you can customize this logic)
+      function generateDispatchNo() {
+        // Implement your own logic to generate a dispatch number
+        return "D" + Math.floor(Math.random() * 1000);
+      }
     });
-    </script>
+  </script>
+
+  <script>
+    // Function to populate the View Dispatch Modal
+    function populateViewDispatchModal(dispatchData) {
+      // Update modal title
+      $("#viewDispatchModalLabel").text("View Dispatch Details");
+
+      // Populate date, product, quantity, transporter, driver, and number of units
+      $("#viewDispatchModal .modal-body .row .col-md-6").html(`
+      <p class="mb-1"><strong>Date Dispatched:</strong> ${dispatchData.dispatchDate}</p>
+      <p class="mb-1"><strong>Product Dispatched:</strong> ${dispatchData.product}</p>
+      <p class="mb-1"><strong>Quantity:</strong> ${dispatchData.quantity} ${dispatchData.unit}</p>
+    `);
+      $("#viewDispatchModal .modal-body .row .col-md-6").append(`
+      <p class="mb-1"><strong>Transporter:</strong> ${dispatchData.transporter}</p>
+      <p class="mb-1"><strong>Driver:</strong> ${dispatchData.driver}</p>
+      <p class="mb-1"><strong>Number of Units:</strong> ${dispatchData.units.length}</p>
+    `);
+     
+      // Populate table with units data
+      var tableBody = $("#viewDispatchModal .modal-body table tbody");
+      tableBody.empty();
+      dispatchData.units.forEach(function (unit) {
+        var row = `
+        <tr>
+          <td>${unit.formationUnit}</td>
+          <td>${unit.location}</td>
+          <td>${unit.deliveryPoint}</td>
+          <td>${unit.quantity} ${unit.unitMeasure}</td>
+        </tr>
+      `;
+        tableBody.append(row);
+      });
+
+      // Populate total in the table footer
+      var tableFooter = $("#viewDispatchModal .modal-body table tfoot tr");
+      var totalQuantity = dispatchData.units.reduce((total, unit) => total + parseFloat(unit.quantity), 0);
+      tableFooter.html(`
+      <td colspan="3" class="text-end"><strong>Total:</strong></td>
+      <td>${totalQuantity} ${dispatchData.unit}</td>
+    `);
+
+      // Show the modal
+      $("#viewDispatchModal").modal("show");
+    }
+  </script>
+  <script>
+    function openViewModal(params1,params2,params3,params4,params5,params6,params7,params8, params9, params10) {
+      var modal = document.getElementById('viewDispatchModal');
+  var modalTitle = modal.querySelector('.modal-title');
+  var modalBody = modal.querySelector('.modal-body');
+  var modalFooter = modal.querySelector('.modal-footer');
+  const requesterSummary1 = document.getElementById('requesterSummary1');
+  const requesterSummary2 = document.getElementById('requesterSummary2');
+  const replace = document.getElementById('productTableBody');
+  const footer = document.getElementById('footer');
+  let productsArray = JSON.parse(params8);
+  const formattedDate = formatDate(params2);
+    // Set the modal title and body content
+    requesterSummary1.innerHTML =  `
+    <div class="text-center">
+                <h2>DISPATCH CARD</h2>
+                <h3 style="color: red;">${params1}</h3>
+              </div>   
+    `;
+    requesterSummary2.innerHTML =  `
+    <div class="row mb-3">
+                  <div class="col-md-6">
+                    <p class="mb-1"><strong>Date Dispatched:</strong> ${formattedDate}</p>
+                    <p class="mb-1"><strong>Product Dispatched:</strong> ${params3}</p>
+                    <p class="mb-1"><strong>Quantity:</strong> ${params4}</p>
+                  </div>
+                  <div class="col-md-6">
+                    <p class="mb-1"><strong>Transporter:</strong> ${params5}</p>
+                    <p class="mb-1"><strong>Driver:</strong> ${params6}</p>
+                    <p class="mb-1"><strong>Number of Units:</strong> ${params7}</p>
+                  </div>
+                </div>  
+    `;
+    let count =1;
+    replace.innerHTML = ``;
+            productsArray.forEach((product) => {
+              if (product.dispatch_id+'' === params1) {
+                   replace.innerHTML += `
+                   <tr>
+                <td>${product.formation_unit}</td>
+                <td>${product.location}</td>
+                <td>${product.delivery_point}</td>
+                <td>${product.quantity} ${product.unit}</td>
+                <td>${product.contact_person}</td>
+                <td>${product.phone}</td>
+                   </tr>
+                   
+                   `;
+             
+                  count +=1
+              }
+               });
+    footer.innerHTML = `<tr>
+                      <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                      <td>${params9} ${params10}</td>
+                    </tr>`;
+                    modalFooter.innerHTML = `<button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="approve(${params1})">APPROVE</button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="reject(${params1})">REJECT</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CLOSE</button>`;
+              }
+    function openViewModalApproved(params1,params2,params3,params4,params5,params6,params7,params8, params9, params10) {
+      var modal = document.getElementById('viewDispatchModal');
+  var modalTitle = modal.querySelector('.modal-title');
+  var modalBody = modal.querySelector('.modal-body');
+  var modalFooter = modal.querySelector('.modal-footer');
+  const requesterSummary1 = document.getElementById('requesterSummary1');
+  const requesterSummary2 = document.getElementById('requesterSummary2');
+  const replace = document.getElementById('productTableBody');
+  const footer = document.getElementById('footer');
+  let productsArray = JSON.parse(params8);
+  const formattedDate = formatDate(params2);
+    // Set the modal title and body content
+    requesterSummary1.innerHTML =  `
+    <div class="text-center">
+                <h2>DISPATCH CARD</h2>
+                <h3 style="color: red;">${params1}</h3>
+              </div>   
+    `;
+    requesterSummary2.innerHTML =  `
+    <div class="row mb-3">
+                  <div class="col-md-6">
+                    <p class="mb-1"><strong>Date Dispatched:</strong> ${formattedDate}</p>
+                    <p class="mb-1"><strong>Product Dispatched:</strong> ${params3}</p>
+                    <p class="mb-1"><strong>Quantity:</strong> ${params4}</p>
+                  </div>
+                  <div class="col-md-6">
+                    <p class="mb-1"><strong>Transporter:</strong> ${params5}</p>
+                    <p class="mb-1"><strong>Driver:</strong> ${params6}</p>
+                    <p class="mb-1"><strong>Number of Units:</strong> ${params7}</p>
+                  </div>
+                </div>  
+    `;
+    let count =1;
+    replace.innerHTML = ``;
+            productsArray.forEach((product) => {
+              if (product.dispatch_id+'' === params1) {
+                   replace.innerHTML += `
+                   <tr>
+                <td>${product.formation_unit}</td>
+                <td>${product.location}</td>
+                <td>${product.delivery_point}</td>
+                <td>${product.quantity} ${product.unit}</td>
+                <td>${product.contact_person}</td>
+                <td>${product.phone}</td>
+                   </tr>
+                   
+                   `;
+             
+                  count +=1
+              }
+               });
+    footer.innerHTML = `<tr>
+                      <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                      <td>${params9} ${params10}</td>
+                    </tr>`;
+                    modalFooter.innerHTML = `<button
+                type="button"
+                class="btn btn-primary" onclick="printModalContent()">
+                <i class="fa-print"></i>Print
+              </button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="reject(${params1})">REJECT</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CLOSE</button>`;
+              }
+              function printModalContent() {
+                var modalContent = document.getElementById('viewDispatchModal').cloneNode(true);
+    var printWindow = window.open('', '', 'height=400,width=600');
+    printWindow.document.write('<html><head><title>Dispatch Card</title>');
+    // Include Bootstrap CSS for styling
+    printWindow.document.write('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">');
+    printWindow.document.write('</head><body>');
+    printWindow.document.write(modalContent.innerHTML);
+    // Hide unnecessary elements for printing
+    printWindow.document.write('<style>.modal-footer { display: none; } footer { display: block; }</style>');
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+}
+              function openViewModalCompleted(params1,params2,params3,params4,params5,params6,params7,params8, params9, params10) {
+      var modal = document.getElementById('viewDispatchModal');
+  var modalTitle = modal.querySelector('.modal-title');
+  var modalBody = modal.querySelector('.modal-body');
+  var modalFooter = modal.querySelector('.modal-footer');
+  const requesterSummary1 = document.getElementById('requesterSummary1');
+  const requesterSummary2 = document.getElementById('requesterSummary2');
+  const replace = document.getElementById('productTableBody');
+  const footer = document.getElementById('footer');
+  let productsArray = JSON.parse(params8);
+  const formattedDate = formatDate(params2);
+    // Set the modal title and body content
+    requesterSummary1.innerHTML =  `
+    <div class="text-center">
+                <h2>DISPATCH CARD</h2>
+                <h3 style="color: red;">${params1}</h3>
+              </div>   
+    `;
+    requesterSummary2.innerHTML =  `
+    <div class="row mb-3">
+                  <div class="col-md-6">
+                    <p class="mb-1"><strong>Date Dispatched:</strong> ${formattedDate}</p>
+                    <p class="mb-1"><strong>Product Dispatched:</strong> ${params3}</p>
+                    <p class="mb-1"><strong>Quantity:</strong> ${params4}</p>
+                  </div>
+                  <div class="col-md-6">
+                    <p class="mb-1"><strong>Transporter:</strong> ${params5}</p>
+                    <p class="mb-1"><strong>Driver:</strong> ${params6}</p>
+                    <p class="mb-1"><strong>Number of Units:</strong> ${params7}</p>
+                  </div>
+                </div>  
+    `;
+    let count =1;
+    replace.innerHTML = ``;
+            productsArray.forEach((product) => {
+              if (product.dispatch_id+'' === params1) {
+                   replace.innerHTML += `
+                   <tr>
+                <td>${product.formation_unit}</td>
+                <td>${product.location}</td>
+                <td>${product.delivery_point}</td>
+                <td>${product.quantity} ${product.unit}</td>
+                <td>${product.contact_person}</td>
+                <td>${product.phone}</td>
+                   </tr>
+                   
+                   `;
+             
+                  count +=1
+              }
+               });
+    footer.innerHTML = `<tr>
+                      <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                      <td>${params9} ${params10}</td>
+                    </tr>`;
+                    modalFooter.innerHTML = `<button
+                type="button"
+                class="btn btn-primary"
+                >
+                <i class="fa-print"></i>Print
+              </button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CLOSE</button>`;
+              }
+              function openViewModalRejected(params1,params2,params3,params4,params5,params6,params7,params8, params9, params10) {
+      var modal = document.getElementById('viewDispatchModal');
+  var modalTitle = modal.querySelector('.modal-title');
+  var modalBody = modal.querySelector('.modal-body');
+  var modalFooter = modal.querySelector('.modal-footer');
+  const requesterSummary1 = document.getElementById('requesterSummary1');
+  const requesterSummary2 = document.getElementById('requesterSummary2');
+  const replace = document.getElementById('productTableBody');
+  const footer = document.getElementById('footer');
+  let productsArray = JSON.parse(params8);
+  const formattedDate = formatDate(params2);
+    // Set the modal title and body content
+    requesterSummary1.innerHTML =  `
+    <div class="text-center">
+                <h2>DISPATCH CARD</h2>
+                <h3 style="color: red;">${params1}</h3>
+              </div>   
+    `;
+    requesterSummary2.innerHTML =  `
+    <div class="row mb-3">
+                  <div class="col-md-6">
+                    <p class="mb-1"><strong>Date Dispatched:</strong> ${formattedDate}</p>
+                    <p class="mb-1"><strong>Product Dispatched:</strong> ${params3}</p>
+                    <p class="mb-1"><strong>Quantity:</strong> ${params4}</p>
+                  </div>
+                  <div class="col-md-6">
+                    <p class="mb-1"><strong>Transporter:</strong> ${params5}</p>
+                    <p class="mb-1"><strong>Driver:</strong> ${params6}</p>
+                    <p class="mb-1"><strong>Number of Units:</strong> ${params7}</p>
+                  </div>
+                </div>  
+    `;
+    let count =1;
+    replace.innerHTML = ``;
+            productsArray.forEach((product) => {
+              if (product.dispatch_id+'' === params1) {
+                   replace.innerHTML += `
+                   <tr>
+                <td>${product.formation_unit}</td>
+                <td>${product.location}</td>
+                <td>${product.delivery_point}</td>
+                <td>${product.quantity} ${product.unit}</td>
+                <td>${product.contact_person}</td>
+                <td>${product.phone}</td>
+                   </tr>
+                   
+                   `;
+             
+                  count +=1
+              }
+               });
+    footer.innerHTML = `<tr>
+                      <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                      <td>${params9} ${params10}</td>
+                    </tr>`;
+                    modalFooter.innerHTML = `<button
+                type="button"
+                class="btn btn-primary"
+                >
+                <i class="fa-print"></i>Print
+              </button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CLOSE</button>`;
+              }
+
+              function formatDate(dateString) {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+  
+  </script>
+  <script>$('.js-example-basic-single').select2({
+    placeholder: 'Select an option',
+    dropdownParent: '#newDispatchModal'
+  });
+  </script>
+<script>
+function approve(id){
+  console.log(id)
+ // Send an AJAX request to the server
+ fetch("/action-dispatch", {
+      method: "POST",
+      body: JSON.stringify({
+        status: 'Approved',
+        id: id,
+        
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((data) => {
+        window.location.reload(true); 
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        window.location.reload(true); 
+      });
+}
+function reject(id){
+// Send an AJAX request to the server
+fetch("/action-dispatch", {
+      method: "POST",
+      body: JSON.stringify({
+        status: 'Rejected',
+        id: id,
+        
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((data) => {
+        window.location.reload(true); 
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        window.location.reload(true); 
+      });
+}
+</script>

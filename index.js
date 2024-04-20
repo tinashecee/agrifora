@@ -474,7 +474,11 @@ app.get("/dispatch", checkNotAuthenticated, (req, res) => {
                         res.render("dispatch", {
                           layout: "./layouts/index-layout",
                           errors,
-                          dispatch: results1,
+                          dispatch: results1.sort(
+                            (a, b) =>
+                              new Date(b.dispatch_date) -
+                              new Date(a.dispatch_date)
+                          ),
                           dispatched_products: results2,
                           warehouse: results3,
                           users: results4,
@@ -1903,6 +1907,25 @@ app.post("/add-dispatch", async (req, res) => {
       }
     );
   });
+});
+app.post("/action-dispatch", async (req, res) => {
+  let errors = [];
+  let { status, id } = req.body;
+  pool.query(
+    `UPDATE dispatch SET status = ? WHERE dispatch_id = ?`,
+    [status, id],
+    (err, results) => {
+      if (err) {
+        // Handle error
+        console.error(err);
+        errors.push({ message: err });
+        return res.redirect("/dispatch");
+      }
+
+      req.flash("success", "You have successfully actioned dispatch");
+      res.redirect("/dispatch");
+    }
+  );
 });
 app.post("/reorder-level", async (req, res) => {
   let errors = [];

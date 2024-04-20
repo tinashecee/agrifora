@@ -155,7 +155,7 @@
                     <div class="progress-bar progress-bar-danger" style="width: 35%"></div>
                   </div>
                 </td>
-                <td><%= moment(dat.last_stock_in_date).format('Do MMMM, YYYY') %></td>
+                <td><%= moment(dat.last_stock_in_date).format('DD/MM/YY') %></td>
                 <td>-</td>
                 <td>
                   <a href="#" class="btn btn-icon btn-rounded btn-flush-primary flush-soft-hover" data-bs-toggle="modal" data-bs-target="#reorderModal" onclick="reorderLevel('<%= dat.id %>')" data-bs-original-title="Edit">
