@@ -113,54 +113,20 @@
               </thead>
               <tbody>
                 <!-- Add your orderbook history data here as rows -->
+                <% if (arry1) { %> <% for (let dat of arry1) { %>
                 <tr>
                   <td>OB12345</td>
-                  <td>30/10/23 - 05/11/23</td>
-                  <td>20</td>
-                  <td>65</td>
-                  <td>7</td>
-                  <td>13</td>
+                  <td><%=  moment(dat.start_date).format('DD/MM/YY') %>  -  <%= moment(dat.end_date).format('DD/MM/YY') %> </td>
+                  <td><%= dat.no_of_prods %></td>
+                  <td><%= dat.num_of_centers %></td>
+                  <td><%= dat.dry_goods %></td>
+                  <td><%= dat.perishables_count %></td>
                   <td>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#allocationModal">View </button>
+                    <a type="button" class="btn btn-primary" href="/orderhistory-view?start_date=<%= dat.start_date %>&end_date=<%= dat.end_date %>">View </a>
                     <button class="btn btn-danger">Delete</button>
                   </td>
                 </tr>
-                <tr>
-                    <td>OB12346</td>
-                    <td>06/11/23 - 12/11/23</td>
-                    <td>20</td>
-                    <td>65</td>
-                    <td>7</td>
-                  <td>13</td>
-                    <td>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#allocationModal">View </button>
-                      <button class="btn btn-danger">Delete</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>OB12347</td>
-                    <td>13/11/23 - 19/11/23</td>
-                    <td>20</td>
-                    <td>65</td>
-                    <td>7</td>
-                  <td>13</td>
-                    <td>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#allocationModal">View </button>
-                      <button class="btn btn-danger">Delete</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>OB12354</td>
-                    <td>20/11/23 - 26/11/23</td>
-                    <td>20</td>
-                    <td>65</td>
-                    <td>7</td>
-                  <td>13</td>
-                    <td>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#allocationModal">View </button>
-                      <button class="btn btn-danger">Delete</button>
-                    </td>
-                  </tr>
+             <% } %> <% } %>
               </tbody>
             </table>
                                      <!-- Pagination -->

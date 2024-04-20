@@ -1,0 +1,276 @@
+
+<div class="mx-auto ms-lg-80 ps-lg-4">
+    <section>
+      <div class="p-8 bg-white navbar-light">
+        <div class="row align-items-center justify-content-between">
+          <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item" aria-current="page">
+                  <a class="d-flex align-items-center" href="#">
+                    <svg class="text-primary me-2" width="20" height="20" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M16.8737 16.875V9.02647C16.8737 8.93939 16.8555 8.85327 16.8202 8.77363C16.785 8.694 16.7335 8.6226 16.6691 8.56402L10.4187 2.88159C10.3036 2.77699 10.1537 2.71904 9.99821 2.71904C9.84272 2.71905 9.69281 2.77701 9.57777 2.88162L3.3282 8.56402C3.26377 8.6226 3.2123 8.69399 3.17707 8.77363C3.14185 8.85326 3.12366 8.93937 3.12366 9.02645V16.875" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                      <path d="M1.24866 16.875H18.7487" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                      <path d="M11.8732 16.8743V12.4993C11.8732 12.3336 11.8073 12.1746 11.6901 12.0574C11.5729 11.9402 11.4139 11.8743 11.2482 11.8743H8.74817C8.58241 11.8743 8.42344 11.9402 8.30623 12.0574C8.18902 12.1746 8.12317 12.3336 8.12317 12.4993V16.8743" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    <span>Orderbook History</span>
+                  </a>
+                </li>
+            
+              </ol>
+            </nav>
+          </div>
+         
+        </div>
+      </div>
+    </section>
+    <div class="col-md-4">
+                              
+      <!-- Modal Button for Upload Orderbook -->
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#download">
+          Download
+      </button>
+  
+      <!-- Modal for Upload Orderbook -->
+      <div class="modal fade" id="uploadOrderbookModal" tabindex="-1" aria-labelledby="uploadOrderbookModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                <form action="/upload-excel" method="post" enctype="multipart/form-data">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="uploadOrderbookModalLabel">Upload Orderbook</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <!-- Date Range Selector -->
+                      <div class="input-group">
+                          <label for="orderbookdates" class="form-label">Select date range:</label>
+                          <input type="date" id="start_date" name="start_date" class="form-control" placeholder="From date">
+                          <input type="date" id="end_date" name="end_date" class="form-control" placeholder="To date">
+                      </div>
+                      <!-- File Upload Section -->
+                      <div class="mb-3">
+                          <label for="orderbookFile" class="form-label">Upload Orderbook File:</label>
+                          <input type="file" class="form-control" id="file" name="excelFile" accept=".xlsx, .xls" />
+                      </div>
+                      <div class="mt-3">
+                        <h5>Upload File Format</h5>
+                        <table class="table table-bordered">
+                          <caption><i>Products to be ordered alphabetically</i></caption>
+                          <thead>
+                            <tr>
+                              <th>Unit</th>
+                              <th>Delivery Point</th>
+                              <th>Products:</th>
+                              <th>1</th>
+                              <th>2</th>
+                              <th>3</th>
+                              <th>4</th>
+                              <th>5</th>
+                              <th>6</th>
+                              <th>Etc..</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+        
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- Link to download sample import document -->
+                      <div class="mt-3">
+                        <p>Download sample import document <a href="/order upload.xlsx" download>here</a>.</p>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Upload</button>
+                  </div>
+              </form>
+              </div>
+          </div>
+      </div>
+  </div>
+  <br></br>
+  <div><h3>Orderbook for  <%= moment(startDate).format('DD/MM/YY') %> to <%= moment(endDate).format('DD/MM/YY') %></h3></div>
+          <!-- ... (other content) ... -->
+          <div class="col-md-12">
+            <!-- Nav Tabs -->
+            <ul class="nav nav-tabs mt-3" id="productstabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="perishables-tab" data-bs-toggle="tab" href="#perishables" role="tab" aria-controls="perishables" aria-selected="true">Perishables</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="drygoods-tab" data-bs-toggle="tab" href="#drygoods" role="tab" aria-controls="drygoods" aria-selected="false">Dry Goods</a>
+                </li>
+            </ul>
+            <!-- Tab content -->
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="drygoods" role="tabpanel" aria-labelledby="drygoods-tab">
+                    <div class="container">
+                        <!-- Add Update Button, Search Bar, and Filter -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="search-input"></label>
+                                <input type="text" id="searchInput" class="form-control" placeholder="Search..." />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="table-filter">Show:</label>
+                                <select id="table-filter" class="form-select">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="all">All</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Table with Updated Headers -->
+                        <div class="table-responsive border rounded">
+                          <table id="editableTable" class="table table-bordered table-striped table-hover">
+                            <thead class="table-primary">
+                                <tr>
+                                    <% if (dryProducts) { %>
+                                        <% dryProducts.forEach((dat, index) => { %>
+                                            <% if (index !== 1 && index !== 2) { %>
+                                                <th><%= dat %></th>
+                                            <% } %>
+                                        <% }) %>
+                                    <% } %>
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider" id="productTableBody">
+                                <!-- Iterate over each row of data -->
+                                <% orders.forEach(order => { %>
+                                    <tr>
+                                        <!-- Iterate over each column in the row and display its value -->
+                                        <% dryProducts.forEach((column, columnIndex) => { %>
+                                            <% if (columnIndex !== 1 && columnIndex !== 2) { %>
+                                                <td>
+                                                    <% if (columnIndex === 1 || columnIndex === 2) { %> 
+                                                        <%= moment(order[column]).format('DD/MM/YY') %> 
+                                                    <% } else { %> 
+                                                        <%= order[column] %> 
+                                                    <% } %>
+                                                </td>
+                                            <% } %>
+                                        <% }) %>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td><strong>Total:</strong></td>
+                                    <!-- Place the "Total:" label in column 5 -->
+                                    <% dryProducts.slice(5).forEach((column, columnIndex) => { %>
+                                        <% if (columnIndex !== 1 && columnIndex !== 2) { %>
+                                            <td><strong><%= dryColumnTotals[column] %></strong></td>
+                                        <% } %>
+                                    <% }) %>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
+                                    <!-- Pagination items will be dynamically generated here -->
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="perishables" role="tabpanel" aria-labelledby="perishables-tab">
+                    <div class="container">
+                        <!-- Add Update Button, Search Bar, and Filter -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="search-input"></label>
+                                <input type="text" id="searchInput" class="form-control" placeholder="Search..." />
+                            </div>
+                            <div class="col-md-4">
+                                <label for="table-filter">Show:</label>
+                                <select id="table-filter" class="form-select">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="all">All</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Table with Updated Headers -->
+                        <div class="table-responsive border rounded">
+                          <table id="editableTable" class="table table-bordered table-striped table-hover">
+                            <thead class="table-primary">
+                                <tr>
+                                    <% if (perishableProducts) { %>
+                                        <% perishableProducts.forEach((dat, index) => { %>
+                                            <% if (index !== 1 && index !== 2) { %>
+                                                <th><%= dat %></th>
+                                            <% } %>
+                                        <% }) %>
+                                    <% } %>
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider" id="productTableBody">
+                                <!-- Iterate over each row of data -->
+                                <% orders.forEach(order => { %>
+                                    <tr>
+                                        <!-- Iterate over each column in the row and display its value -->
+                                        <% perishableProducts.forEach((column, columnIndex) => { %>
+                                            <% if (columnIndex !== 1 && columnIndex !== 2) { %>
+                                                <td>
+                                                    <% if (columnIndex === 1 || columnIndex === 2) { %> 
+                                                        <%= moment(order[column]).format('DD/MM/YY') %> 
+                                                    <% } else { %> 
+                                                        <%= order[column] %> 
+                                                    <% } %>
+                                                </td>
+                                            <% } %>
+                                        <% }) %>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td><strong>Total:</strong></td>
+                                    <!-- Place the "Total:" label in column 5 -->
+                                    <% perishableProducts.slice(5).forEach((column, columnIndex) => { %>
+                                        <% if (columnIndex !== 1 && columnIndex !== 2) { %>
+                                            <td><strong><%= perishableColumnTotals[column] %></strong></td>
+                                        <% } %>
+                                    <% }) %>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
+                                    <!-- Pagination items will be dynamically generated here -->
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+      </div>
+  </div>
+      <!-- Footer container -->
+      <div class="main-footer">
+        <span>&copy; 2023. Maguta Stock Management System. All Rights Reserved.</span>
+        <span>Created by: <a href="http://agrifora.co.zw" target="_blank">Agrifora| People |Production |Purpose</a></span>
+    </div><!-- main-footer -->
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/bootstrap/bootstrap.bundle.min.js"></script>
+
+
+     

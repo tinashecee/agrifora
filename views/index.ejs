@@ -242,8 +242,7 @@
                     <td contenteditable="false"><%= dat.total_quantity %></td>
                     <td contenteditable="false"><%= dat.reorder_level %></td>
                     <td contenteditable="false">
-                      <%= moment(dat.last_stock_in_date).format('Do MMMM, YYYY')
-                      %>
+                      <%= moment(dat.last_stock_in_date).format('DD/MM/YY') %>
                     </td>
                   </tr>
                   <% } %> <% } %><% } %>

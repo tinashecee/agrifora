@@ -586,6 +586,7 @@ app.get("/orderbook", checkNotAuthenticated, (req, res) => {
           startDate = results2[0].start_date;
           endDate = results2[0].end_date;
         }
+        console.log(startDate, endDate);
         pool.query(
           "SELECT * FROM order_book WHERE start_date = ? AND end_date = ?",
           [startDate, endDate],
@@ -714,6 +715,169 @@ app.get("/orderbook", checkNotAuthenticated, (req, res) => {
             });
           }
         );
+      }
+    );
+  });
+});
+app.get("/orderhistory-view", checkNotAuthenticated, (req, res) => {
+  let errors = [];
+  let columns = [];
+  const dryColumnTotals = {};
+  const perishableColumnTotals = {};
+  let dryProducts = [];
+  let perishableProducts = [];
+  let startDate = new Date(req.query.start_date);
+  let endDate = new Date(req.query.end_date);
+
+  // Now format these dates into the 'YYYY-MM-DD' format expected by SQL
+  const formattedStartDate = startDate.toISOString().slice(0, 10);
+  const formattedEndDate = endDate.toISOString().slice(0, 10);
+  console.log(formattedStartDate, formattedEndDate);
+  pool.query("SHOW COLUMNS FROM order_book", [], (err, results1a) => {
+    if (err) {
+      console.error(err);
+      errors.push({ message: err });
+      return res.render("orderbook", {
+        layout: "./layouts/index-layout",
+        errors,
+        orders: [],
+        startDate: "0/0/0",
+        endDate: "0/0/0",
+        columns,
+        dryProducts,
+        perishableProducts,
+        dryColumnTotals,
+        perishableColumnTotals,
+      });
+    }
+
+    results1a.forEach((e) => {
+      columns.push(e.Field);
+    });
+    pool.query(
+      "SELECT * FROM order_book WHERE start_date >= ? AND end_date <= ?",
+      [formattedStartDate, formattedEndDate],
+      (err, results1) => {
+        if (err) {
+          console.error(err);
+          errors.push({ message: err });
+          return res.render("orderbook", {
+            layout: "./layouts/index-layout",
+            errors,
+            orders: [],
+            startDate: "0/0/0",
+            endDate: "0/0/0",
+            columns,
+            dryProducts,
+            perishableProducts,
+            dryColumnTotals,
+            perishableColumnTotals,
+          });
+        }
+        console.log(results1);
+        pool.query("SELECT * FROM products", [], (err, results3a) => {
+          if (err) {
+            console.error(err);
+            errors.push({ message: err });
+            return res.render("orderbook", {
+              layout: "./layouts/index-layout",
+              errors,
+              orders: [],
+              startDate: "0/0/0",
+              endDate: "0/0/0",
+              columns,
+              dryProducts,
+              perishableProducts,
+              dryColumnTotals,
+              perishableColumnTotals,
+            });
+          }
+          if (results1) {
+            dryProducts.push("id");
+            dryProducts.push("start_date");
+            dryProducts.push("end_date");
+            dryProducts.push("unit");
+            dryProducts.push("delivery_point");
+            perishableProducts.push("id");
+            perishableProducts.push("start_date");
+            perishableProducts.push("end_date");
+            perishableProducts.push("unit");
+            perishableProducts.push("delivery_point");
+            columns.forEach((order) => {
+              // Flag to track if the order has been pushed to any array
+              let orderPushed = false;
+
+              // Iterate over the products array to find a match for the product name
+              for (product of results3a) {
+                // Skip if paramName is id, start_date, end_date, unit, or delivery_point
+                if (
+                  ![
+                    "id",
+                    "start_date",
+                    "end_date",
+                    "unit",
+                    "delivery_point",
+                  ].includes(order)
+                ) {
+                  // Find a matching product in results3a
+                  const matchingProduct = results3a.find(
+                    (product) => order === removeSpaces(product.product_name)
+                  );
+
+                  // If a matching product is found
+                  if (matchingProduct) {
+                    // Determine the product type
+                    if (matchingProduct.product_type === "Dry Goods") {
+                      // Push the order into the dryProducts array if not already added
+                      if (!orderPushed) {
+                        dryProducts.push(order);
+                        orderPushed = true;
+                      }
+                    } else if (matchingProduct.product_type === "Perishable") {
+                      // Push the order into the perishableProducts array if not already added
+                      if (!orderPushed) {
+                        perishableProducts.push(order);
+                        orderPushed = true;
+                      }
+                    }
+                  }
+                }
+              }
+            });
+
+            dryProducts.forEach((column) => {
+              dryColumnTotals[column] = results1.reduce((total, order) => {
+                return (
+                  total +
+                  (typeof order[column] === "number" ? order[column] : 0)
+                );
+              }, 0);
+            });
+            perishableProducts.forEach((column) => {
+              perishableColumnTotals[column] = results1.reduce(
+                (total, order) => {
+                  return (
+                    total +
+                    (typeof order[column] === "number" ? order[column] : 0)
+                  );
+                },
+                0
+              );
+            });
+          }
+          res.render("orderhistory_view", {
+            layout: "./layouts/index-layout",
+            errors,
+            orders: results1,
+            startDate,
+            endDate,
+            columns,
+            dryProducts,
+            perishableProducts,
+            dryColumnTotals,
+            perishableColumnTotals,
+          });
+        });
       }
     );
   });
@@ -1119,7 +1283,134 @@ app.post("/warehousemovement", checkNotAuthenticated, (req, res) => {
   );
 });
 app.get("/orderhistory", checkNotAuthenticated, (req, res) => {
-  res.render("orderhistory", { layout: "./layouts/index-layout" });
+  let errors = [];
+  let columns = [];
+  let arry1 = [];
+  pool.query("SELECT * FROM order_book", [], (err, results2) => {
+    if (err) {
+      console.error(err);
+      errors.push({ message: err });
+      return res.render("orderhistory", {
+        layout: "./layouts/index-layout",
+        errors,
+      });
+    }
+    pool.query("SELECT * FROM products", [], (err, results1) => {
+      if (err) {
+        console.error(err);
+        errors.push({ message: err });
+        return res.render("orderhistory", {
+          layout: "./layouts/index-layout",
+          errors,
+        });
+      }
+      pool.query("SHOW COLUMNS FROM order_summary", [], (err, results1b) => {
+        if (err) {
+          console.error(err);
+          errors.push({ message: err });
+          return res.render("index", {
+            layout: "./layouts/index-layout",
+            errors,
+            prods: [],
+          });
+        }
+        pool.query("SELECT * FROM unit", [], (err, results1c) => {
+          if (err) {
+            console.error(err);
+            errors.push({ message: err });
+            return res.render("index", {
+              layout: "./layouts/index-layout",
+              errors,
+              prods: [],
+            });
+          }
+          pool.query("SELECT * FROM order_summary", [], (err, results3) => {
+            if (err) {
+              console.error(err);
+              errors.push({ message: err });
+              return res.render("orderhistory", {
+                layout: "./layouts/index-layout",
+                errors,
+              });
+            }
+            results1b.forEach((e) => {
+              if (
+                e.Field != "ser" ||
+                e.Field != "id" ||
+                e.Field != "unit" ||
+                e.Field != "delivery_point"
+              ) {
+                columns.push(e.Field);
+              }
+            });
+            results3.forEach((q) => {
+              let dryCount = 0;
+              let perishableCount = 0;
+              if (results1) {
+                columns.forEach((order) => {
+                  // Flag to track if the order has been pushed to any array
+                  let orderPushed = false;
+
+                  // Iterate over the products array to find a match for the product name
+                  for (product of results1) {
+                    // Skip if paramName is id, start_date, end_date, unit, or delivery_point
+                    if (
+                      ![
+                        "id",
+                        "start_date",
+                        "end_date",
+                        "unit",
+                        "delivery_point",
+                      ].includes(order)
+                    ) {
+                      // Find a matching product in results3a
+                      const matchingProduct = results1.find(
+                        (product) =>
+                          order === removeSpaces(product.product_name)
+                      );
+
+                      // If a matching product is found
+                      if (matchingProduct) {
+                        // Determine the product type
+                        if (matchingProduct.product_type === "Dry Goods") {
+                          // Push the order into the dryProducts array if not already added
+                          if (!orderPushed) {
+                            dryCount += 1;
+                            orderPushed = true;
+                          }
+                        } else if (
+                          matchingProduct.product_type === "Perishable"
+                        ) {
+                          // Push the order into the perishableProducts array if not already added
+                          if (!orderPushed) {
+                            perishableCount += 1;
+                            orderPushed = true;
+                          }
+                        }
+                      }
+                    }
+                  }
+                });
+              }
+              arry1.push({
+                start_date: q.start_date,
+                end_date: q.end_date,
+                no_of_prods: dryCount + perishableCount,
+                num_of_centers: results1c.length,
+                dry_goods: dryCount,
+                perishables_count: perishableCount,
+              });
+            });
+
+            res.render("orderhistory", {
+              layout: "./layouts/index-layout",
+              arry1,
+            });
+          });
+        });
+      });
+    });
+  });
 });
 app.get("/login", (req, res) => {
   let errors = [];
@@ -1741,6 +2032,106 @@ app.post("/reset-password", (req, res) => {
   });
 });
 
+//export Excell
+app.get("/export-products", async (req, res) => {
+  let errors = [];
+  pool.query("SELECT * FROM products", [], async (err, products) => {
+    if (err) {
+      console.error(err);
+      errors.push({ message: err });
+      return res.render("products", {
+        layout: "./layouts/index-layout",
+        errors,
+        products: [],
+      });
+    }
+
+    // Create a new workbook
+    const workbook = new exceljs.Workbook();
+
+    // Add a worksheet
+    const worksheet = workbook.addWorksheet("Products");
+
+    // Define table headers
+    const headers = [
+      { header: "ID", key: "id", width: 10 },
+      { header: "Product Name", key: "product_name", width: 30 },
+      { header: "Description", key: "description", width: 30 },
+      { header: "Product Type", key: "product_type", width: 20 },
+      { header: "Unit", key: "unit", width: 15 },
+      { header: "Alternative Unit", key: "alternative_unit", width: 20 },
+      { header: "Conversion Factor", key: "conversion_factor", width: 20 },
+      { header: "Reorder Level", key: "reorder_level", width: 15 },
+    ];
+
+    // Add headers to the worksheet
+    worksheet.columns = headers;
+
+    // Add data rows to the worksheet
+    products.forEach((product) => {
+      worksheet.addRow(product);
+    });
+
+    // Write the workbook to a file and export
+    workbook.xlsx
+      .writeFile("Products-Report.xlsx")
+      .then(() => {
+        console.log("Excel file created successfully!");
+        // Provide the file for download
+        res.download("Products-Report.xlsx");
+      })
+      .catch((err) => {
+        console.error("Error writing Excel file:", err);
+      });
+  });
+});
+app.get("/export-stock-card", async (req, res) => {
+  // Create a new workbook
+  const workbook = new exceljs.Workbook();
+
+  // Add a worksheet
+  const worksheet = workbook.addWorksheet("Stock Card");
+
+  // Get modal data
+  const requesterSummary =
+    document.getElementById("requesterSummary1").innerHTML;
+  const replaceTable = document.getElementById("replaceTable1");
+
+  // Write requester summary to worksheet
+  worksheet.addRow([requesterSummary]);
+
+  // Write table headers to worksheet
+  worksheet.addRow(["#", "Product", "Unit Measure", "Quantity"]);
+
+  // Iterate over table rows and write data to worksheet
+  replaceTable.querySelectorAll("tr").forEach((row) => {
+    const rowData = [];
+    row.querySelectorAll("td").forEach((cell) => {
+      rowData.push(cell.textContent);
+    });
+    worksheet.addRow(rowData);
+  });
+
+  // Generate the Excel file
+  workbook.xlsx
+    .writeBuffer()
+    .then((buffer) => {
+      // Convert buffer to Blob
+      const blob = new Blob([buffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      // Create download link
+      const downloadLink = document.createElement("a");
+      downloadLink.href = window.URL.createObjectURL(blob);
+      downloadLink.download = "Stock_Card.xlsx";
+      // Trigger download
+      downloadLink.click();
+    })
+    .catch((error) => {
+      console.error("Error exporting Excel:", error);
+      alert("Error exporting Excel. Please try again.");
+    });
+});
 // Multer setup for file upload
 const upload = multer();
 

@@ -806,6 +806,7 @@
     const replace = document.getElementById('productTableBody');
     const footer = document.getElementById('footer');
     let productsArray = JSON.parse(params8);
+    const formattedDate = formatDate(params2);
       // Set the modal title and body content
       requesterSummary1.innerHTML =  `
       <div class="text-center">
@@ -816,7 +817,7 @@
       requesterSummary2.innerHTML =  `
       <div class="row mb-3">
                     <div class="col-md-6">
-                      <p class="mb-1"><strong>Date Dispatched:</strong> ${params2}</p>
+                      <p class="mb-1"><strong>Date Dispatched:</strong> ${formattedDate}</p>
                       <p class="mb-1"><strong>Product Dispatched:</strong> ${params3}</p>
                       <p class="mb-1"><strong>Quantity:</strong> ${params4}</p>
                     </div>
@@ -851,6 +852,14 @@
                         <td>${params9} ${params10}</td>
                       </tr>`;
                 }
+                function formatDate(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
     
     </script>
     <script>$('.js-example-basic-single').select2({

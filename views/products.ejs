@@ -1,4 +1,4 @@
-
+    
         <div class="mx-auto ms-lg-80 ps-lg-4">
           <% for (let error of errors) { %>
             <div class="alert alert-danger" role="alert"><%= error.message %></div>
@@ -46,14 +46,31 @@
         </button>
         
         <!-- Export Button -->
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="modal" data-bs-target="#exportModal" aria-expanded="false">
             Export
         </button>
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="#">Excel</a></li>
             <li><a class="dropdown-item" href="#">PDF</a></li>
         </ul>
-
+       
+        <div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exportModalLabel">Export Options</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p>Select the export format:</p>
+                <ul>
+                  <li><a class="btn btn-secondary" href="/export-products">Export as Excel</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        
         <!-- Search Bar -->
     
         <div class="mt-9">
@@ -178,6 +195,8 @@
     <span>Created by: <a href="http://soxfort.com" target="_blank">Soxfort Solutions | Intuitive Innovation</a></span>
   </div><!-- main-footer -->
     <script src="js/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+   
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const productNameInput = document.getElementById('productName');

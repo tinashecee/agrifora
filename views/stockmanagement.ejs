@@ -50,7 +50,7 @@
             <div class="input-group">
               <input type="date" id="fromDate" class="form-control" placeholder="From date">
               <input type="date" id="toDate" class="form-control" placeholder="To date">
-              <button id="goButton" class="btn btn-primary">Go</button>
+              <button id="goButton" class="btn btn-primary" onclick="updateTable('<%= JSON.stringify(stock) %>','<%= JSON.stringify(stock_products) %>')">Go</button>
             </div>
           </div>
           <div class="col-md-4">
@@ -89,7 +89,7 @@
                       <th>Actions</th>
                     </tr>
                   </thead> 
-                  <tbody>
+                  <tbody id="alex">
                     <!-- Example rows with data -->
                     <% if (stock) { %> <% for (let dat of stock) { %>
                     <tr>
@@ -107,7 +107,7 @@
                       <td><%= dat.supplier %></td>
                       <td><%= dat.warehouse %></td>
                       <td>
-                        <a href="#" class="btn btn-primary btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="openViewModal('<%= dat.stock_date %>','<%=  dat.stock_id %>','<%=  dat.supplier %>','<%=  dat.warehouse %>','<%=  JSON.stringify(stock_products) %>')">View</a>
+                        <a href="#" class="btn btn-primary btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="openViewModal('<%= dat.stock_date %>','<%=  dat.stock_id %>','<%=  dat.supplier %>','<%=  dat.warehouse %>','<%=  JSON.stringify(stock_products) %>', '<%= productCount %>')">View</a>
                         <a href="#" class="btn btn-danger btn-sm">Delete</a>
                       </td>
                     </tr>
@@ -141,7 +141,7 @@
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody >
               <% if (prods) { %> <% for (let dat of prods) { %>
               <tr>
                 <td><%= dat.id %></td>
@@ -535,8 +535,10 @@ var modalBody = modal.querySelector('.modal-body');
             }
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
 <script>
-  function openViewModal(params1,params2,params3,params4,params5) {
+
+  function openViewModal(params1,params2,params3,params4,params5, params6) {
     var modal = document.getElementById('staticBackdrop');
 var modalTitle = modal.querySelector('.modal-title');
 var modalBody = modal.querySelector('.modal-body');
@@ -545,13 +547,95 @@ const requesterSummary = document.getElementById('requesterSummary1');
 const replace = document.getElementById('replaceTable1');
 let productsArray = JSON.parse(params5);
   // Set the modal title and body content
+  const formattedDate = formatDate(params1);
+  requesterSummary.innerHTML =  ``;
   requesterSummary.innerHTML =  `
   <div class="row">
           <div class="col-auto">
             <p>Date:</p>
           </div>
           <div class="col">
-            <p><b>${params1}</b></p>
+            <p><b>${formattedDate}</b></p>
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-auto">
+            <p>Reference:</p>
+          </div>
+          <div class="col">
+            <p><b>${params2}</b></p>
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-auto">
+            <p>Supplier:</p>
+          </div>
+          <div class="col">
+            <p><b>${params3}</b></p>
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-auto">
+            <p>Warehouse:</p>
+          </div>
+          <div class="col">
+            <p><b>${params4}</b></p>
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-auto">
+            <p>No. of products:</p>
+          </div>
+          <div class="col">
+            <p><b>${params6}</b></p>
+          </div>
+        </div>
+       
+  `;
+  let count =1;
+  replace.innerHTML = ``;
+          productsArray.forEach((product) => {
+            if (product.stock_id+'' === params2) {
+                 replace.innerHTML += `
+                 <tr>
+              <td>${count}</td>
+              <td>${product.product_name}</td>
+              <td>${product.unit}</td>
+              <td>${product.quantity}</td>
+                 </tr>
+                 
+                 `;
+           
+                count +=1
+            }
+             });
+  modalFooter.innerHTML = `       <button type="button" class="btn btn-primary" onclick="exportToExcel('${params1}','${params2}','${params3}','${params4}','${params6}')"><i class="fa-download"></i>Export</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>`;
+            }
+            function openViewModal2(params1,params2,params3,params4,params5) {
+             
+    var modal = document.getElementById('staticBackdrop');
+var modalTitle = modal.querySelector('.modal-title');
+var modalBody = modal.querySelector('.modal-body');
+var modalFooter = modal.querySelector('.modal-footer');
+const requesterSummary = document.getElementById('requesterSummary1');
+const replace = document.getElementById('replaceTable1');
+let productsArray = params5;
+console.log(params5)
+  // Set the modal title and body content
+  const formattedDate = formatDate(params1);
+  requesterSummary.innerHTML =  ``;
+  requesterSummary.innerHTML =  `
+  <div class="row">
+          <div class="col-auto">
+            <p>Date:</p>
+          </div>
+          <div class="col">
+            <p><b>${formattedDate}</b></p>
           </div>
         </div>
       
@@ -612,5 +696,120 @@ let productsArray = JSON.parse(params5);
   modalFooter.innerHTML = `       <button type="button" class="btn btn-primary"><i class="fa-download"></i>Export</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>`;
             }
+   
+            function updateTable(params, params1) {
+              const tableBody = document.getElementById("alex");
+              const fromDate = document.getElementById("fromDate").value;
+    const toDate = document.getElementById("toDate").value;
+              let productsArray = JSON.parse(params);
+              let stock_products = JSON.parse(params1);
+              if(fromDate && toDate){
+    tableBody.innerHTML = ""; // Clear the table body
+   
+
+    productsArray.forEach((movement) => {
+      if( movement.stock_date >= fromDate && movement.stock_date <= toDate){
+      const row = document.createElement("tr");
+      const formattedDate = formatDate(movement.stock_date);
+      let productCount = 0;
+                        for (let productData of stock_products) {
+                          if (productData.stock_id === movement.stock_id) {
+                            productCount++;
+                          }
+                        }
+     
+        row.innerHTML = `
+                      <td>${formattedDate}</td>
+                      <td>${movement.stock_id}</td>
+                      <td>${productCount}</td>
+                      <td>${movement.supplier}</td>
+                      <td>${movement.warehouse}</td>
+                      <td>
+                        <a href="#" class="btn btn-primary btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="openViewModal2('${movement.stock_date}','${movement.stock_id}','${movement.supplier}','${movement.warehouse}','JSON.stringify(${stock_products})')">View</a>
+                        <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                      </td>
+    `;
+      
+      tableBody.appendChild(row);
+                    }
+    });
+  } else {
+      // Display a message or handle the case when either fromDate or toDate is empty
+      window.alert("Please select both From Date and To Date.");
+    }
+    
+  }
+  function exportToExcel(params1,params2,params3,params4,params6) {
+// Create a new workbook
+const workbook = new ExcelJS.Workbook();
+
+// Add a worksheet
+const worksheet = workbook.addWorksheet('Stock Card');
+
+// Get modal data
+const requesterSummary = document.getElementById('requesterSummary1');
+const replaceTable = document.getElementById('replaceTable1');
+
+// Extract text content from requesterSummary
+const requesterSummaryText = requesterSummary.textContent.trim();
+
+// Split requesterSummaryText into separate lines based on the newline character
+const requesterSummaryLines = requesterSummaryText.split('\n');
+
+// Add requester summary data to a single row with multiple cells
+const summaryRow = worksheet.addRow(['Date:', 'Reference:', 'Supplier:', 'Warehouse:', 'No. of products:']);
+summaryRow.eachCell({ includeEmpty: true }, (cell) => {
+  cell.width = 25; // Set cell width to 210 pixels
+});
+summaryRow.font = { bold: true };
+
+// Set cell values for requester summary
+summaryRow.getCell(1).value = 'Date: ' + formatDate(params1);
+summaryRow.getCell(2).value = 'Reference: ' + params2;
+summaryRow.getCell(3).value = 'Supplier: ' + params3;
+summaryRow.getCell(4).value = 'Warehouse: ' + params4;
+summaryRow.getCell(5).value = 'No. of products: ' + params6;
+
+// Write table headers to worksheet
+worksheet.addRow(['#', 'Product', 'Unit Measure', 'Quantity']);
+
+// Iterate over table rows and write data to worksheet
+replaceTable.querySelectorAll('tr').forEach(row => {
+  const rowData = [];
+  row.querySelectorAll('td').forEach(cell => {
+    rowData.push(cell.textContent);
+  });
+  worksheet.addRow(rowData);
+});
+
+// Set column widths to 210 pixels
+worksheet.columns.forEach(column => {
+  column.width = 25;
+});
+
+// Generate the Excel file
+workbook.xlsx.writeBuffer().then(buffer => {
+  // Convert buffer to Blob
+  const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  // Create download link
+  const downloadLink = document.createElement('a');
+  downloadLink.href = window.URL.createObjectURL(blob);
+  downloadLink.download = 'Stock_Card.xlsx';
+  // Trigger download
+  downloadLink.click();
+}).catch(error => {
+  console.error('Error exporting Excel:', error);
+  alert('Error exporting Excel. Please try again.');
+});
+
+}
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${day}/${month}/${year}`;
+  }
 
 </script>
