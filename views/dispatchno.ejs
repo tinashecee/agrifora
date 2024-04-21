@@ -155,10 +155,11 @@
       </thead>
       <tbody>
         <!-- Example row with a hyperlink -->
+        <% if (dnotes) { %> <% for (let dat of dnotes) { %>
         <tr>
-          <td><a href="ddnote.html">DN001</a></td>
-          <td>HQ2 BDE CRANBORNE</td>
-          <td>2023-09-21</td>
+          <td><a href="#"><%= dat.despatchnoteno %></a></td>
+          <td><%= dat.unit.name %></td>
+          <td><%= moment(dat.despatchdate).format('DD/MM/YY') %></td>
           <td>
             <button
               class="btn btn-primary"
@@ -171,55 +172,8 @@
             </button>
           </td>
         </tr>
-        <tr>
-          <td><a href="ddnote.html">DN002</a></td>
-          <td>SCHOOL OF LOGISTICS</td>
-          <td>2023-09-21</td>
-          <td>
-            <button
-              class="btn btn-primary"
-              type="button"
-              data-bs-toggle="offcanvas"
-              data-bs-target="#offcanvasWithBothOptions"
-              aria-controls="offcanvasWithBothOptions">
-              <i class="fas fa-eye"></i>
-              <!-- Font Awesome eye icon -->
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td><a href="ddnote.html">DN003</a></td>
-          <td>ZS INF MBALA MBALA</td>
-          <td>2023-09-21</td>
-          <td>
-            <button
-              class="btn btn-primary"
-              type="button"
-              data-bs-toggle="offcanvas"
-              data-bs-target="#offcanvasWithBothOptions"
-              aria-controls="offcanvasWithBothOptions">
-              <i class="fas fa-eye"></i>
-              <!-- Font Awesome eye icon -->
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td><a href="ddnote.html">DN004</a></td>
-          <td>BOAT REGT KARIBA</td>
-          <td>2023-09-21</td>
-          <td>
-            <button
-              class="btn btn-primary"
-              type="button"
-              data-bs-toggle="offcanvas"
-              data-bs-target="#offcanvasWithBothOptions"
-              aria-controls="offcanvasWithBothOptions">
-              <i class="fas fa-eye"></i>
-              <!-- Font Awesome eye icon -->
-            </button>
-          </td>
-        </tr>
-
+        <% } %><% } %>
+       
         <!-- Add more rows with hyperlinks as needed -->
       </tbody>
     </table>
@@ -242,12 +196,96 @@
         <div
           class="embed-responsive embed-responsive-16by9"
           style="height: 794px">
-          <iframe
-            id="pdf-preview"
-            class="embed-responsive-item"
-            src="ddnote.html"
-            width="100%"
-            height="100%"></iframe>
+          <div class="container my-5">
+            <div class="text-center">
+                <img src="sirius-assets/images/logos/sirius-logo.png" alt="Logo" style="max-width: 150px;">
+                <h3 class="text-center mb-4">Delivery Note</h3>
+              </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                  <h5>Delivered by:</h5>
+                  <p>Agrifora (Pvt) Ltd<br>
+                    28A Woodholme Rd<br>
+                  Harare<br>
+                  Delivery No. <span style="color: red;"><b>001</b></span></p>
+        
+                  <p>Date: 02/04/2024</p>
+                </div>
+                <div class="col-md-6 text-end">
+                  <h5>Delivered to:</h5>
+                  <p>ZNA :<br>
+                  Unit : 13 INF BN<br>
+                  Location: PLUMTREE<br>
+                  Delivery Point: 13 INF BN (PLUMTREE)</p>
+                </div>
+              </div>
+            <table class="table table-borderedless">
+                <thead class="table-primary">
+                <tr>
+                  <th>Product ID</th>
+                  <th>Description</th>
+                  <th>Unit Measure</th>
+                  <th>Qty Ordered</th>
+                  <th>Qty Received</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1.</td>
+                  <td>Cabbage</td>
+                  <td>Kg</td>
+                  <td>150.00</td>
+                  <td>150.00</td>
+                </tr>
+                <tr>
+                  <td>2.</td>
+                  <td>Tomatoes</td>
+                  <td>Kg</td>
+                  <td>150.00</td>
+                  <td>150.00</td>
+                </tr>
+                <tr>
+                  <td>3.</td>
+                  <td>Onions</td>
+                  <td>Kg</td>
+                  <td>50.00</td>
+                  <td>50.00</td>
+                </tr>
+                <tr>
+                  <td>4.</td>
+                  <td>Apples</td>
+                  <td>Kg</td>
+                  <td>250.00</td>
+                  <td>250.00</td>
+                </tr>
+                <tr>
+                  <td>5.</td>
+                  <td>Bananas</td>
+                  <td>Kg</td>
+                  <td>120.00</td>
+                  <td>120.00</td>
+                </tr>
+              </tbody>
+            </table>
+            <br></br>
+            <div class="row">
+                <div class="col-md-6 text-start">
+                  <p><b>Agrifora Representative:</b></p>
+                  <div class="text-start">
+                    <img src="sirius-assets/images/logos/sirius-logo.png" alt="Agrifora Represantative's ID" style="max-width: 200px;">
+                  </div>
+                </div>
+                <div class="col-md-6 text-end">
+                  <p><b>Received by and on behalf of ZNA</b><p>
+                 <p> Smile Nkomo<br>
+                  Unit : 13 INF BN<br>
+                  Location: PLUMTREE<br>
+                  Delivery Point: 13 INF BN (PLUMTREE)<br>
+                  <p>Date: 02/04/2024</p>
+                </div>
+              </div>
+          </div>
         </div>
         <!-- Print and Save buttons -->
         <div>

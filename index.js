@@ -14,6 +14,7 @@ const moment = require("moment");
 const puppeteer = require("puppeteer");
 const multer = require("multer");
 const exceljs = require("exceljs");
+const axios = require("axios");
 const SENDACTIVATEACCOUNTEMAIL = require("./email-generators/activate_account.js");
 const app = express();
 initializePassport(passport);
@@ -517,8 +518,46 @@ app.post("/get-modal-products", checkNotAuthenticated, (req, res) => {
     });
   });
 });
-app.get("/deliverynotes", checkNotAuthenticated, (req, res) => {
-  res.render("dispatchno", { layout: "./layouts/index-layout" });
+app.get("/deliverynotes", checkNotAuthenticated, async (req, res) => {
+  const generateTokenResponse = await axios.post(
+    "http://197.221.234.206:82/agrifora/token/generate-token",
+    {
+      id: "string",
+      deleted: true,
+      deletereason: "string",
+      fkdeletedby: "string",
+      fkcreatedby: "string",
+      fkmodifiedby: "string",
+      dateapproved: "string",
+      dateauthorised: "string",
+      datemodified: "string",
+      datecreated: "string",
+      days: 0,
+      months: 0,
+      firstname: "string",
+      gender: "string",
+      password: "password",
+      lastname: "string",
+      username: "agrifora",
+      ipaddress: "string",
+    }
+  );
+
+  console.log(generateTokenResponse.data.result.token);
+
+  const despatchNotesResponse = await axios.get(
+    "http://197.221.234.206:82/agrifora/api/despatchnote/list/completed",
+
+    {
+      headers: {
+        Authorization: `Bearer ${generateTokenResponse.data.result.token}`,
+      },
+    }
+  );
+  res.render("dispatchno", {
+    layout: "./layouts/index-layout",
+    dnotes: despatchNotesResponse.data,
+  });
 });
 app.get("/warehousemovement", checkNotAuthenticated, (req, res) => {
   let errors = [];
@@ -1847,12 +1886,13 @@ app.post("/add-dispatch", async (req, res) => {
   } = req.body;
   let yourDate = new Date();
   date_created = formatDate(yourDate);
+
   pool.query("SELECT * FROM unit", [], (err, unitResults) => {
     pool.query(
       `
-      INSERT INTO dispatch (dispatch_date, warehouse, staff_member, transporter, product, status, driver, quantity, unit)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ? , ?)
-    `,
+          INSERT INTO dispatch (dispatch_date, warehouse, staff_member, transporter, product, status, driver, quantity, unit)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ? , ?)
+        `,
       [
         dispatchDate,
         warehouse,
@@ -1894,12 +1934,12 @@ app.post("/add-dispatch", async (req, res) => {
 
           pool.query(
             `
-          INSERT INTO dispatch_units (formation_unit,location,
-            province,
-            delivery_point,
-            contact_person,
-            phone , quantity, unit, dispatch_id)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+              INSERT INTO dispatch_units (formation_unit,location,
+                province,
+                delivery_point,
+                contact_person,
+                phone , quantity, unit, dispatch_id)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
               formation_unit,
               location,
@@ -1930,19 +1970,180 @@ app.post("/add-dispatch", async (req, res) => {
 app.post("/action-dispatch", async (req, res) => {
   let errors = [];
   let { status, id } = req.body;
+  let yourDate = new Date();
+  let apidispatchUnits = [];
   pool.query(
-    `UPDATE dispatch SET status = ? WHERE dispatch_id = ?`,
-    [status, id],
-    (err, results) => {
+    `SELECT * FROM dispatch_units WHERE dispatch_id = ?`,
+    [id],
+    async (err, dispatchUnit) => {
       if (err) {
         // Handle error
         console.error(err);
         errors.push({ message: err });
         return res.redirect("/dispatch");
       }
+      dispatchUnit.forEach((e) => {
+        pool.query(
+          `SELECT * FROM unit WHERE unit_name = ?`,
+          [e.formation_unit],
+          async (err, unitData) => {
+            if (err) {
+              // Handle error
+              console.error(err);
+              errors.push({ message: err });
+              return res.redirect("/dispatch");
+            }
+            apidispatchUnits.push({
+              quantity: e.quantity,
+              unit: {
+                id: unitData[0].unit_id,
+                name: "string",
+                address: "string",
+                city: "string",
+                contactperson: "string",
+                contactnumber: "string",
+                parent: "string",
+                province: {
+                  id: "string",
+                  province: "string",
+                },
+              },
+            });
+          }
+        );
+      });
+      pool.query(
+        `SELECT * FROM dispatch WHERE dispatch_id = ?`,
+        [id],
+        async (err, dispatchData) => {
+          if (err) {
+            // Handle error
+            console.error(err);
+            errors.push({ message: err });
+            return res.redirect("/dispatch");
+          }
+          pool.query(
+            `SELECT * FROM products WHERE product_name = ?`,
+            [dispatchData[0].product],
+            async (err, productsData) => {
+              if (err) {
+                // Handle error
+                console.error(err);
+                errors.push({ message: err });
+                return res.redirect("/dispatch");
+              }
+              pool.query(
+                `UPDATE dispatch SET status = ? WHERE dispatch_id = ?`,
+                [status, id],
+                async (err, results) => {
+                  if (err) {
+                    // Handle error
+                    console.error(err);
+                    errors.push({ message: err });
+                    return res.redirect("/dispatch");
+                  }
+                  if (status == "Approved") {
+                    try {
+                      // Step 1: Generate token
+                      const generateTokenResponse = await axios.post(
+                        "http://197.221.234.206:82/agrifora/token/generate-token",
+                        {
+                          id: "string",
+                          deleted: true,
+                          deletereason: "string",
+                          fkdeletedby: "string",
+                          fkcreatedby: "string",
+                          fkmodifiedby: "string",
+                          dateapproved: "string",
+                          dateauthorised: "string",
+                          datemodified: "string",
+                          datecreated: "string",
+                          days: 0,
+                          months: 0,
+                          firstname: "string",
+                          gender: "string",
+                          password: "password",
+                          lastname: "string",
+                          username: "agrifora",
+                          ipaddress: "string",
+                        }
+                      );
 
-      req.flash("success", "You have successfully actioned dispatch");
-      res.redirect("/dispatch");
+                      console.log(generateTokenResponse.data.result.token);
+
+                      // Step 2: Make despatch product request
+                      const despatchProductResponse = await axios.post(
+                        "http://197.221.234.206:82/agrifora/api/despatchnote/despatchproduct",
+                        {
+                          id: makeid(10),
+                          despatchdate: yourDate,
+                          product: {
+                            id: productsData[0].product_id,
+                            code: "string",
+                            name: "string",
+                            invtype: {
+                              id: "string",
+                              invtype: "string",
+                            },
+                            measureunit: {
+                              id: "string",
+                              measureunit: "string",
+                              symbol: "string",
+                            },
+                          },
+                          despatchunits: apidispatchUnits,
+                          staffmember: dispatchData[0].staff_member,
+                          transporter: dispatchData[0].transporter,
+                          warehouse: dispatchData[0].warehouse,
+                        },
+                        {
+                          headers: {
+                            Authorization: `Bearer ${generateTokenResponse.data.result.token}`,
+                          },
+                        }
+                      );
+
+                      const despatchProductData = despatchProductResponse.data;
+                      console.log(
+                        "Despatch Product Response:",
+                        despatchProductData
+                      );
+                      console.log("Despatch Note ID:", despatchProductData.id);
+                      console.log(
+                        "Despatch Note No:",
+                        despatchProductData.despatchnoteno
+                      );
+                      pool.query(
+                        `UPDATE dispatch SET despatchnoteid = ? , despatchnoteno = ? WHERE dispatch_id = ?`,
+                        [
+                          despatchProductData.id,
+                          despatchProductData.despatchnoteno,
+                          id,
+                        ],
+                        async (err, results) => {
+                          if (err) {
+                            // Handle error
+                            console.error(err);
+                            errors.push({ message: err });
+                            return res.redirect("/dispatch");
+                          }
+                          req.flash(
+                            "success",
+                            "You have successfully actioned dispatch"
+                          );
+                          res.redirect("/dispatch");
+                        }
+                      );
+                    } catch (error) {
+                      console.error("Error:", error);
+                    }
+                  }
+                }
+              );
+            }
+          );
+        }
+      );
     }
   );
 });
