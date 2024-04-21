@@ -498,6 +498,25 @@ app.get("/dispatch", checkNotAuthenticated, (req, res) => {
     });
   });
 });
+app.post("/get-modal-products", checkNotAuthenticated, (req, res) => {
+  pool.query("SELECT * FROM dispatch_units", [], (err, results1) => {
+    let errors = [];
+    if (err) {
+      console.error(err);
+      errors.push({ message: err });
+      return res.status(404).send("Resource not found");
+    }
+    pool.query("SELECT * FROM stock_products", [], (err, results2) => {
+      let errors = [];
+      if (err) {
+        console.error(err);
+        errors.push({ message: err });
+        return res.status(404).send("Resource not found");
+      }
+      res.send({ dispatched_products: results1, stock_products: results2 });
+    });
+  });
+});
 app.get("/deliverynotes", checkNotAuthenticated, (req, res) => {
   res.render("dispatchno", { layout: "./layouts/index-layout" });
 });
