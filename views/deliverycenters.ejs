@@ -45,7 +45,27 @@
     <div class="card bg-primary text-white">
       <div class="card-body">
         <h5 class="card-title">Provinces</h5>
-        <p class="card-text" id="provincesStat">10</p> 
+        
+<% 
+// Create an empty object to store unique provinces
+const uniqueProvinces = {};
+
+// Iterate through the units array to count unique provinces
+units.forEach(unit => {
+  // Check if the province already exists in the uniqueProvinces object
+  if (!uniqueProvinces[unit.province]) {
+    // If not, add it to the object
+    uniqueProvinces[unit.province] = 1;
+  } else {
+    // If it exists, increment the count
+    uniqueProvinces[unit.province]++;
+  }
+});
+
+// Get the count of unique provinces
+const uniqueProvinceCount = Object.keys(uniqueProvinces).length;
+%>
+        <p class="card-text" id="provincesStat"> <%= uniqueProvinceCount %></p> 
       </div>
     </div>
   </div>
@@ -54,7 +74,7 @@
     <div class="card bg-success text-white">
       <div class="card-body">
         <h5 class="card-title">Units</h5>
-        <p class="card-text" id="unitsStat">25</p>
+        <p class="card-text" id="unitsStat"><%= units.length %></p>
       </div>
     </div>
   </div>
@@ -63,7 +83,26 @@
     <div class="card bg-warning text-white">
       <div class="card-body">
         <h5 class="card-title">Delivery Points</h5>
-        <p class="card-text" id="deliveryPointsStat">150</p>
+        <% 
+// Create an empty object to store unique delivery points
+const uniqueDeliveryPoints = {};
+
+// Iterate through the units array to count unique delivery points
+units.forEach(unit => {
+  // Check if the delivery point already exists in the uniqueDeliveryPoints object
+  if (!uniqueDeliveryPoints[unit.delivery_point]) {
+    // If not, add it to the object
+    uniqueDeliveryPoints[unit.delivery_point] = 1;
+  } else {
+    // If it exists, increment the count
+    uniqueDeliveryPoints[unit.delivery_point]++;
+  }
+});
+
+// Get the count of unique delivery points
+const uniqueDeliveryPointCount = Object.keys(uniqueDeliveryPoints).length;
+%>
+        <p class="card-text" id="deliveryPointsStat"> <%= uniqueDeliveryPointCount %></p>
       </div>
     </div>
   </div>
@@ -81,8 +120,8 @@
             <i class="fas fa-file"></i>Generate Report
           </button>
           <ul class="dropdown-menu">
-              <li><a href="#" class="dropdown-item">Excel</a></li>
-              <li><a href="#" class="dropdown-item">PDF</a></li>
+              <li><button class="dropdown-item btn " onclick="exportToExcel()">Excel</button></li>
+           
           </ul>
       </div>
   </div>
@@ -252,4 +291,48 @@
           $(this).remove();
       });
   });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+<script>
+  function exportToExcel() {
+  // Create a new workbook
+  const workbook = new ExcelJS.Workbook();
+
+  // Add a worksheet
+  const worksheet = workbook.addWorksheet('Units');
+
+  // Add column headers with bold font style
+  const headers = [ 'Unit Name', 'Location', 'Delivery Point', 'Contact Person', 'Phone Number'];
+  worksheet.addRow(headers).font = { bold: true };
+
+  // Add data from the table
+  const rows = document.querySelectorAll('table tbody tr');
+  rows.forEach(row => {
+    const rowData = [];
+    row.querySelectorAll('td').forEach(cell => {
+      rowData.push(cell.textContent.trim());
+    });
+    worksheet.addRow(rowData);
+  });
+   // Set column widths
+   worksheet.columns.forEach(column => {
+    column.width = 25;
+  });
+
+  // Generate the Excel file
+  workbook.xlsx.writeBuffer().then(buffer => {
+    // Convert buffer to Blob
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    // Create download link
+    const downloadLink = document.createElement('a');
+    downloadLink.href = window.URL.createObjectURL(blob);
+    downloadLink.download = 'Units.xlsx';
+    // Trigger download
+    downloadLink.click();
+  }).catch(error => {
+    console.error('Error exporting Excel:', error);
+    alert('Error exporting Excel. Please try again.');
+  });
+}
+
 </script>

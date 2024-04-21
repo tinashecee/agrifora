@@ -91,6 +91,15 @@
     <i class="fas fa-plus"></i> Add Transporter
   </button>
   
+    <button type="button" class="btn btn-primary mt-3 dropdown-toggle" data-bs-toggle="dropdown">
+      <i class="fas fa-file"></i>Generate Report
+    </button>
+    <ul class="dropdown-menu">
+        <li><button class="dropdown-item btn " onclick="exportToExcel()">Excel</button></li>
+     
+    </ul>
+
+  
   <!-- New Transporter Modal -->
   <div class="modal fade" id="newTransporterModal" tabindex="-1" aria-labelledby="newTransporterModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -224,7 +233,6 @@
         </div>
         </div>
       </div>
-          <script src="js/bootstrap/bootstrap.bundle.min.js"></script>
       <script src="js/main.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
       <script src="js/charts-demo.js"></script>
@@ -314,6 +322,50 @@
           integrity="sha384-pzjw8z+lbXg1h9xLjBkYsQbUPaHp1w18TVS+JZnVCTY5bA6qyj2i7ckD2J+uzWpF"
           crossorigin="anonymous"></script>
  
-    
+          <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+
+          <script>
+            function exportToExcel() {
+            // Create a new workbook
+            const workbook = new ExcelJS.Workbook();
+          
+            // Add a worksheet
+            const worksheet = workbook.addWorksheet('Transporter');
+          
+            // Add column headers with bold font style
+            const headers = [ 'Transporter ID', 'Transporter', 'Contact Person', 'Number of Trucks'];
+            worksheet.addRow(headers).font = { bold: true };
+          
+            // Add data from the table
+            const rows = document.querySelectorAll('table tbody tr');
+            rows.forEach(row => {
+              const rowData = [];
+              row.querySelectorAll('td').forEach(cell => {
+                rowData.push(cell.textContent.trim());
+              });
+              worksheet.addRow(rowData);
+            });
+             // Set column widths
+             worksheet.columns.forEach(column => {
+              column.width = 25;
+            });
+          
+            // Generate the Excel file
+            workbook.xlsx.writeBuffer().then(buffer => {
+              // Convert buffer to Blob
+              const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+              // Create download link
+              const downloadLink = document.createElement('a');
+              downloadLink.href = window.URL.createObjectURL(blob);
+              downloadLink.download = 'Transporters.xlsx';
+              // Trigger download
+              downloadLink.click();
+            }).catch(error => {
+              console.error('Error exporting Excel:', error);
+              alert('Error exporting Excel. Please try again.');
+            });
+          }
+          
+          </script>    
 
   
