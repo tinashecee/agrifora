@@ -696,7 +696,97 @@ console.log(params5)
   modalFooter.innerHTML = `       <button type="button" class="btn btn-primary"><i class="fa-download"></i>Export</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>`;
             }
-   
+            function openViewModal2a(params1,params2,params3,params4) {
+             
+             var modal = document.getElementById('staticBackdrop');
+         var modalTitle = modal.querySelector('.modal-title');
+         var modalBody = modal.querySelector('.modal-body');
+         var modalFooter = modal.querySelector('.modal-footer');
+         const requesterSummary = document.getElementById('requesterSummary1');
+         const replace = document.getElementById('replaceTable1');
+         fetch("/get-modal-products", {
+      method: "POST",
+      body: JSON.stringify({}),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }).then(function (response) {
+      response.json().then(function (text) {
+        let productsArray = text.stock_products
+      
+           // Set the modal title and body content
+           const formattedDate = formatDate(params1);
+           requesterSummary.innerHTML =  ``;
+           requesterSummary.innerHTML =  `
+           <div class="row">
+                   <div class="col-auto">
+                     <p>Date:</p>
+                   </div>
+                   <div class="col">
+                     <p><b>${formattedDate}</b></p>
+                   </div>
+                 </div>
+               
+                 <div class="row">
+                   <div class="col-auto">
+                     <p>Reference:</p>
+                   </div>
+                   <div class="col">
+                     <p><b>${params2}</b></p>
+                   </div>
+                 </div>
+               
+                 <div class="row">
+                   <div class="col-auto">
+                     <p>Supplier:</p>
+                   </div>
+                   <div class="col">
+                     <p><b>${params3}</b></p>
+                   </div>
+                 </div>
+               
+                 <div class="row">
+                   <div class="col-auto">
+                     <p>Warehouse:</p>
+                   </div>
+                   <div class="col">
+                     <p><b>${params4}</b></p>
+                   </div>
+                 </div>
+               
+                 <div class="row">
+                   <div class="col-auto">
+                     <p>No. of products:</p>
+                   </div>
+                   <div class="col">
+                     <p><b>${productsArray.length}</b></p>
+                   </div>
+                 </div>
+                
+           `;
+           let count =1;
+           replace.innerHTML = ``;
+                   productsArray.forEach((product) => {
+                     if (product.stock_id+'' === params2) {
+                          replace.innerHTML += `
+                          <tr>
+                       <td>${count}</td>
+                       <td>${product.product_name}</td>
+                       <td>${product.unit}</td>
+                       <td>${product.quantity}</td>
+                          </tr>
+                          
+                          `;
+                    
+                         count +=1
+                     }
+                      });
+                      modalFooter.innerHTML =``
+           modalFooter.innerHTML = `       <button type="button" class="btn btn-primary"><i class="fa-download"></i>Export</button>
+                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>`;
+                    })})
+                     }
+            
             function updateTable(params, params1) {
               const tableBody = document.getElementById("alex");
               const fromDate = document.getElementById("fromDate").value;
@@ -725,7 +815,7 @@ console.log(params5)
                       <td>${movement.supplier}</td>
                       <td>${movement.warehouse}</td>
                       <td>
-                        <a href="#" class="btn btn-primary btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="openViewModal2('${movement.stock_date}','${movement.stock_id}','${movement.supplier}','${movement.warehouse}','JSON.stringify(${stock_products})')">View</a>
+                        <a href="#" class="btn btn-primary btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="openViewModal2a('${movement.stock_date}','${movement.stock_id}','${movement.supplier}','${movement.warehouse}')">View</a>
                         <a href="#" class="btn btn-danger btn-sm">Delete</a>
                       </td>
     `;

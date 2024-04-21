@@ -246,7 +246,7 @@
                 <button
                   type="button"
                   class="btn btn-primary mx-2"
-                  onclick="window.print()">
+                  onclick="printModalContent()">
                   <i class="fas fa-print"></i> Print
                 </button>
                 <button
@@ -459,6 +459,24 @@
       const month = String(date.getMonth() + 1).padStart(2, "0");
       const day = String(date.getDate()).padStart(2, "0");
       return `${year}-${month}-${day}`;
+    }
+    function printModalContent() {
+      var modalContent = document.getElementById("reportModal").cloneNode(true);
+      var printWindow = window.open("", "", "height=400,width=600");
+      printWindow.document.write("<html><head><title>Dispatch Card</title>");
+      // Include Bootstrap CSS for styling
+      printWindow.document.write(
+        '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">'
+      );
+      printWindow.document.write("</head><body>");
+      printWindow.document.write(modalContent.innerHTML);
+      // Hide unnecessary elements for printing
+      printWindow.document.write(
+        "<style>.modal-footer { display: none; } footer { display: block; }</style>"
+      );
+      printWindow.document.write("</body></html>");
+      printWindow.document.close();
+      printWindow.print();
     }
   </script>
 </div>

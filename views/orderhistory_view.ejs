@@ -27,9 +27,9 @@
     <div class="col-md-4">
                               
       <!-- Modal Button for Upload Orderbook -->
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#download">
-          Download
-      </button>
+      <button type="button" class="btn btn-primary" onclick="exportToExcel()">
+        Download
+    </button>
   
       <!-- Modal for Upload Orderbook -->
       <div class="modal fade" id="uploadOrderbookModal" tabindex="-1" aria-labelledby="uploadOrderbookModalLabel" aria-hidden="true">
@@ -126,7 +126,7 @@
                         </div>
                         <!-- Table with Updated Headers -->
                         <div class="table-responsive border rounded">
-                          <table id="editableTable" class="table table-bordered table-striped table-hover">
+                          <table id="dryTable" class="table table-bordered table-striped table-hover">
                             <thead class="table-primary">
                                 <tr>
                                     <% if (dryProducts) { %>
@@ -202,7 +202,7 @@
                         </div>
                         <!-- Table with Updated Headers -->
                         <div class="table-responsive border rounded">
-                          <table id="editableTable" class="table table-bordered table-striped table-hover">
+                          <table id="perishablesTable" class="table table-bordered table-striped table-hover">
                             <thead class="table-primary">
                                 <tr>
                                     <% if (perishableProducts) { %>
@@ -271,6 +271,57 @@
   <script src="js/jquery.min.js"></script>
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+  <script>
+    function exportToExcel() {
+  const workbook = new ExcelJS.Workbook();
 
+  // Add worksheet for Dry Table
+  const dryWorksheet = workbook.addWorksheet('Dry Table');
+  addTableDataToWorksheet(dryWorksheet, 'dryTable');
 
+  // Add worksheet for Perishables Table
+  const perishablesWorksheet = workbook.addWorksheet('Perishables Table');
+  addTableDataToWorksheet(perishablesWorksheet, 'perishablesTable');
+
+  // Generate the Excel file
+  workbook.xlsx.writeBuffer().then(buffer => {
+    // Convert buffer to Blob
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    // Create download link
+    const downloadLink = document.createElement('a');
+    downloadLink.href = window.URL.createObjectURL(blob);
+    downloadLink.download = 'Orderbook-History.xlsx';
+    // Trigger download
+    downloadLink.click();
+  }).catch(error => {
+    console.error('Error exporting Excel:', error);
+    alert('Error exporting Excel. Please try again.');
+  });
+}
+
+function addTableDataToWorksheet(worksheet, tableId) {
+  const table = document.getElementById(tableId);
+  const headers = [];
+  const bodyRows = table.querySelectorAll('tbody tr');
+
+  // Extract table headers
+  table.querySelectorAll('thead th').forEach(header => {
+    headers.push(header.textContent.trim());
+  });
+
+  // Add headers to the worksheet with bold font style
+  worksheet.addRow(headers).font = { bold: true };
+
+  // Add data rows to the worksheet
+  bodyRows.forEach(row => {
+    const rowData = [];
+    row.querySelectorAll('td').forEach(cell => {
+      rowData.push(cell.textContent.trim());
+    });
+    worksheet.addRow(rowData);
+  });
+}
+
+    </script>
      
