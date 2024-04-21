@@ -477,9 +477,13 @@
             </thead>
             <tbody>
               <!-- Table rows with delivery data -->
+              <% if (dnotes) { %> <% for (let dat of dnotes) { %> <% const today
+              = new Date(); %> <% const despatchDate = new
+              Date(dat.despatchdate); %> <% if (despatchDate.toDateString() ===
+              today.toDateString()) { %>
               <tr>
-                <td>2023-11-24</td>
-                <td>HQ 1 BDE</td>
+                <td><%= moment(dat.despatchdate).format('DD/MM/YY') %></td>
+                <td><%= dat.unit.name %></td>
                 <td>
                   <a
                     href="#"
@@ -489,32 +493,8 @@
                   </a>
                 </td>
               </tr>
-              <tr>
-                <td>2023-11-24</td>
-                <td>1 REF HOSP BYO</td>
+              <% } %> <% } %> <% } %>
 
-                <td>
-                  <a
-                    href="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#deliveryModal">
-                    <i class="fas fa-eye"></i>
-                  </a>
-                </td>
-              </tr>
-              <tr>
-                <td>2023-11-24</td>
-                <td>ZS INF MBALA MBALA</td>
-
-                <td>
-                  <a
-                    href="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#deliveryModal">
-                    <i class="fas fa-eye"></i>
-                  </a>
-                </td>
-              </tr>
               <!-- Add more rows as needed -->
             </tbody>
           </table>

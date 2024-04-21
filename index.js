@@ -103,7 +103,7 @@ GROUP BY
               connection.query(
                 "SHOW COLUMNS FROM order_summary",
                 [],
-                (err, results1b) => {
+                async (err, results1b) => {
                   if (err) {
                     console.error(err);
                     errors.push({ message: err });
@@ -184,6 +184,41 @@ GROUP BY
                       prods: [],
                     });
                   } else {
+                    const generateTokenResponse = await axios.post(
+                      "http://197.221.234.206:82/agrifora/token/generate-token",
+                      {
+                        id: "string",
+                        deleted: true,
+                        deletereason: "string",
+                        fkdeletedby: "string",
+                        fkcreatedby: "string",
+                        fkmodifiedby: "string",
+                        dateapproved: "string",
+                        dateauthorised: "string",
+                        datemodified: "string",
+                        datecreated: "string",
+                        days: 0,
+                        months: 0,
+                        firstname: "string",
+                        gender: "string",
+                        password: "password",
+                        lastname: "string",
+                        username: "agrifora",
+                        ipaddress: "string",
+                      }
+                    );
+
+                    console.log(generateTokenResponse.data.result.token);
+
+                    const despatchNotesResponse = await axios.get(
+                      "http://197.221.234.206:82/agrifora/api/despatchnote/list/completed",
+
+                      {
+                        headers: {
+                          Authorization: `Bearer ${generateTokenResponse.data.result.token}`,
+                        },
+                      }
+                    );
                     res.render("index", {
                       layout: "./layouts/index-layout",
                       errors,
@@ -195,6 +230,7 @@ GROUP BY
                       perishableColumnTotals,
                       delivery_units: results2a,
                       prods: results1,
+                      dnotes: despatchNotesResponse.data,
                     });
                   }
                 }
