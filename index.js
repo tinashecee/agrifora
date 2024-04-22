@@ -242,6 +242,44 @@ GROUP BY
     );
   });
 });
+app.post("/get-dnotes", checkNotAuthenticated, async (req, res) => {
+  const generateTokenResponse = await axios.post(
+    "http://197.221.234.206:82/agrifora/token/generate-token",
+    {
+      id: "string",
+      deleted: true,
+      deletereason: "string",
+      fkdeletedby: "string",
+      fkcreatedby: "string",
+      fkmodifiedby: "string",
+      dateapproved: "string",
+      dateauthorised: "string",
+      datemodified: "string",
+      datecreated: "string",
+      days: 0,
+      months: 0,
+      firstname: "string",
+      gender: "string",
+      password: "password",
+      lastname: "string",
+      username: "agrifora",
+      ipaddress: "string",
+    }
+  );
+
+  console.log(generateTokenResponse.data.result.token);
+
+  const despatchNotesResponse = await axios.get(
+    "http://197.221.234.206:82/agrifora/api/despatchnote/list/completed",
+
+    {
+      headers: {
+        Authorization: `Bearer ${generateTokenResponse.data.result.token}`,
+      },
+    }
+  );
+  res.send({ dnotes: despatchNotesResponse.data });
+});
 app.get("/products", checkNotAuthenticated, (req, res) => {
   let errors = [];
   pool.query("SELECT * FROM products", [], (err, results1) => {

@@ -126,7 +126,7 @@
             id="toDate"
             class="form-control"
             placeholder="To date" />
-          <button id="goButton" class="btn btn-primary">Go</button>
+          <button id="goButton" class="btn btn-primary" onclick="updateTable('<%= JSON.stringify(dnotes) %>')">Go</button>
         </div>
       </div>
       <div class="col-md-2">
@@ -153,7 +153,7 @@
           <th>Action</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id="productTableBody">
         <!-- Example row with a hyperlink -->
         <% if (dnotes) { %> <% for (let dat of dnotes) { %>
         <tr>
@@ -264,54 +264,60 @@
   </div>
 
   <script src="js/bootstrap/bootstrap.bundle.min.js"></script>
+
   <script>
-    // Add an event listener to the search input
-    const searchInput = document.getElementById("search-input");
-    searchInput.addEventListener("input", function () {
-      filterTable();
-    });
-
-    // Function to filter the table based on user input
-    function filterTable() {
-      const input = searchInput.value.toLowerCase();
-      const table = document.getElementById("delivery-notes-table");
-      const rows = table.getElementsByTagName("tr");
-
-      for (let i = 1; i < rows.length; i++) {
-        // Start from 1 to skip the header row
-        const row = rows[i];
-        const deliveryNoteNumber = row.cells[0].textContent.toLowerCase();
-        const unit = row.cells[1].textContent.toLowerCase();
-        const date = row.cells[2].textContent.toLowerCase();
-
-        if (
-          deliveryNoteNumber.includes(input) ||
-          unit.includes(input) ||
-          date.includes(input)
-        ) {
-          row.style.display = "";
-        } else {
-          row.style.display = "none";
-        }
-      }
-    }
-  </script>
-  <script>
-    const deliveryNoteLinks = document.querySelectorAll(
-      "#delivery-notes-table tbody a"
-    );
-    const pdfPreview = document.getElementById("pdf-preview");
-
-    // Add click event listeners to delivery note links
-    deliveryNoteLinks.forEach((link) => {
-      link.addEventListener("click", function (event) {
-        event.preventDefault(); // Prevent the link from navigating to a new page
-        const pdfUrl = this.getAttribute("href");
-        pdfPreview.src = pdfUrl; // Load the PDF in the iframe
-      });
-    });
-  </script>
-  <script>
+       function formatDate(dateString) {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${day}/${month}/${year}`;
+  }
+     function updateTable(params) {
+             const tableBody = document.getElementById("productTableBody");
+             const fromDate = document.getElementById("fromDate").value;
+   const toDate = document.getElementById("toDate").value;
+             let dispatchArray = JSON.parse(params);
+             if(fromDate && toDate){
+   tableBody.innerHTML = ""; // Clear the table body
+   
+   dispatchArray.forEach((movement) => {
+    let d1 = new Date(movement.despatchdate)
+    let d2 = new Date(fromDate)
+    let d3 = new Date(toDate)
+     if( d1 >= d2 && d1 <= d3){
+     const row = document.createElement("tr");
+     const formattedDate = formatDate(movement.despatchdate);
+    
+     
+       row.innerHTML = `
+       <td><a href="#">${movement.despatchnoteno}</a></td>
+          <td>${movement.unit.name}</td>
+          <td>${formattedDate}</td>
+          <td>
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasWithBothOptions"
+              aria-controls="offcanvasWithBothOptions" onclick="openViewModal1('${movement.despatchnoteno}','${movement.despatchdate}','${movement.unit.name}','${movement.unit.province}','${movement.unit.contactperson}')">
+              <i class="fas fa-eye"></i>
+              <!-- Font Awesome eye icon -->
+            </button>
+          </td>
+   `;
+     
+     tableBody.appendChild(row);
+                  
+                  }
+   });
+  } else {
+     // Display a message or handle the case when either fromDate or toDate is empty
+     window.alert("Please select both From Date and To Date.");
+   }
+   
+  }
+  
     function openViewModal(dnoteno,dnotedate,unitname,unit_province,unit_contact_person, despatchitemsJSON) {
  console.log(unitname)
 
@@ -364,6 +370,71 @@
            
              });
             }
+            function openViewModal1(dnoteno,dnotedate,unitname,unit_province,unit_contact_person) {
+
+
+  const dd1 = document.getElementById('dd1');
+  const dd2 = document.getElementById('dd2');
+  const dd3 = document.getElementById('dd3');
+  const dd4 = document.getElementById('dd4');
+
+  dd1.innerHTML = ``
+  dd1.innerHTML = `<h5>Delivered by:</h5>
+                  <p>Agrifora (Pvt) Ltd<br>
+                    28A Woodholme Rd<br>
+                  Harare<br>
+                  Delivery No. <span style="color: red;"><b>${dnoteno}</b></span></p>
+        
+                  <p>Date: ${dnotedate}</p>`
           
+  dd2.innerHTML = ``
+  dd2.innerHTML = `  <h5>Delivered to:</h5>
+                  <p>ZNA :<br>
+                  Unit : ${unitname}<br>
+                  Location: ${unit_province}<br>
+                  Delivery Point: ${unitname}</p>`
+  dd3.innerHTML = ``
+  dd3.innerHTML = ` <p><b>Received by and on behalf of ZNA</b><p>
+                 <p> ${unit_contact_person}<br>
+                  Unit : ${unitname}<br>
+                  Location: ${unit_province}<br>
+                  Delivery Point: ${unitname}<br>
+                  <p>Date: ${dnotedate}</p>`
+                  dd4.innerHTML = ``
+                  fetch("/get-dnotes", {
+      method: "POST",
+      body: JSON.stringify({}),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }).then(function (response) {
+      response.json().then(function (text) {
+ 
+  let despatchitems = text.dnotes        
+  let count =1;
+  dd4.innerHTML = ``;
+          despatchitems.forEach((products) => {
+            if(products.despatchnoteno == dnoteno){
+                products.despatchitems.forEach((product) => {
+                 dd4.innerHTML += `
+                 <tr>
+              <td>${count}</td>
+              <td>${product.product.name}</td>
+              <td>${product.product.measureunit.symbol}</td>
+              <td>${product.quantity}</td>
+              <td>${product.received}</td>
+                 </tr>
+                 
+                 `;
+           
+                count +=1
+                })
+                }
+             });
+
+            })})
+            }
+            
+       
   </script>
 </div>
