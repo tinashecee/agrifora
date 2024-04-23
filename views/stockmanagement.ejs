@@ -311,7 +311,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="saveStockButton">Save Stock</button>
+        <button type="button" class="btn btn-primary" id="saveStockButton"  >Save Stock</button>
       </div>
     </div>
   </div>
@@ -486,6 +486,7 @@ const unit = cells.eq(3).text().trim();
       alert('Please fill in all details.');
       return;
     }
+    showLoadingSpinner();
     // Send data to server
     fetch('/add-stock', {
       method: 'POST',

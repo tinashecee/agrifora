@@ -292,9 +292,7 @@ app.get("/products", checkNotAuthenticated, (req, res) => {
         products: [],
       });
     }
-    results1.forEach((e) => {
-      console.log(e.product_name);
-    });
+
     res.render("products", {
       layout: "./layouts/index-layout",
       errors,
@@ -1845,6 +1843,7 @@ app.post("/add-product", async (req, res) => {
     alternateUnit,
     conversionFactor,
   } = req.body;
+
   pool.getConnection((err, connection) => {
     if (err) {
       console.error("Error getting MySQL connection:", err);
@@ -1894,6 +1893,7 @@ app.post("/add-product", async (req, res) => {
             }
             console.log("Column created successfully");
             connection.release();
+
             req.flash("success", "You have successfully added a product");
             res.redirect("/products");
           });

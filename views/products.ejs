@@ -130,12 +130,12 @@
 
         <div id="alertContainer"></div>
     </div>
-
+ 
     <!-- Add Product Modal -->
     <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-              <form action="/add-product" method="post">
+              <form action="/add-product" method="post" onsubmit="return validateForm()">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addProductModalLabel">Add New Product</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -160,6 +160,7 @@
                         <div class="mb-3">
                             <label for="unitMeasure" class="form-label">Unit Measure</label>
                             <select class="form-select" id="unitMeasure" name="unitMeasure" required>
+                              <option value="">Select Unit Measure</option>
                                 <option value="Kg">Kgs</option>
                                 <option value="Litres">Litres</option>
                                 <option value="Bags">Bags</option>
@@ -183,7 +184,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" >Save Product</button>
+                    <button type="submit" class="btn btn-primary"   >Save Product</button>
                 </div>
               </form>
             </div>
@@ -292,3 +293,27 @@ newRow.innerHTML = `
             });
         });
     </script>
+   <script>
+    function validateForm() {
+        // Get all required input fields
+        var requiredInputs = document.querySelectorAll('input[required], select[required]');
+        var isValid = true;
+
+        // Check if all required fields are filled
+        for (var i = 0; i < requiredInputs.length; i++) {
+            if (!requiredInputs[i].value) {
+                isValid = false;
+                break;
+            }
+        }
+
+        // If all required fields are filled, return true to submit the form
+        // Otherwise, show an alert and return false to prevent form submission
+        if (isValid) {
+          showLoadingSpinner();
+        } else {
+            alert('Please fill in all required fields.');
+            return false;
+        }
+    }
+</script>

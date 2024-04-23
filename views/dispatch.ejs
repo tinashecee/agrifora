@@ -527,7 +527,7 @@
            </div>
            <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" id="saveDispatchButton">Save Dispatch</button>
+              <button type="button" class="btn btn-primary" id="saveDispatchButton" >Save Dispatch</button>
            </div>
         </div>
      </div>
@@ -700,7 +700,7 @@
         return;
       }
   
-       console.log(dispatchData);
+      showLoadingSpinner();
             // Send data to server
       fetch('/add-dispatch', {
       method: 'POST',
@@ -1532,6 +1532,7 @@
   function approve(id){
   console.log(id)
   // Send an AJAX request to the server
+  showLoadingSpinner();
   fetch("/action-dispatch", {
      method: "POST",
      body: JSON.stringify({

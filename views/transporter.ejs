@@ -301,7 +301,7 @@
 
     // Output the fleet details array (you can modify this part based on your needs)
     console.log("Fleet Details:", fleetDetails);
-
+    showLoadingSpinner();
     // Send data to server
     fetch('/add-transporter', {
       method: 'POST',
