@@ -16,12 +16,35 @@
     .hidden-column {
     display: none;
 }
+/* Overlay styles */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+  display: none; /* Initially hidden */
+}
+
+/* Spinner styles */
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.logo {
+  width: 50px; /* Adjust size as needed */
+  height: 50px; /* Adjust size as needed */
+}
+
    </style>
   
 </head>
 <body>
    
-        
      
         <nav class="d-lg-none navbar navbar-dark bg-dark">
           <div class="container-fluid">
@@ -42,7 +65,7 @@
         
             <ul class="mb-8 mb-md-24 list-unstyled">
               <li class="mb-2">
-                <a class="d-flex py-3 px-4 align-items-center text-decoration-none rounded bg-secondary text-white fw-bold" href="/">
+                <a class="d-flex py-3 px-4 align-items-center text-decoration-none rounded bg-secondary text-white fw-bold"  onclick="showLoadingSpinner()" href="/">
                   <svg class="me-3" width="20" height="20" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M16.8735 16.875V9.02647C16.8735 8.93939 16.8553 8.85327 16.8201 8.77363C16.7849 8.69399 16.7334 8.62259 16.669 8.56402L10.4185 2.88159C10.3035 2.77699 10.1536 2.71903 9.99808 2.71904C9.84259 2.71905 9.69269 2.77701 9.57765 2.88161L3.32807 8.56402C3.26365 8.6226 3.21218 8.69399 3.17695 8.77362C3.14173 8.85326 3.12354 8.93937 3.12354 9.02645V16.875" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                     <path d="M1.24854 16.875H18.7485" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -67,7 +90,7 @@
                   </span>
                 </a>
                 <div class="collapse ps-6" id="menus1-4">
-                  <a class="d-flex mb-2 py-3 px-4 align-items-center text-decoration-none text-white fw-bold" href="/products">
+                  <a class="d-flex mb-2 py-3 px-4 align-items-center text-decoration-none text-white fw-bold" onclick="showLoadingSpinner()" href="/products">
                     <svg class="me-3" width="20" height="20" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M5.95325 10.3282L11.8907 3.1407L16.875 3.125L16.8593 8.1093L9.67184 14.0468" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                       <path d="M7.8125 12.1875L12.5 7.5" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -75,7 +98,7 @@
                     </svg>
                     <span>Products</span>
                   </a>
-                  <a class="d-flex mb-2 py-3 px-4 align-items-center text-decoration-none text-white fw-bold" href="stockmanagement">
+                  <a class="d-flex mb-2 py-3 px-4 align-items-center text-decoration-none text-white fw-bold" onclick="showLoadingSpinner()" href="stockmanagement">
                     <svg class="me-3" width="20" height="20" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M2.70833 15L17.2917 15C18.0971 15 18.75 14.316 18.75 13.4722V2.77778C18.75 1.93401 18.0971 1.25 17.2917 1.25L2.70833 1.25C1.90292 1.25 1.25 1.93401 1.25 2.77778V13.4722C1.25 14.316 1.90292 15 2.70833 15Z" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                       <path d="M12.5 18.75H7.5" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -83,7 +106,7 @@
                     </svg>
                     <span>Stock Management</span>
                   </a>
-                  <a class="d-flex mb-2 py-3 px-4 align-items-center text-decoration-none text-white fw-bold" href="productmovement">
+                  <a class="d-flex mb-2 py-3 px-4 align-items-center text-decoration-none text-white fw-bold" onclick="showLoadingSpinner()" href="productmovement">
                     <svg class="me-3" width="20" height="20" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M2.70833 15L17.2917 15C18.0971 15 18.75 14.316 18.75 13.4722V2.77778C18.75 1.93401 18.0971 1.25 17.2917 1.25L2.70833 1.25C1.90292 1.25 1.25 1.93401 1.25 2.77778V13.4722C1.25 14.316 1.90292 15 2.70833 15Z" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                       <path d="M12.5 18.75H7.5" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -91,7 +114,7 @@
                     </svg>
                     <span>Movement</span>
                   </a>
-                  <a class="d-flex py-3 px-4 align-items-center text-decoration-none text-white fw-bold" href="dispatch">
+                  <a class="d-flex py-3 px-4 align-items-center text-decoration-none text-white fw-bold" onclick="showLoadingSpinner()" href="dispatch">
                     <svg class="me-3" width="20" height="20" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M13.75 4.375H17.5" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                       <path d="M15.625 2.5V6.25" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -100,7 +123,7 @@
                     </svg>
                     <span>Dispatch</span>
                   </a>
-                  <a class="d-flex py-3 px-4 align-items-center text-decoration-none text-white fw-bold" href="deliverynotes">
+                  <a class="d-flex py-3 px-4 align-items-center text-decoration-none text-white fw-bold" onclick="showLoadingSpinner()" href="deliverynotes">
                     <svg class="me-3" width="20" height="20" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M13.75 4.375H17.5" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                       <path d="M15.625 2.5V6.25" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -109,7 +132,7 @@
                     </svg>
                     <span>Delivery Note</span>
                   </a>
-                  <a class="d-flex py-3 px-4 align-items-center text-decoration-none text-white fw-bold" href="warehousemovement">
+                  <a class="d-flex py-3 px-4 align-items-center text-decoration-none text-white fw-bold" onclick="showLoadingSpinner()" href="warehousemovement">
                     <svg class="me-3" width="20" height="20" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M13.75 4.375H17.5" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                       <path d="M15.625 2.5V6.25" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -136,7 +159,7 @@
                   </span>
                 </a>
                 <div class="collapse ps-6" id="menus1-10">
-                  <a class="d-flex mb-2 py-3 px-4 align-items-center text-decoration-none text-white fw-bold" href="orderbook">
+                  <a class="d-flex mb-2 py-3 px-4 align-items-center text-decoration-none text-white fw-bold" onclick="showLoadingSpinner()" href="orderbook">
                     <svg class="me-3" width="20" height="20" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M5.95325 10.3282L11.8907 3.1407L16.875 3.125L16.8593 8.1093L9.67184 14.0468" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                       <path d="M7.8125 12.1875L12.5 7.5" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -144,7 +167,7 @@
                     </svg>
                     <span>Current</span>
                   </a>
-                  <a class="d-flex py-3 px-4 align-items-center text-decoration-none text-white fw-bold" href="orderhistory">
+                  <a class="d-flex py-3 px-4 align-items-center text-decoration-none text-white fw-bold"  onclick="showLoadingSpinner()" href="orderhistory">
                     <svg class="me-3" width="20" height="20" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M13.75 4.375H17.5" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                       <path d="M15.625 2.5V6.25" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -172,7 +195,7 @@
                   </span>
                 </a>
                 <div class="collapse ps-6" id="menus1-9">
-                  <a class="d-flex mb-2 py-3 px-4 align-items-center text-decoration-none text-white fw-bold" href="stockrecon">
+                  <a class="d-flex mb-2 py-3 px-4 align-items-center text-decoration-none text-white fw-bold" onclick="showLoadingSpinner()" href="stockrecon">
                     <svg class="me-3" width="20" height="20" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M5.95325 10.3282L11.8907 3.1407L16.875 3.125L16.8593 8.1093L9.67184 14.0468" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                       <path d="M7.8125 12.1875L12.5 7.5" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -180,7 +203,7 @@
                     </svg>
                     <span>By Stock Items</span>
                   </a>
-                  <a class="d-flex py-3 px-4 align-items-center text-decoration-none text-white fw-bold" href="centermovement">
+                  <a class="d-flex py-3 px-4 align-items-center text-decoration-none text-white fw-bold" onclick="showLoadingSpinner()" href="centermovement">
                     <svg class="me-3" width="20" height="20" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M13.75 4.375H17.5" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                       <path d="M15.625 2.5V6.25" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -192,7 +215,7 @@
                 </div>
               </li>
               <li class="mb-2">
-                <a class="d-flex py-3 px-4 align-items-center text-decoration-none text-white fw-bold" href="reports">
+                <a class="d-flex py-3 px-4 align-items-center text-decoration-none text-white fw-bold" onclick="showLoadingSpinner()" href="reports">
                   <svg class="me-3" width="20" height="20" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M3.54956 13.8327C2.61735 12.2612 2.29088 10.4035 2.63146 8.60832C2.97204 6.81315 3.95624 5.20407 5.39924 4.08321C6.84225 2.96235 8.6448 2.40682 10.4684 2.52094C12.292 2.63505 14.0113 3.41097 15.3033 4.70298C16.5953 5.99499 17.3712 7.71422 17.4853 9.53783C17.5995 11.3614 17.044 13.164 15.9231 14.607C14.8022 16.05 13.1932 17.0342 11.398 17.3748C9.60285 17.7154 7.7451 17.3889 6.17361 16.4567L6.17362 16.4567L3.58218 17.1971C3.47497 17.2277 3.36151 17.2291 3.25357 17.2011C3.14563 17.1732 3.04713 17.1168 2.96828 17.038C2.88943 16.9592 2.83311 16.8607 2.80514 16.7527C2.77717 16.6448 2.77857 16.5313 2.80921 16.4241L3.54962 13.8327L3.54956 13.8327Z" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                     <path d="M7.5 8.4375H12.5" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -218,7 +241,7 @@
                   </span>
                 </a>
                 <div class="collapse ps-6" id="menus1-3">
-                  <a class="d-flex mb-2 py-3 px-4 align-items-center text-decoration-none text-white fw-bold" href="users">
+                  <a class="d-flex mb-2 py-3 px-4 align-items-center text-decoration-none text-white fw-bold" onclick="showLoadingSpinner()" href="users">
                     <svg class="me-3" width="20" height="20" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M5.95325 10.3282L11.8907 3.1407L16.875 3.125L16.8593 8.1093L9.67184 14.0468" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                       <path d="M7.8125 12.1875L12.5 7.5" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -226,7 +249,7 @@
                     </svg>
                     <span>User Management</span>
                   </a>
-                  <a class="d-flex mb-2 py-3 px-4 align-items-center text-decoration-none text-white fw-bold" href="transporter">
+                  <a class="d-flex mb-2 py-3 px-4 align-items-center text-decoration-none text-white fw-bold" onclick="showLoadingSpinner()" href="transporter">
                     <svg class="me-3" width="20" height="20" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M2.70833 15L17.2917 15C18.0971 15 18.75 14.316 18.75 13.4722V2.77778C18.75 1.93401 18.0971 1.25 17.2917 1.25L2.70833 1.25C1.90292 1.25 1.25 1.93401 1.25 2.77778V13.4722C1.25 14.316 1.90292 15 2.70833 15Z" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                       <path d="M12.5 18.75H7.5" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -243,7 +266,7 @@
                     </svg>
                     <span>User Roles</span>
                   </a>
-                  <a class="d-flex py-3 px-4 align-items-center text-decoration-none text-white fw-bold" href="warehouse">
+                  <a class="d-flex py-3 px-4 align-items-center text-decoration-none text-white fw-bold" onclick="showLoadingSpinner()" href="warehouse">
                     <svg class="me-3" width="20" height="20" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M13.75 4.375H17.5" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                       <path d="M15.625 2.5V6.25" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -253,7 +276,7 @@
                     <span>Warehouses</span>
                   </a>
              
-                  <a class="d-flex py-3 px-4 align-items-center text-decoration-none text-white fw-bold" href="deliverycenters">
+                  <a class="d-flex py-3 px-4 align-items-center text-decoration-none text-white fw-bold" onclick="showLoadingSpinner()" href="deliverycenters">
                     <svg class="me-3" width="20" height="20" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M13.75 4.375H17.5" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                       <path d="M15.625 2.5V6.25" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -265,7 +288,7 @@
                 </div>
               </li>
               <li class="mb-2">
-                <a class="d-flex py-3 px-4 align-items-center text-decoration-none text-white fw-bold" href="faq">
+                <a class="d-flex py-3 px-4 align-items-center text-decoration-none text-white fw-bold" onclick="showLoadingSpinner()" href="faq">
                   <svg class="me-3" width="20" height="20" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M10 17.5C14.1421 17.5 17.5 14.1421 17.5 10C17.5 5.85786 14.1421 2.5 10 2.5C5.85786 2.5 2.5 5.85786 2.5 10C2.5 14.1421 5.85786 17.5 10 17.5Z" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                     <path d="M10 13.125C11.7259 13.125 13.125 11.7259 13.125 10C13.125 8.27411 11.7259 6.875 10 6.875C8.27411 6.875 6.875 8.27411 6.875 10C6.875 11.7259 8.27411 13.125 10 13.125Z" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -278,7 +301,7 @@
                 </a>
               </li>
               <li class="mb-2">
-                <a class="d-flex py-3 px-4 align-items-center text-decoration-none text-white fw-bold" href="/logout">
+                <a class="d-flex py-3 px-4 align-items-center text-decoration-none text-white fw-bold" onclick="showLoadingSpinner()" href="/logout">
                   <svg class="me-3" width="20" height="20" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M10 17.5C14.1421 17.5 17.5 14.1421 17.5 10C17.5 5.85786 14.1421 2.5 10 2.5C5.85786 2.5 2.5 5.85786 2.5 10C2.5 14.1421 5.85786 17.5 10 17.5Z" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                     <path d="M10 13.125C11.7259 13.125 13.125 11.7259 13.125 10C13.125 8.27411 11.7259 6.875 10 6.875C8.27411 6.875 6.875 8.27411 6.875 10C6.875 11.7259 8.27411 13.125 10 13.125Z" stroke="#7A899B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -294,6 +317,17 @@
           </div>
         </div>
         <%- body %>
+        <!-- Loading spinner overlay -->
+   <!-- Loading spinner overlay -->
+   <div id="overlay" class="overlay">
+    <div class="spinner">
+      <button class="btn btn-primary" type="button" disabled>
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Loading...
+      </button>
+    </div>
+  </div>
+        </div>
       </div>
     </div>
     <!-- Footer container --
@@ -352,6 +386,11 @@
           });
       });
   </script>
-  
+   <script>
+   function showLoadingSpinner() {
+  var overlay = document.getElementById("overlay");
+  overlay.style.display = "block";
+}
+</script>
 </body>
 </html>
