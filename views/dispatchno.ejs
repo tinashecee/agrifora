@@ -126,7 +126,7 @@
             id="toDate"
             class="form-control"
             placeholder="To date" />
-          <button id="goButton" class="btn btn-primary" onclick="updateTable('<%= JSON.stringify(dnotes) %>')">Go</button>
+          <button id="goButton" class="btn btn-primary" onclick="updateTable('<%= JSON.stringify(dnotes) %>', '<%= token %>')">Go</button>
         </div>
       </div>
       <div class="col-md-2">
@@ -157,16 +157,16 @@
         <!-- Example row with a hyperlink -->
         <% if (dnotes) { %> <% for (let dat of dnotes) { %>
         <tr>
-          <td><a href="#"><%= dat.despatchnoteno %></a></td>
+          <td><a href="#"><%= dat.deliverynotes[0].deliverynoteno %></a></td>
           <td><%= dat.unit.name %></td>
-          <td><%= moment(dat.despatchdate).format('DD/MM/YY') %></td>
+          <td><%= moment(dat.deliverynotes[0].datecreated).format('DD/MM/YY') %></td>
           <td>
             <button
               class="btn btn-primary"
               type="button"
               data-bs-toggle="offcanvas"
               data-bs-target="#offcanvasWithBothOptions"
-              aria-controls="offcanvasWithBothOptions" onclick="openViewModal('<%= dat.despatchnoteno %>','<%= dat.despatchdate %>','<%= dat.unit.name %>','<%= dat.unit.province %>','<%= dat.unit.contactperson %>', '<%=  JSON.stringify(dat.despatchitems) %>')">
+              aria-controls="offcanvasWithBothOptions" onclick="openViewModal('<%= dat.deliverynotes[0].despatchnoteno %>','<%= dat.deliverynotes[0].datecreated %>','<%= dat.unit.name %>','<%= dat.unit.province %>','<%= dat.unit.contactperson %>','<%= dat.image %>','<%= dat.deliverynotes[0].receivedby.firstname %>','<%= dat.deliverynotes[0].receivedby.lastname %>','<%= dat.deliverynotes[0].receivedby.phone %>', '<%=  JSON.stringify(dat.deliverynotes[0].deliveryitems) %>','<%= token %>', '<%= dat.deliverynotes[0].id %>')">
               <i class="fas fa-eye"></i>
               <!-- Font Awesome eye icon -->
             </button>
@@ -227,11 +227,12 @@
             </table>
             <br></br>
             <div class="row">
-                <div class="col-md-6 text-start">
+                <div class="col-md-6 text-start" id="dd5">
                   <p><b>Agrifora Representative:</b></p>
                   <div class="text-start">
-                    <img src="sirius-assets/images/logos/sirius-logo.png" alt="Agrifora Represantative's ID" style="max-width: 200px;">
+                    <img id="your-img-tag-id" alt="Agrifora Represantative's ID" style="max-width: 200px;">
                   </div>
+                  
                 </div>
                 <div class="col-md-6 text-end" id="dd3">
                  
@@ -272,7 +273,7 @@
   const day = String(date.getDate()).padStart(2, "0");
   return `${day}/${month}/${year}`;
   }
-     function updateTable(params) {
+     function updateTable(params, token) {
              const tableBody = document.getElementById("productTableBody");
              const fromDate = document.getElementById("fromDate").value;
    const toDate = document.getElementById("toDate").value;
@@ -281,16 +282,16 @@
    tableBody.innerHTML = ""; // Clear the table body
    
    dispatchArray.forEach((movement) => {
-    let d1 = new Date(movement.despatchdate)
+    let d1 = new Date(movement.deliverynotes[0].datecreated)
     let d2 = new Date(fromDate)
     let d3 = new Date(toDate)
      if( d1 >= d2 && d1 <= d3){
      const row = document.createElement("tr");
-     const formattedDate = formatDate(movement.despatchdate);
+     const formattedDate = formatDate(movement.deliverynotes[0].datecreated);
     
      
        row.innerHTML = `
-       <td><a href="#">${movement.despatchnoteno}</a></td>
+       <td><a href="#">${movement.deliverynotes[0].deliverynoteno}</a></td>
           <td>${movement.unit.name}</td>
           <td>${formattedDate}</td>
           <td>
@@ -299,7 +300,7 @@
               type="button"
               data-bs-toggle="offcanvas"
               data-bs-target="#offcanvasWithBothOptions"
-              aria-controls="offcanvasWithBothOptions" onclick="openViewModal1('${movement.despatchnoteno}','${movement.despatchdate}','${movement.unit.name}','${movement.unit.province}','${movement.unit.contactperson}')">
+              aria-controls="offcanvasWithBothOptions" onclick="openViewModal1('${movement.deliverynotes[0].deliverynoteno}','${movement.deliverynotes[0].datecreated}','${movement.unit.name}','${movement.unit.province}','${movement.unit.contactperson}', '${movement.image}','${movement.deliverynotes[0].receivedby.firstname}','${movement.deliverynotes[0].receivedby.lastname}','${movement.deliverynotes[0].receivedby.phone}','${token}', '${movement.deliverynotes[0].id}')">
               <i class="fas fa-eye"></i>
               <!-- Font Awesome eye icon -->
             </button>
@@ -317,13 +318,14 @@
    
   }
   
-    function openViewModal(dnoteno,dnotedate,unitname,unit_province,unit_contact_person, despatchitemsJSON) {
- console.log(unitname)
+    function openViewModal(dnoteno,dnotedate,unitname,unit_province,unit_contact_person,image,receivedbyfirstname,receivedbylastname, receivedbyphone, despatchitemsJSON, token, despatchid) {
 
+console.log(dnoteno)
   const dd1 = document.getElementById('dd1');
   const dd2 = document.getElementById('dd2');
   const dd3 = document.getElementById('dd3');
   const dd4 = document.getElementById('dd4');
+  const dd5 = document.getElementById('dd5');
 
   dd1.innerHTML = ``
   dd1.innerHTML = `<h5>Delivered by:</h5>
@@ -342,11 +344,9 @@
                   Delivery Point: ${unitname}</p>`
   dd3.innerHTML = ``
   dd3.innerHTML = ` <p><b>Received by and on behalf of ZNA</b><p>
-                 <p> ${unit_contact_person}<br>
-                  Unit : ${unitname}<br>
-                  Location: ${unit_province}<br>
-                  Delivery Point: ${unitname}<br>
-                  <p>Date: ${dnotedate}</p>`
+                 <p>Firstname ${receivedbyfirstname}<br>
+                  Lastname : ${receivedbylastname}<br>
+                  Phone: ${receivedbyphone}<br></p>`
   
   let despatchitems = JSON.parse(despatchitemsJSON)                    
   dd4.innerHTML = ``
@@ -357,10 +357,10 @@
                  dd4.innerHTML += `
                  <tr>
               <td>${count}</td>
-              <td>${product.product.name}</td>
-              <td>${product.product.measureunit.symbol}</td>
+              <td>${product.inventory.name}</td>
+              <td>${product.inventory.measureunit.symbol}</td>
               <td>${product.quantity}</td>
-              <td>${product.received}</td>
+              <td>${product.despatchquantity}</td>
                  </tr>
                  
                  `;
@@ -368,15 +368,41 @@
                 count +=1
            
              });
+             var imageUrl = `http://197.221.234.206:82/agrifora/api/deliverynote/${despatchid}/image`;
+
+// Make a GET request to the API endpoint
+fetch(imageUrl, {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer ' + token,
+  },
+})
+.then(response => {
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return response.blob(); // Convert response to Blob
+})
+.then(blob => {
+  // Create a URL for the blob
+  var url = URL.createObjectURL(blob);
+
+  // Set the src attribute of the img tag
+  var imgTag = document.getElementById('your-img-tag-id');
+  imgTag.src = url;
+})
+.catch(error => {
+  console.error('There was a problem with the fetch operation:', error);
+});
             }
-            function openViewModal1(dnoteno,dnotedate,unitname,unit_province,unit_contact_person) {
+            function openViewModal1(dnoteno,dnotedate,unitname,unit_province,unit_contact_person,image,receivedbyfirstname,receivedbylastname, receivedbyphone, token, despatchid) {
 
-
+console.log(dnoteno)
   const dd1 = document.getElementById('dd1');
   const dd2 = document.getElementById('dd2');
   const dd3 = document.getElementById('dd3');
   const dd4 = document.getElementById('dd4');
-
+  const dd5 = document.getElementById('dd5');
   dd1.innerHTML = ``
   dd1.innerHTML = `<h5>Delivered by:</h5>
                   <p>Agrifora (Pvt) Ltd<br>
@@ -394,11 +420,9 @@
                   Delivery Point: ${unitname}</p>`
   dd3.innerHTML = ``
   dd3.innerHTML = ` <p><b>Received by and on behalf of ZNA</b><p>
-                 <p> ${unit_contact_person}<br>
-                  Unit : ${unitname}<br>
-                  Location: ${unit_province}<br>
-                  Delivery Point: ${unitname}<br>
-                  <p>Date: ${dnotedate}</p>`
+                 <p>Firstname ${receivedbyfirstname}<br>
+                  Lastname : ${receivedbylastname}<br>
+                  Phone: ${receivedbyphone}<br></p>`
                   dd4.innerHTML = ``
                   fetch("/get-dnotes", {
       method: "POST",
@@ -413,25 +437,56 @@
   let count =1;
   dd4.innerHTML = ``;
           despatchitems.forEach((products) => {
-            if(products.despatchnoteno == dnoteno){
-                products.despatchitems.forEach((product) => {
+           // console.log(products.deliverynotes[0].deliverynoteno, dnoteno)
+            if(products.deliverynotes[0].deliverynoteno == dnoteno){
+                products.deliverynotes[0].deliveryitems.forEach((product) => {
+               //   console.log(product.despatchnoteno , dnoteno)
+               
+                  console.log(product)
                  dd4.innerHTML += `
                  <tr>
               <td>${count}</td>
-              <td>${product.product.name}</td>
-              <td>${product.product.measureunit.symbol}</td>
+              <td>${product.inventory.name}</td>
+              <td>${product.inventory.measureunit.symbol}</td>
               <td>${product.quantity}</td>
-              <td>${product.received}</td>
+              <td>${product.despatchquantity}</td>
                  </tr>
                  
                  `;
            
                 count +=1
+                  
                 })
-                }
+              }
              });
 
             })})
+            var imageUrl = `http://197.221.234.206:82/agrifora/api/deliverynote/${despatchid}/image`;
+
+// Make a GET request to the API endpoint
+fetch(imageUrl, {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer ' + token,
+  },
+})
+.then(response => {
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return response.blob(); // Convert response to Blob
+})
+.then(blob => {
+  // Create a URL for the blob
+  var url = URL.createObjectURL(blob);
+
+  // Set the src attribute of the img tag
+  var imgTag = document.getElementById('your-img-tag-id');
+  imgTag.src = url;
+})
+.catch(error => {
+  console.error('There was a problem with the fetch operation:', error);
+});
             }
             
        

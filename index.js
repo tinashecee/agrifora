@@ -231,6 +231,7 @@ GROUP BY
                       delivery_units: results2a,
                       prods: results1,
                       dnotes: despatchNotesResponse.data,
+                      token: generateTokenResponse.data.result.token,
                     });
                   }
                 }
@@ -629,6 +630,7 @@ app.get("/deliverynotes", checkNotAuthenticated, async (req, res) => {
   res.render("dispatchno", {
     layout: "./layouts/index-layout",
     dnotes: despatchNotesResponse.data,
+    token: generateTokenResponse.data.result.token,
   });
 });
 app.get("/warehousemovement", checkNotAuthenticated, (req, res) => {
